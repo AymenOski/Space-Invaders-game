@@ -1,0 +1,22 @@
+body {
+    font-family: 'Press Start 2P', cursive;
+    box-shadow: 0 0 70px #00ff00, 0 0 140px #00ff00;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    justify-content: start;
+    background-color: black;
+    color: rgb(127, 185, 33);
+    height: 98vh;
+}
+
+.hud div {
+    display: inline-block;
+    margin-top: 20px;
+    margin-right: 20px;
+
+}

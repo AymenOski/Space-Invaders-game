@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Invaders</title>
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <script defer src="./script.js"></script>
+    <div class="game-container">
+        
+        <div class="hud">
+            <div class="score-container">Score: 0</div>
+            <div class="timer-container">Time: 0</div>
+            <div class="lives-container">Lives: 3</div>
+        </div>
+
+        <div class="enemy-container">
+            <!-- Enemies will be generated here -->
+        </div>
+
+        <div class="player-container">
+            <div class="player"></div>
+        </div>
+
+        <div class="pause-menu" style="display: none;"> 
+            <button id="continue-btn">Continue</button>
+            <button id="restart-btn">Restart</button>
+        </div>
+
+    </div>
+</body>
+</html>
