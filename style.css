@@ -1,15 +1,17 @@
 body {
     font-family: 'Press Start 2P', cursive;
-    box-shadow: 0 0 70px #00ff00, 0 0 140px #00ff00;
+    /* box-shadow: 0 0 70px #00ff00, 0 0 140px #00ff00; */
+    background-color: #000000; 
 }
 
 .game-container {
     display: flex;
+    position: relative;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     justify-content: start;
-    background-color: black;
+    background: black;
     color: rgb(127, 185, 33);
     height: 98vh;
 }
@@ -18,5 +20,23 @@ body {
     display: inline-block;
     margin-top: 20px;
     margin-right: 20px;
+}
 
+.enemy {
+    image-rendering: pixelated;
+    will-change: transform;
+    width: 24px;
+    height: 24px;
+}
+
+.E1 {
+    background: url(./Assets/invader_A1.png) no-repeat center;
+}
+
+.E2 {
+    background: url(./Assets/invader_B1.png) no-repeat center;
+}
+
+.E3 {
+    background: url(./Assets/invader_C1.png) no-repeat center;
 }
