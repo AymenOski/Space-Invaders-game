@@ -18,5 +18,38 @@ body {
     display: inline-block;
     margin-top: 20px;
     margin-right: 20px;
+    
+}
+
+
+
+.enemy-container{
+    flex: 1;
+}
+
+
+.player-container{
+    
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    background-color: rgb(73, 71, 71);
+    width: 100%;
+    height: 100px;
+    border :1px solid red;
+}
+
+
+.player-container .player {
+    overflow: hidden;
+    align-self:    center;
+    width: 20%;
+    max-width: 80px;
+    height: 50px;
+    background-image: url('../Assets/player.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size:  contain;
+    image-rendering: pixelated;    /* for blocky style */
 
 }
