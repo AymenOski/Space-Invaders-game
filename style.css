@@ -29,14 +29,26 @@ body {
     height: 24px;
 }
 
-.E1 {
+.E1__A1 {
     background: url(./Assets/invader_A1.png) no-repeat center;
 }
 
-.E2 {
+.E2__B1 {
     background: url(./Assets/invader_B1.png) no-repeat center;
 }
 
-.E3 {
+.E3__C1 {
     background: url(./Assets/invader_C1.png) no-repeat center;
+}
+
+.E1__A2 {
+    background: url(./Assets/invader_A2.png) no-repeat center;
+}
+
+.E2__B2 {
+    background: url(./Assets/invader_B2.png) no-repeat center;
+}
+
+.E3__C2 {
+    background: url(./Assets/invader_C2.png) no-repeat center;
 }

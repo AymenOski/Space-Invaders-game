@@ -63,8 +63,11 @@ export class Enemy {
             this.EnemyX -= this.Speed;
         } else if (direction === 'right') {
             this.EnemyX += this.Speed;
-        }else if (direction === 'down') {
-            this.EnemyY += this.Speed + 5;
+        } else if (direction === 'down') {
+            this.EnemyY += this.Speed + 20;
+        }
+        if (this.EnemyX % 35 === 0 ) {
+                this.updateEnemyType();
         }
         this.updatePosition();
     }
@@ -73,4 +76,29 @@ export class Enemy {
             this.Element.style.transform = `translate3d(${this.EnemyX}px, ${this.EnemyY}px , 0px) scale(1.8)`;
         }
     }
+
+    updateEnemyType() {
+        if (this.Element) {
+            if (this.Element.classList.contains('E1__A1')) {
+                this.Element.classList.remove('E1__A1');
+                this.Element.classList.add('E1__A2');
+            } else if (this.Element.classList.contains('E2__B1')) {
+                this.Element.classList.remove('E2__B1');
+                this.Element.classList.add('E2__B2');
+            } else if (this.Element.classList.contains('E3__C1')) {
+                this.Element.classList.remove('E3__C1');
+                this.Element.classList.add('E3__C2');
+            } else if (this.Element.classList.contains('E1__A2')) {
+                this.Element.classList.remove('E1__A2');
+                this.Element.classList.add('E1__A1');
+            } else if (this.Element.classList.contains('E2__B2')) {
+                this.Element.classList.remove('E2__B2');
+                this.Element.classList.add('E2__B1');
+            } else if (this.Element.classList.contains('E3__C2')) {
+                this.Element.classList.remove('E3__C2');
+                this.Element.classList.add('E3__C1');
+            }
+        }
+    }
 }
+

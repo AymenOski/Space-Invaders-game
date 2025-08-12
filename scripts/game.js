@@ -32,17 +32,17 @@ export class Game {
         for (let i = 0; i < this.EnemyGrid.length; i++) {
             for (let j = 0; j < this.EnemyGrid[i].length; j++) {
                 // const newEnemy = this.level === 1 ? new Enemy(1, false) : new Enemy(2, false);
-                const newEnemy = new Enemy(3, null);
+                const newEnemy = new Enemy(2, null);
                 var enemyElement = undefined;
                 switch (this.EnemyGrid[i][j]) {
                     case "E1":
-                        enemyElement = newEnemy.createEnemyElement("E1");
+                        enemyElement = newEnemy.createEnemyElement("E1__A1");
                         break;
                     case "E2":
-                        enemyElement = newEnemy.createEnemyElement("E2");
+                        enemyElement = newEnemy.createEnemyElement("E2__B1");
                         break;
                     case "E3":
-                        enemyElement = newEnemy.createEnemyElement("E3");
+                        enemyElement = newEnemy.createEnemyElement("E3__C1");
                         break;
                     default:
                         continue;
