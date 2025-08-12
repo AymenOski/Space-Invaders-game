@@ -48,12 +48,13 @@ export class player {
     movePlayer(direction) {
     const p = document.querySelector(".player");
     const container = document.querySelector(".player-container");
-    const maxX = ( container.offsetWidth - p.offsetWidth ) / 2;
-    const minX = -( container.offsetWidth - p.offsetWidth ) / 2;
+    const maxX = ( container.offsetWidth / 2 ) - p.offsetWidth / 2;
+    const minX = -( container.offsetWidth / 2 ) + p.offsetWidth / 2;
 
-    console.log(maxX, minX);
+    console.log(container.offsetWidth , p.offsetWidth );
+    console.log(minX, maxX );
 
-    if (direction === "left") {
+    if (direction === "left" && this.x - this.moves > minX) {
         this.x -= this.moves;
     } else if (direction === "right" && this.x + this.moves < maxX ) {
         this.x += this.moves;
