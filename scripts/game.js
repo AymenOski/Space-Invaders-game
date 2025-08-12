@@ -32,7 +32,7 @@ export class Game {
         for (let i = 0; i < this.EnemyGrid.length; i++) {
             for (let j = 0; j < this.EnemyGrid[i].length; j++) {
                 // const newEnemy = this.level === 1 ? new Enemy(1, false) : new Enemy(2, false);
-                const newEnemy = new Enemy(2, null);
+                const newEnemy = new Enemy(3, null);
                 var enemyElement = undefined;
                 switch (this.EnemyGrid[i][j]) {
                     case "E1":
@@ -67,7 +67,7 @@ export class Game {
         let firstEnemyColumn = this.Enemies[0].getElement().getBoundingClientRect();
         let lastEnemyColumn = this.Enemies[this.Enemies.length - 1].getElement().getBoundingClientRect();
 
-        if ((firstEnemyColumn.left <= 0 || lastEnemyColumn.right >= window.innerWidth) && !this.EnemiesHaveMovedDown) {
+        if ((firstEnemyColumn.left <= 0 || lastEnemyColumn.right + 10 >= window.innerWidth) && !this.EnemiesHaveMovedDown) {
             this.EnemiesCanMoveX = false;
         }
 
@@ -87,7 +87,7 @@ export class Game {
             this.EnemiesDirection = 'right';
         }
 
-        if (lastEnemyColumn.right >= window.innerWidth && !this.EnemiesCanMoveX) {
+        if (lastEnemyColumn.right + 10 >= window.innerWidth && !this.EnemiesCanMoveX) {
             this.Enemies.forEach((enemy) => {
                 enemy.moveEnemy('down');
             })
@@ -101,14 +101,13 @@ export class Game {
 }
 
 const music = document.getElementById('gameMusic');
-const game = new Game();
 music.play();
+const game = new Game();
 game.spawnEnemies();
 
 
 function gameLoop(timestamp) {
     game.updateEntities(timestamp);
-    // renderEntities();
     // handleSounds();
     requestAnimationFrame(gameLoop);
 }
