@@ -66,9 +66,6 @@ export class Enemy {
         } else if (direction === 'down') {
             this.EnemyY += this.Speed + 20;
         }
-        if (this.EnemyX % 35 === 0 ) {
-                this.updateEnemyType();
-        }
         this.updatePosition();
     }
     updatePosition() {

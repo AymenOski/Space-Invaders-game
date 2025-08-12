@@ -75,6 +75,9 @@ export class Game {
         if (this.EnemiesCanMoveX) {
             this.Enemies.forEach((enemy) => {
                 enemy.moveEnemy(this.EnemiesDirection);
+                if (enemy.getEnemyX() % 35 === 0) {
+                    enemy.updateEnemyType();
+                }
             })
         }
         if (firstEnemyColumn.left <= 0 && !this.EnemiesCanMoveX) {
@@ -97,7 +100,6 @@ export class Game {
             this.EnemiesDirection = 'left';
         }
     }
-    // Update player
 }
 
 const music = document.getElementById('gameMusic');
