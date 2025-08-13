@@ -1,23 +1,15 @@
-export class player {
+export class Player {
     constructor() {
         this.score = 0;
         this.lives = 3;
-        this.moves = 5
+        this.moves = 3
         this.x = 0;
+        this.direction = null;
 
-        document.addEventListener("keydown", (event) => {
-        if (event.key.startsWith("Arrow")) {
-            switch(event.key) {
-            case "ArrowLeft":
-                this.movePlayer("left");
-                break;
-            case "ArrowRight":
-                this.movePlayer("right");
-                break;
-            }
-        }
-    });
-        
+        const p = document.createElement("div");
+        p.classList.add("player");
+        const container = document.querySelector(".player-container");
+        container.appendChild(p);
     }
 
     getLives() { return this.lives }
@@ -51,8 +43,6 @@ export class player {
     const maxX = ( container.offsetWidth / 2 ) - p.offsetWidth / 2;
     const minX = -( container.offsetWidth / 2 ) + p.offsetWidth / 2;
 
-    console.log(container.offsetWidth , p.offsetWidth );
-    console.log(minX, maxX );
 
     if (direction === "left" && this.x - this.moves > minX) {
         this.x -= this.moves;
