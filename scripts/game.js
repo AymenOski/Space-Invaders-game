@@ -8,7 +8,7 @@ export class Game {
         this.Player = new Player();
     }
 
-    updateEntities(timestamp) {
+    updateEntities(timestamp) {}
         // Update all enemies          
         let firstEnemyColumn = this.EnemyManager.Enemies[0].getElement().getBoundingClientRect();
         let lastEnemyColumn = this.EnemyManager.Enemies[this.EnemyManager.Enemies.length - 1].getElement().getBoundingClientRect();
