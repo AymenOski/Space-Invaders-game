@@ -6,17 +6,16 @@ export class Enemy {
         this.EnemyY = 0;
         this.Element = null; // This will hold the enemy element once created
     }
-    // Getters
-    getSpeed() {
-        return this.Speed;
-    }
-    getEnemywhoShots() {
-        return this.EnemywhoShots;
-    }
-    // Setters
-    setSpeed(Speed) {
-        this.Speed = Speed;
-    }
+
+    getSpeed() { return this.Speed; }
+    getElement() { return this.Element; }
+    getEnemyX() { return this.EnemyX; }
+    getEnemyY() { return this.EnemyY; }
+    getEnemywhoShots() { return this.EnemywhoShots; }
+    setSpeed(Speed) { this.Speed = Speed; }
+    setElement(element) { this.Element = element; }
+    setEnemyX(x) { this.EnemyX = x; }
+    setEnemyY(y) { this.EnemyY = y; }
     setEnemywhoShots() {
         let r = Math.random();
         if (r <= 0.33) {
@@ -28,24 +27,6 @@ export class Enemy {
         }
         this.EnemywhoShots = EnemywhoShots;
     }
-    // getters
-    getElement() {
-        return this.Element;
-    }
-    getEnemyX() {
-        return this.EnemyX;
-    }
-    // setters 
-    setElement(element) {
-        this.Element = element;
-    }
-    setEnemyX(x) {
-        this.EnemyX = x;
-    }
-    setEnemyY(y) {
-        this.EnemyY = y;
-    }
-    // methods
     createEnemyElement(type) {
         if (!this.Element) {
             this.Element = document.createElement('div');
@@ -66,8 +47,8 @@ export class Enemy {
         } else if (direction === 'down') {
             this.EnemyY += this.Speed + 20;
         }
-        if (this.EnemyX % 35 === 0 ) {
-                this.updateEnemyType();
+        if (this.EnemyX % 35 === 0) {
+            this.updateEnemyType();
         }
         this.updatePosition();
     }

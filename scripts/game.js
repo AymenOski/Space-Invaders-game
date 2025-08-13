@@ -19,15 +19,11 @@ export class Game {
         ];
         this.Enemies = [];
     }
-    // Getters
-    getEnemyCount() {
-        return this.EnemyCount;
-    }
-    // Setters
-    setEnemyCount(EnemyCount) {
-        this.EnemyCount = EnemyCount;
-    }
-    // Methods 
+    
+    getEnemyCount() { return this.EnemyCount; }
+    setEnemyCount(EnemyCount) { this.EnemyCount = EnemyCount; }
+
+
     spawnEnemies() {
         for (let i = 0; i < this.EnemyGrid.length; i++) {
             for (let j = 0; j < this.EnemyGrid[i].length; j++) {
