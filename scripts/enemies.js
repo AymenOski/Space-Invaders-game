@@ -1,9 +1,10 @@
+import { Bullet } from './bullet.js';
+
 const Enemies = document.querySelector('.enemy-container');
 
 export class Enemy {
-    constructor(Speed, EnemywhoShots) {
+    constructor(Speed) {
         this.Speed = Speed;
-        this.EnemywhoShots = EnemywhoShots;
         this.EnemyX = 0;
         this.EnemyY = 0;
         this.Element = null; // This will hold the enemy element once created
@@ -13,22 +14,21 @@ export class Enemy {
     getElement() { return this.Element; }
     getEnemyX() { return this.EnemyX; }
     getEnemyY() { return this.EnemyY; }
-    getEnemywhoShots() { return this.EnemywhoShots; }
     setSpeed(Speed) { this.Speed = Speed; }
     setElement(element) { this.Element = element; }
     setEnemyX(x) { this.EnemyX = x; }
     setEnemyY(y) { this.EnemyY = y; }
-    setEnemywhoShots() {
-        let r = Math.random();
-        if (r <= 0.33) {
-
-        } else if (r <= 0.66) {
-
-        } else {
-
+    shoot() {
+        const bullet = new Bullet(this.EnemyX, this.EnemyY);
+        bullet.createBulletElement();
+        const enemyContainer = document.querySelector('.enemy-container');
+        enemyContainer.append(bullet.getElement());
+        for (let i = 0; i < 10; i++) {
+            bullet.moveBullet('down');
         }
-        this.EnemywhoShots = EnemywhoShots;
+        bullet.Element = null; // Clear the bullet element after shooting
     }
+
     createEnemyElement(type) {
         if (!this.Element) {
             this.Element = document.createElement('div');

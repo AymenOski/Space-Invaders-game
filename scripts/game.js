@@ -17,12 +17,17 @@ export class Game {
             this.EnemyManager.EnemiesCanMoveX = false;
         }
 
+        // moves enemies and make them shoot
         this.EnemyManager.EnemiesHaveMovedDown = false;
         if (this.EnemyManager.EnemiesCanMoveX) {
-            this.EnemyManager.Enemies.forEach((enemy) => {
+            this.EnemyManager.Enemies.forEach((enemy , index) => {
                 enemy.moveEnemy(this.EnemyManager.EnemiesDirection);
                 if (enemy.getEnemyX() % 35 === 0) {
                     enemy.updateEnemyType();
+                    // enemy.shoot(enemy.getEnemyX(), enemy.getEnemyY());
+                    if (Math.random() < 0.1) { // 10% chance to shoot
+                        // enemy.shoot();
+                    }
                 }
             })
         }
@@ -48,8 +53,6 @@ export class Game {
     }
 }
 
-const music = document.getElementById('gameMusic');
-music.play();
 const game = new Game();
 
 function gameLoop(timestamp) {
