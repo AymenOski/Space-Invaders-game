@@ -1,3 +1,5 @@
+import { Bullet } from './bullet.js';
+
 const Enemies = document.querySelector('.enemy-container');
 
 export class Enemy {

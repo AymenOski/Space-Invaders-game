@@ -1,3 +1,5 @@
+import { Bullet } from './bullet.js';
+
 export class Player {
     constructor() {
         this.score = 0;
@@ -8,10 +10,26 @@ export class Player {
         this.createPlayer()
         this.trackDirection()
 
+        document.addEventListener("keydown", (event) => {
+            if (event.key.startsWith("Arrow")) {
+                switch (event.key) {
+                    case "ArrowLeft":
+                        this.movePlayer("left");
+                        break;
+                    case "ArrowRight":
+                        this.movePlayer("right");
+                        break;
+                        case " ":
+                    this.shoot();
+                    break;
+                default:
+                    return;
+                }
+            }
+        });
+
     }
 
-
-    //geters
     getLives() { return this.lives }
     getScore() { return this.score }
     getX() { return this.x }
@@ -50,8 +68,12 @@ export class Player {
     }
 
 
-    shoot() { }
-
+    shoot() {
+    const bullet = new Bullet(this.x, 500);
+    bullet.createBulletElement();
+    const playerContainer = document.querySelector('.player-container');
+    playerContainer.prepend(bullet.getElement());
+    }
 
     movePlayer(direction) {
         const p = document.querySelector(".player");

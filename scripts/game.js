@@ -1,4 +1,4 @@
-import { Enemy , EnemyManager} from './enemies.js';
+import { EnemyManager} from './enemies.js';
 import { Player } from './player.js';
 
 export class Game {
@@ -24,6 +24,10 @@ export class Game {
                 enemy.moveEnemy(this.EnemyManager.EnemiesDirection);
                 if (enemy.getEnemyX() % 35 === 0) {
                     enemy.updateEnemyType();
+                    // enemy.shoot(enemy.getEnemyX(), enemy.getEnemyY());
+                    if (Math.random() < 0.1) { // 10% chance to shoot
+                        // enemy.shoot();
+                    }
                 }
             })
         }
