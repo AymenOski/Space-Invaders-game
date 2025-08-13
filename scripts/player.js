@@ -1,4 +1,4 @@
-export class player {
+export class Player {
     constructor() {
         this.score = 0;
         this.lives = 3;
@@ -6,18 +6,18 @@ export class player {
         this.x = 0;
 
         document.addEventListener("keydown", (event) => {
-        if (event.key.startsWith("Arrow")) {
-            switch(event.key) {
-            case "ArrowLeft":
-                this.movePlayer("left");
-                break;
-            case "ArrowRight":
-                this.movePlayer("right");
-                break;
+            if (event.key.startsWith("Arrow")) {
+                switch (event.key) {
+                    case "ArrowLeft":
+                        this.movePlayer("left");
+                        break;
+                    case "ArrowRight":
+                        this.movePlayer("right");
+                        break;
+                }
             }
-        }
-    });
-        
+        });
+
     }
 
     getLives() { return this.lives }
@@ -46,21 +46,21 @@ export class player {
 
 
     movePlayer(direction) {
-    const p = document.querySelector(".player");
-    const container = document.querySelector(".player-container");
-    const maxX = ( container.offsetWidth / 2 ) - p.offsetWidth / 2;
-    const minX = -( container.offsetWidth / 2 ) + p.offsetWidth / 2;
+        const p = document.querySelector(".player");
+        const container = document.querySelector(".player-container");
+        const maxX = (container.offsetWidth / 2) - p.offsetWidth / 2;
+        const minX = -(container.offsetWidth / 2) + p.offsetWidth / 2;
 
-    console.log(container.offsetWidth , p.offsetWidth );
-    console.log(minX, maxX );
+        console.log(container.offsetWidth, p.offsetWidth);
+        console.log(minX, maxX);
 
-    if (direction === "left" && this.x - this.moves > minX) {
-        this.x -= this.moves;
-    } else if (direction === "right" && this.x + this.moves < maxX ) {
-        this.x += this.moves;
+        if (direction === "left" && this.x - this.moves > minX) {
+            this.x -= this.moves;
+        } else if (direction === "right" && this.x + this.moves < maxX) {
+            this.x += this.moves;
+        }
+
+        p.style.transform = `translate3d(${this.x}px, 0, 0)`;
     }
-    
-    p.style.transform = `translate3d(${this.x}px, 0, 0)`;
-}
 
 }

@@ -1,3 +1,5 @@
+const Enemies = document.querySelector('.enemy-container');
+
 export class Enemy {
     constructor(Speed, EnemywhoShots) {
         this.Speed = Speed;
@@ -75,6 +77,57 @@ export class Enemy {
             } else if (this.Element.classList.contains('E3__C2')) {
                 this.Element.classList.remove('E3__C2');
                 this.Element.classList.add('E3__C1');
+            }
+        }
+    }
+}
+
+export class EnemyManager {
+    constructor() {
+        this.EnemyCount = 55;
+        this.Enemies = [];
+        this.EnemiesDirection = 'right';
+        this.EnemiesCanMoveX = true;
+        this.EnemiesHaveMovedDown = false;
+        this.EnemyGrid = [
+            ["E1", "E1", "E1", "E1", "E1", "E1", "E1", "E1", "E1", "E1", "E1"],
+            ["E2", "E2", "E2", "E2", "E2", "E2", "E2", "E2", "E2", "E2", "E2"],
+            ["E2", "E2", "E2", "E2", "E2", "E2", "E2", "E2", "E2", "E2", "E2"],
+            ["E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3"],
+            ["E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3"]
+        ];
+    }
+
+    spawnEnemies() {
+        for (let i = 0; i < this.EnemyGrid.length; i++) {
+            for (let j = 0; j < this.EnemyGrid[i].length; j++) {
+                // const newEnemy = this.level === 1 ? new Enemy(1, false) : new Enemy(2, false);
+                const newEnemy = new Enemy(2, null);
+                var enemyElement = undefined;
+                switch (this.EnemyGrid[i][j]) {
+                    case "E1":
+                        enemyElement = newEnemy.createEnemyElement("E1__A1");
+                        break;
+                    case "E2":
+                        enemyElement = newEnemy.createEnemyElement("E2__B1");
+                        break;
+                    case "E3":
+                        enemyElement = newEnemy.createEnemyElement("E3__C1");
+                        break;
+                    default:
+                        continue;
+                }
+                newEnemy.setElement(enemyElement);
+
+                const posX = j * 70;
+                const posY = i * 55;
+                newEnemy.setEnemyX(posX);
+                newEnemy.setEnemyY(posY);
+
+                newEnemy.updatePosition();
+
+                this.Enemies.push(newEnemy);
+                Enemies.appendChild(newEnemy.getElement());
             }
         }
     }
