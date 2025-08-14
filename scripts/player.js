@@ -2,33 +2,43 @@ export class Player {
     constructor() {
         this.score = 0;
         this.lives = 3;
-        this.moves = 5
+        this.moves = 3
         this.x = 0;
+        this.direction = null;
+        this.createPlayer()
+        this.trackDirection()
 
-        document.addEventListener("keydown", (event) => {
-            switch (event.key) {
-                case "ArrowLeft":
-                    this.movePlayer("left");
-                    break;
-                case "ArrowRight":
-                    this.movePlayer("right");
-                    break;
-                case " ":
-                    this.shoot();
-                    break;
-                default:
-                    return;
-            }
-        });
     }
 
+
+    //geters
     getLives() { return this.lives }
     getScore() { return this.score }
     getX() { return this.x }
-
+    // seters 
     setLives(lives) { this.lives = lives }
     setScore(score) { this.score = score }
     setX(x) { this.x = x }
+
+    createPlayer(){
+        const p = document.createElement("div");
+        p.classList.add("player");
+        const container = document.querySelector(".player-container");
+        container.appendChild(p);
+    }
+
+    trackDirection(){
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "ArrowLeft") {
+                this.direction = "left";
+            } else if (event.key === "ArrowRight") {
+                this.direction = "right";
+            }
+        });
+        document.addEventListener("keyup", () => {
+            this.direction = null;
+        });
+    }
 
     reset() { this.score = 0; this.lives = 3; this.x = 0; }
 
@@ -41,14 +51,14 @@ export class Player {
 
 
     shoot() { }
+
+
     movePlayer(direction) {
         const p = document.querySelector(".player");
         const container = document.querySelector(".player-container");
         const maxX = (container.offsetWidth / 2) - p.offsetWidth / 2;
         const minX = -(container.offsetWidth / 2) + p.offsetWidth / 2;
 
-        console.log(container.offsetWidth, p.offsetWidth);
-        console.log(minX, maxX);
 
         if (direction === "left" && this.x - this.moves > minX) {
             this.x -= this.moves;

@@ -100,7 +100,7 @@ export class EnemyManager {
         for (let i = 0; i < this.EnemyGrid.length; i++) {
             for (let j = 0; j < this.EnemyGrid[i].length; j++) {
                 // const newEnemy = this.level === 1 ? new Enemy(1, false) : new Enemy(2, false);
-                const newEnemy = new Enemy(2, null);
+                const newEnemy = new Enemy(4, null);
                 var enemyElement = undefined;
                 switch (this.EnemyGrid[i][j]) {
                     case "E1":

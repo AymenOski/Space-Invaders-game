@@ -53,6 +53,7 @@ const game = new Game();
 
 function gameLoop(timestamp) {
     game.updateEntities(timestamp);
+    if (game.Player.direction ){ game.Player.movePlayer(game.Player.direction)}
     // handleSounds();
     requestAnimationFrame(gameLoop);
 }
