@@ -1,5 +1,3 @@
-import { Bullet } from './bullet.js';
-
 export class Player {
     constructor() {
         this.score = 0;
@@ -42,12 +40,7 @@ export class Player {
     }
 
 
-    shoot() {
-    const bullet = new Bullet(this.x, 500);
-    bullet.createBulletElement();
-    const playerContainer = document.querySelector('.player-container');
-    playerContainer.prepend(bullet.getElement());
-    }
+    shoot() { }
     movePlayer(direction) {
         const p = document.querySelector(".player");
         const container = document.querySelector(".player-container");
