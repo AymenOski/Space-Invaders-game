@@ -17,14 +17,7 @@ export class Enemy {
     setEnemyX(x) { this.EnemyX = x; }
     setEnemyY(y) { this.EnemyY = y; }
     shoot() {
-        const bullet = new Bullet(this.EnemyX, this.EnemyY);
-        bullet.createBulletElement();
-        const enemyContainer = document.querySelector('.enemy-container');
-        enemyContainer.append(bullet.getElement());
-        for (let i = 0; i < 10; i++) {
-            bullet.moveBullet('down');
-        }
-        bullet.Element = null; // Clear the bullet element after shooting
+
     }
 
     createEnemyElement(type) {
@@ -33,25 +26,34 @@ export class Enemy {
             this.Element.classList.add('enemy');
             this.Element.classList.add(type);
             this.Element.style.left = `${window.innerWidth / 4 + 15}px`;
-            this.Element.style.top = `${window.innerHeight / 10}px`;
-            this.Element.style.transform = `translate3d(0px , 0px , 0px) scale(1.8)`;
+            this.Element.style.top = `${50}px`;
+            this.Element.style.transform = `translate3d(0px , 0px , 0px)`;
             this.Element.style.position = 'absolute';
         }
         return this.Element;
     }
+
     moveEnemy(direction) {
         if (direction === 'left') {
             this.EnemyX -= this.Speed;
         } else if (direction === 'right') {
             this.EnemyX += this.Speed;
         } else if (direction === 'down') {
-            this.EnemyY += this.Speed + 20;
+            // this.EnemyY += this.Speed + 20;
+            this.EnemyY += this.Speed;
         }
         this.updatePosition();
     }
+
     updatePosition() {
         if (this.Element) {
-            this.Element.style.transform = `translate3d(${this.EnemyX}px, ${this.EnemyY}px , 0px) scale(1.8)`;
+        const enemyContainer = document.querySelector('.enemy-container');
+        console.log(enemyContainer.offsetWidth);
+        
+        if ( enemyContainer.offsetWidth  > 700){
+                this.Element.style.transform = `translate3d(${this.EnemyX * 50}px, ${this.EnemyY * 50}px , 0px) scale(2)`; console.log("big");
+        }else{ this.Element.style.transform = `translate3d(${this.EnemyX * 30}px, ${this.EnemyY * 30}px , 0px) scale(1)`;       console.log("small") }
+
         }
     }
 
@@ -100,7 +102,7 @@ export class EnemyManager {
         for (let i = 0; i < this.EnemyGrid.length; i++) {
             for (let j = 0; j < this.EnemyGrid[i].length; j++) {
                 // const newEnemy = this.level === 1 ? new Enemy(1, false) : new Enemy(2, false);
-                const newEnemy = new Enemy(4, null);
+                const newEnemy = new Enemy(0.1, null);
                 var enemyElement = undefined;
                 switch (this.EnemyGrid[i][j]) {
                     case "E1":
@@ -117,8 +119,8 @@ export class EnemyManager {
                 }
                 newEnemy.setElement(enemyElement);
 
-                const posX = j * 70;
-                const posY = i * 55;
+                const posX = j  ;
+                const posY = i  ;
                 newEnemy.setEnemyX(posX);
                 newEnemy.setEnemyY(posY);
 
