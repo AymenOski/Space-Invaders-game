@@ -22,7 +22,7 @@ export class Game {
         // moves enemies and make them shoot
         this.EnemyManager.EnemiesHaveMovedDown = false;
         if (this.EnemyManager.EnemiesCanMoveX) {
-            this.EnemyManager.Enemies.forEach((enemy, index) => {
+            this.EnemyManager.Enemies.forEach((enemy) => {
                 enemy.moveEnemy(this.EnemyManager.EnemiesDirection);
                 if (enemy.getEnemyX() % 35 === 0) {
                     enemy.updateEnemyType();
@@ -48,12 +48,12 @@ export class Game {
             this.EnemyManager.EnemiesCanMoveX = true;
             this.EnemyManager.EnemiesDirection = 'left';
         }
-        if (Math.random() < 0.05) {
+        if (Math.random() < 0.02) {
             this.EnemyManager.chargingBullets();
         }
         if (this.EnemyManager.EnemyBullets.length > 0) {
             this.EnemyManager.EnemyBullets.forEach((bullet) => {
-                if (bullet.getY() >= window.innerHeight) {
+                if (bullet.getY() + firstEnemyColumn.top + 20>= window.innerHeight) {
                     bullet.getElement().remove();
                     this.EnemyManager.EnemyBullets = this.EnemyManager.EnemyBullets.filter(b => b !== bullet);
                     return;
