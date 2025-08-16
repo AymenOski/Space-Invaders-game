@@ -7,24 +7,23 @@ export class Player {
         this.moves = 3
         this.x = 0;
         this.direction = null;
+        this.playerBullets = [];
         this.createPlayer()
         this.trackDirection()
 
         document.addEventListener("keydown", (event) => {
-            if (event.key.startsWith("Arrow")) {
-                switch (event.key) {
-                    case "ArrowLeft":
-                        this.movePlayer("left");
-                        break;
-                    case "ArrowRight":
-                        this.movePlayer("right");
-                        break;
-                        case " ":
+            switch (event.key) {
+                case "ArrowLeft":
+                    this.movePlayer("left");
+                    break;
+                case "ArrowRight":
+                    this.movePlayer("right");
+                    break;
+                case " ":
                     this.shoot();
                     break;
                 default:
                     return;
-                }
             }
         });
 
@@ -38,14 +37,14 @@ export class Player {
     setScore(score) { this.score = score }
     setX(x) { this.x = x }
 
-    createPlayer(){
+    createPlayer() {
         const p = document.createElement("div");
         p.classList.add("player");
         const container = document.querySelector(".player-container");
         container.appendChild(p);
     }
 
-    trackDirection(){
+    trackDirection() {
         document.addEventListener("keydown", (event) => {
             if (event.key === "ArrowLeft") {
                 this.direction = "left";
@@ -69,10 +68,9 @@ export class Player {
 
 
     shoot() {
-    const bullet = new Bullet(this.x, 500);
-    bullet.createBulletElement();
-    const playerContainer = document.querySelector('.player-container');
-    playerContainer.prepend(bullet.getElement());
+        const bullet = new Bullet(this.x + window.innerWidth / 4, window.innerHeight - 500);
+        bullet.Element = bullet.createBulletElement(bullet.updateBulletType(Math.random()));
+        this.playerBullets.push(bullet);
     }
 
     movePlayer(direction) {

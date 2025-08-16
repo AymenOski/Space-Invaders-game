@@ -132,7 +132,7 @@ export class EnemyManager {
     }
 
     chargingBullets() {
-        const bullet = new Bullet(this.EnemiesX , this.EnemiesY);
+        const bullet = new Bullet(this.EnemiesX, this.EnemiesY);
         bullet.Element = bullet.createBulletElement(bullet.updateBulletType(Math.random()));
         this.EnemyBullets.push(bullet);
     }

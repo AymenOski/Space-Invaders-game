@@ -70,7 +70,7 @@ body {
 .bullet__type__1,
 .bullet__type__2,
 .bullet__type__3 {
-    border: 1px solid red;
+    /* border: 1px solid red; */
     width: 8px;
     height: 8px;
     background-size: contain;
