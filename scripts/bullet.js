@@ -1,18 +1,21 @@
 export class Bullet {
-    constructor(x , y){
+    constructor(x, y) {
         this.x = x;
         this.y = y;
+        this.Speed = 5;
         this.Element = null;
     }
 
     getElement() { return this.Element; }
     getX() { return this.x; }
     getY() { return this.y; }
+    setX(x) { this.x = x; }
+    setY(y) { this.y = y; }
 
-    createBulletElement() {
+    createBulletElement(type) {
         if (!this.Element) {
             this.Element = document.createElement('div');
-            this.Element.classList.add('bullet');
+            this.Element.classList.add(type);
             this.Element.style.left = `${this.x}px`;
             this.Element.style.top = `${this.y}px`;
             this.Element.style.transform = `translate3d(0px , 0px , 0px) scale(1.8)`;
@@ -23,16 +26,26 @@ export class Bullet {
 
     moveBullet(direction) {
         if (direction === 'up') {
-            this.y -= 10;
+            this.y -= this.Speed;
         } else if (direction === 'down') {
-            this.y += 10;
+            this.y += this.Speed;
         }
         this.updatePosition();
     }
-    
+
     updatePosition() {
         if (this.Element) {
             this.Element.style.transform = `translate3d(${this.x}px, ${this.y}px , 0px) scale(1.8)`;
+        }
+    }
+
+    updateBulletType(type) {
+        if (type < 0.33) {
+            return "bullet__type__1"
+        } else if (type < 0.66) {
+            return "bullet__type__2"
+        } else {
+            return "bullet__type__3"
         }
     }
 

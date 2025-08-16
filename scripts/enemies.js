@@ -2,6 +2,9 @@ import { Bullet } from './bullet.js';
 
 const Enemies = document.querySelector('.enemy-container');
 
+// Enemy class
+
+
 export class Enemy {
     constructor(Speed) {
         this.Speed = Speed;
@@ -18,16 +21,6 @@ export class Enemy {
     setElement(element) { this.Element = element; }
     setEnemyX(x) { this.EnemyX = x; }
     setEnemyY(y) { this.EnemyY = y; }
-    shoot() {
-        const bullet = new Bullet(this.EnemyX, this.EnemyY);
-        bullet.createBulletElement();
-        const enemyContainer = document.querySelector('.enemy-container');
-        enemyContainer.append(bullet.getElement());
-        for (let i = 0; i < 10; i++) {
-            bullet.moveBullet('down');
-        }
-        bullet.Element = null; // Clear the bullet element after shooting
-    }
 
     createEnemyElement(type) {
         if (!this.Element) {
@@ -82,10 +75,15 @@ export class Enemy {
     }
 }
 
+// EnemyManager class
+
+
 export class EnemyManager {
     constructor() {
         this.EnemyCount = 55;
         this.Enemies = [];
+        this.EnemiesX = 0;
+        this.EnemiesY = 0;
         this.EnemiesDirection = 'right';
         this.EnemiesCanMoveX = true;
         this.EnemiesHaveMovedDown = false;
@@ -96,6 +94,7 @@ export class EnemyManager {
             ["E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3"],
             ["E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3"]
         ];
+        this.EnemyBullets = [];
     }
 
     spawnEnemies() {
@@ -130,6 +129,12 @@ export class EnemyManager {
                 Enemies.appendChild(newEnemy.getElement());
             }
         }
+    }
+
+    chargingBullets() {
+        const bullet = new Bullet(this.EnemiesX , this.EnemiesY);
+        bullet.Element = bullet.createBulletElement(bullet.updateBulletType(Math.random()));
+        this.EnemyBullets.push(bullet);
     }
 }
 
