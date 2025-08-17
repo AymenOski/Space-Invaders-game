@@ -8,6 +8,8 @@ export class Player {
         this.x = 0;
         this.direction = null;
         this.playerBullets = [];
+        this.lastShotTime = 0;
+        this.shootCooldown = 700;
         this.createPlayer()
         this.trackDirection()
 
@@ -20,7 +22,7 @@ export class Player {
                     this.movePlayer("right");
                     break;
                 case " ":
-                    this.shoot();
+                    this.handleShoot();
                     break;
                 default:
                     return;
@@ -67,8 +69,16 @@ export class Player {
     }
 
 
+    handleShoot() {
+        const now = performance.now();
+        if (now - this.lastShotTime >= this.shootCooldown) {
+            this.shoot();
+            this.lastShotTime = now;
+        }
+    }
+
     shoot() {
-        const bullet = new Bullet(this.x + window.innerWidth / 4, window.innerHeight - 500);
+        const bullet = new Bullet(this.x + window.innerWidth / 4, window.innerHeight - 400);
         bullet.Element = bullet.createBulletElement(bullet.updateBulletType(Math.random()));
         this.playerBullets.push(bullet);
     }
@@ -89,7 +99,7 @@ export class Player {
         p.style.transform = `translate3d(${this.x}px, 0, 0)`;
     }
 
-    update(){
+    update() {
         if (this.playerBullets.length > 0) {
             this.playerBullets.forEach((bullet) => {
                 if (bullet.getY() + innerHeight <= 0) {
