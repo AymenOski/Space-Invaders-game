@@ -56,21 +56,21 @@ export class Enemy {
         const columns = 11 
         const rows = 5     
 
-        const xSpacing = (width / 2)  / columns + 5
-        const ySpacing = (height / 3 ) / rows  + 5  
+        const xSpacing = (width / 2)  / columns + 10
+        const ySpacing = (height / 3 ) / rows  + 10 
 
         if (width < 600){ 
-            enemyContainer.style.background = "blue"
+            // enemyContainer.style.background = "blue"
             this.Element.style.transform = `translate3d(${this.EnemyX * xSpacing}px, ${this.EnemyY * ySpacing}px , 0px) scale(0.5)`
         }
         else if (width < 800) {
-            enemyContainer.style.background = "red"
+            // enemyContainer.style.background = "red"
                 this.Element.style.transform = `translate3d(${this.EnemyX * xSpacing}px, ${this.EnemyY * ySpacing}px , 0px) scale(1)`
         } else if (width < 1200) {
-            enemyContainer.style.background = "gray"
+            // enemyContainer.style.background = "purple"
                 this.Element.style.transform = `translate3d(${this.EnemyX * xSpacing}px, ${this.EnemyY * ySpacing}px , 0px) scale(1.5)`
         } else if (width > 1200) {
-            enemyContainer.style.background = "green"
+            // enemyContainer.style.background = "gray"
                 this.Element.style.transform = `translate3d(${this.EnemyX * xSpacing}px, ${this.EnemyY * ySpacing}px , 0px) scale(2)`
         }
 
