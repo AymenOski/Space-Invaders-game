@@ -89,4 +89,18 @@ export class Player {
         p.style.transform = `translate3d(${this.x}px, 0, 0)`;
     }
 
+    update(){
+        if (this.playerBullets.length > 0) {
+            this.playerBullets.forEach((bullet) => {
+                if (bullet.getY() + innerHeight <= 0) {
+                    bullet.getElement().remove();
+                    this.playerBullets = this.playerBullets.filter(b => b !== bullet);
+                    return;
+                }
+                document.querySelector('.game-container').append(bullet.getElement());
+                bullet.moveBullet('up');
+            });
+        }
+    }
+
 }

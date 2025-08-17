@@ -130,11 +130,69 @@ export class EnemyManager {
             }
         }
     }
-
-    chargingBullets() {
+    shoot() {
         const bullet = new Bullet(this.EnemiesX, this.EnemiesY);
         bullet.Element = bullet.createBulletElement(bullet.updateBulletType(Math.random()));
         this.EnemyBullets.push(bullet);
     }
+
+    update() {
+        // Update all enemies
+        let firstEnemyColumn = this.Enemies[0].getElement().getBoundingClientRect();
+        let lastEnemyColumn = this.Enemies[this.Enemies.length - 1].getElement().getBoundingClientRect();
+        this.EnemiesX = firstEnemyColumn.left;
+        this.EnemiesY = firstEnemyColumn.top;
+        if ((firstEnemyColumn.left <= 0 || lastEnemyColumn.right + 10 >= window.innerWidth) && !this.EnemiesHaveMovedDown) {
+            this.EnemiesCanMoveX = false;
+        }
+
+        // moves enemies and make them shoot
+        this.EnemiesHaveMovedDown = false;
+        if (this.EnemiesCanMoveX) {
+            this.Enemies.forEach((enemy) => {
+                enemy.moveEnemy(this.EnemiesDirection);
+                if (enemy.getEnemyX() % 35 === 0) {
+                    enemy.updateEnemyType();
+                }
+            })
+        }
+
+        if (firstEnemyColumn.left <= 0 && !this.EnemiesCanMoveX) {
+            this.Enemies.forEach((enemy) => {
+                enemy.moveEnemy('down');
+            })
+
+            this.EnemiesHaveMovedDown = true;
+            this.EnemiesCanMoveX = true;
+            this.EnemiesDirection = 'right';
+        }
+
+        if (lastEnemyColumn.right + 10 >= window.innerWidth && !this.EnemiesCanMoveX) {
+            this.Enemies.forEach((enemy) => {
+                enemy.moveEnemy('down');
+            })
+
+            this.EnemiesHaveMovedDown = true;
+            this.EnemiesCanMoveX = true;
+            this.EnemiesDirection = 'left';
+        }
+        // shooting enemy and player bullets
+        if (Math.random() < 0.02) {
+            this.shoot();
+        }
+        if (this.EnemyBullets.length > 0) {
+            this.EnemyBullets.forEach((bullet) => {
+                if (bullet.getY() + this.EnemiesY + 20 >= window.innerHeight) {
+                    bullet.getElement().remove();
+                    this.EnemyBullets = this.EnemyBullets.filter(b => b !== bullet);
+                    return;
+                }
+                document.querySelector('.game-container').appendChild(bullet.getElement());
+                bullet.moveBullet('down');
+            });
+        }
+
+    }
+
 }
 
