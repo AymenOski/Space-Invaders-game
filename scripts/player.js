@@ -78,10 +78,10 @@ export class Player {
 
     shoot() {
         const p = document.querySelector(".player");
-        const container = document.querySelector(".game-container");
-        const containerRect = container.getBoundingClientRect();
         const playerRect = p.getBoundingClientRect();
-        const bulletX = playerRect.left - containerRect.left + p.offsetWidth / 2;
+          
+        
+        const bulletX = playerRect.left + p.offsetWidth / 2;
         const bullet = new Bullet(bulletX, window.innerHeight - p.offsetWidth);
         bullet.Element = bullet.createBulletElement(bullet.updateBulletType(-1));
         this.playerBullets.push(bullet);

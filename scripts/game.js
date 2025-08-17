@@ -8,7 +8,7 @@ export class Game {
         this.Player = new Player();
     }
 
-    updateEntities() { 
+    updateEntities() {
         // this.EnemyManager.update();
         this.Player.update();
     }
@@ -24,4 +24,3 @@ function gameLoop() {
 }
 
 requestAnimationFrame(gameLoop);
-
