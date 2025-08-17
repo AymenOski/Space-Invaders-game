@@ -1,0 +1,92 @@
+body {
+    font-family: 'Press Start 2P', cursive;
+    background-color: #000000; 
+    margin: 0;
+    padding: 0;
+}
+
+.hud {
+    height: 70px;
+}
+
+.hud div {
+    display: inline-block;
+    margin-top: 20px;
+    margin-right: 20px;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    justify-content: start;
+    background: black;
+    color: rgb(127, 185, 33);
+    height: 99vh;
+
+}
+
+
+/* Enemys */
+.enemy-container{
+    position: relative;
+    overflow: hidden;
+    flex: 1;
+    width: 100%;
+    height: 600px; 
+}
+
+.enemy {
+    
+    image-rendering: pixelated;
+    width: 24px;
+    height: 24px;
+    position : absolute;
+    left : 25%;
+    top : 50px
+}
+
+
+.E1__A1 { background: url(./Assets/invader_A1.png) no-repeat center; }
+.E2__B1 { background: url(./Assets/invader_B1.png) no-repeat center; }
+.E3__C1 { background: url(./Assets/invader_C1.png) no-repeat center; }
+.E1__A2 { background: url(./Assets/invader_A2.png) no-repeat center; }
+.E2__B2 { background: url(./Assets/invader_B2.png) no-repeat center; }
+.E3__C2 { background: url(./Assets/invader_C2.png) no-repeat center; }
+
+
+/* player */
+
+.player-container{
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 60px;
+
+}
+
+.player-container .player {
+    overflow: hidden;
+    align-self:    center;
+    width: 5%;
+    max-width: 6%;
+    background-image: url('../Assets/player.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size:  contain;
+    image-rendering: pixelated;    /* for blocky style */
+    height: 100%;
+}
+
+
+/* bullet */
+.bullet {
+    will-change: transform;
+    width: 8px;
+    height: 8px;
+    background: url(./Assets/player.png) no-repeat center;
+    background-size: contain;
+    image-rendering: pixelated;
+}
