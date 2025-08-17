@@ -180,6 +180,7 @@ export class EnemyManager {
         if (Math.random() < 0.02) {
             this.shoot();
         }
+        
         if (this.EnemyBullets.length > 0) {
             this.EnemyBullets.forEach((bullet) => {
                 if (bullet.getY() + this.EnemiesY + 20 >= window.innerHeight) {

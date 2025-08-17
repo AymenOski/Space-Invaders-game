@@ -67,9 +67,14 @@ body {
     background: url(./Assets/Enemy_Bullet_C.png) no-repeat center;
 }
 
+.player__bullet__type__1 {
+    background: url(./Assets/Player_Bullet.png) no-repeat center;
+}
+
 .bullet__type__1,
 .bullet__type__2,
-.bullet__type__3 {
+.bullet__type__3,
+.player__bullet__type__1 {
     /* border: 1px solid red; */
     width: 8px;
     height: 8px;
@@ -93,8 +98,8 @@ body {
     overflow: hidden;
     display: flex;
     justify-content: center;
-    background-color: rgb(73, 71, 71);
-    width: 100%;
+    /* background-color: rgb(73, 71, 71); */
+    width: 100%; 
     height: 100px;
 }
 

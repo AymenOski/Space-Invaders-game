@@ -4,7 +4,7 @@ export class Player {
     constructor() {
         this.score = 0;
         this.lives = 3;
-        this.moves = 3
+        this.Speed = 3
         this.x = 0;
         this.direction = null;
         this.playerBullets = [];
@@ -68,7 +68,6 @@ export class Player {
         }
     }
 
-
     handleShoot() {
         const now = performance.now();
         if (now - this.lastShotTime >= this.shootCooldown) {
@@ -78,9 +77,15 @@ export class Player {
     }
 
     shoot() {
-        const bullet = new Bullet(this.x + window.innerWidth / 4, window.innerHeight - 400);
-        bullet.Element = bullet.createBulletElement(bullet.updateBulletType(Math.random()));
+        const p = document.querySelector(".player");
+        const container = document.querySelector(".game-container");
+        const containerRect = container.getBoundingClientRect();
+        const playerRect = p.getBoundingClientRect();
+        const bulletX = playerRect.left - containerRect.left + p.offsetWidth / 2;
+        const bullet = new Bullet(bulletX, window.innerHeight - p.offsetWidth);
+        bullet.Element = bullet.createBulletElement(bullet.updateBulletType(-1));
         this.playerBullets.push(bullet);
+        document.querySelector('.game-container').appendChild(bullet.getElement());
     }
 
     movePlayer(direction) {
@@ -90,10 +95,10 @@ export class Player {
         const minX = -(container.offsetWidth / 2) + p.offsetWidth / 2;
 
 
-        if (direction === "left" && this.x - this.moves > minX) {
-            this.x -= this.moves;
-        } else if (direction === "right" && this.x + this.moves < maxX) {
-            this.x += this.moves;
+        if (direction === "left" && this.x - this.Speed > minX) {
+            this.x -= this.Speed;
+        } else if (direction === "right" && this.x + this.Speed < maxX) {
+            this.x += this.Speed;
         }
 
         p.style.transform = `translate3d(${this.x}px, 0, 0)`;
@@ -102,13 +107,14 @@ export class Player {
     update() {
         if (this.playerBullets.length > 0) {
             this.playerBullets.forEach((bullet) => {
-                if (bullet.getY() + innerHeight <= 0) {
+                if (bullet.getY() <= 0) {
                     bullet.getElement().remove();
                     this.playerBullets = this.playerBullets.filter(b => b !== bullet);
                     return;
                 }
                 document.querySelector('.game-container').append(bullet.getElement());
                 bullet.moveBullet('up');
+
             });
         }
     }

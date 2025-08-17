@@ -16,9 +16,7 @@ export class Bullet {
         if (!this.Element) {
             this.Element = document.createElement('div');
             this.Element.classList.add(type);
-            this.Element.style.left = `${this.x}px`;
-            this.Element.style.top = `${this.y}px`;
-            this.Element.style.transform = `translate3d(0px , 0px , 0px) scale(1.8)`;
+            this.Element.style.transform = `translate3d(${this.x}px ,${this.y}px , 0px) scale(1.8)`;
             this.Element.style.position = 'absolute';
         }
         return this.Element;
@@ -33,13 +31,18 @@ export class Bullet {
         this.updatePosition();
     }
 
-    updatePosition() {
+    updatePosition() {        
+        console.log(this.x - window.innerWidth / 2);
+        
         if (this.Element) {
-            this.Element.style.transform = `translate3d(${this.x}px, ${this.y}px , 0px) scale(1.8)`;
+            this.Element.style.transform = `translate3d(${this.x - window.innerWidth / 2}px, ${this.y}px , 0px) scale(1.8)`;
         }
     }
 
     updateBulletType(type) {
+        if (type === -1){
+            return "player__bullet__type__1";
+        }
         if (type < 0.33) {
             return "bullet__type__1"
         } else if (type < 0.66) {
