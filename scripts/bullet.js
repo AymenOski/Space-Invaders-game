@@ -16,7 +16,6 @@ export class Bullet {
         if (!this.Element) {
             this.Element = document.createElement('div');
             this.Element.classList.add(type);
-            this.Element.style.transform = `translate3d(${this.x}px ,${this.y}px , 0px) scale(1.8)`;
             this.Element.style.position = 'absolute';
         }
         return this.Element;
@@ -32,8 +31,6 @@ export class Bullet {
     }
 
     updatePosition() {        
-        console.log(this.x - window.innerWidth / 2);
-        
         if (this.Element) {
             this.Element.style.transform = `translate3d(${this.x - window.innerWidth / 2}px, ${this.y}px , 0px) scale(1.8)`;
         }

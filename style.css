@@ -76,8 +76,8 @@ body {
 .bullet__type__3,
 .player__bullet__type__1 {
     /* border: 1px solid red; */
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
     background-size: contain;
     image-rendering: pixelated;
 }

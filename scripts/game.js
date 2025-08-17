@@ -9,7 +9,7 @@ export class Game {
     }
 
     updateEntities() {
-        // this.EnemyManager.update();
+        this.EnemyManager.update();
         this.Player.update();
     }
 }

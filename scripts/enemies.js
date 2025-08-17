@@ -4,7 +4,6 @@ const Enemies = document.querySelector('.enemy-container');
 
 // Enemy class
 
-
 export class Enemy {
     constructor(Speed) {
         this.Speed = Speed;
@@ -131,7 +130,8 @@ export class EnemyManager {
         }
     }
     shoot() {
-        const bullet = new Bullet(this.EnemiesX, this.EnemiesY);
+        const randomEnemy = this.Enemies[Math.floor(Math.random() * this.Enemies.length)];
+        const bullet = new Bullet(randomEnemy.getEnemyX(), this.EnemiesY);
         bullet.Element = bullet.createBulletElement(bullet.updateBulletType(Math.random()));
         this.EnemyBullets.push(bullet);
     }
@@ -183,7 +183,9 @@ export class EnemyManager {
         
         if (this.EnemyBullets.length > 0) {
             this.EnemyBullets.forEach((bullet) => {
-                if (bullet.getY() + this.EnemiesY + 20 >= window.innerHeight) {
+                if (bullet.getY() + 25>= window.innerHeight) {
+                    console.log(bullet.getY() + 4 );
+                    console.log(":",window.innerHeight);
                     bullet.getElement().remove();
                     this.EnemyBullets = this.EnemyBullets.filter(b => b !== bullet);
                     return;
@@ -196,4 +198,3 @@ export class EnemyManager {
     }
 
 }
-

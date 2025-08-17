@@ -78,10 +78,9 @@ export class Player {
 
     shoot() {
         const p = document.querySelector(".player");
-        const playerRect = p.getBoundingClientRect();
-          
+        const playerRect = p.getBoundingClientRect();        
         
-        const bulletX = playerRect.left + p.offsetWidth / 2;
+        const bulletX = playerRect.left + p.offsetWidth / 2;        
         const bullet = new Bullet(bulletX, window.innerHeight - p.offsetWidth);
         bullet.Element = bullet.createBulletElement(bullet.updateBulletType(-1));
         this.playerBullets.push(bullet);
@@ -107,7 +106,9 @@ export class Player {
     update() {
         if (this.playerBullets.length > 0) {
             this.playerBullets.forEach((bullet) => {
-                if (bullet.getY() <= 0) {
+                if (bullet.getY() + 4 <= 0) {
+                    // console.log(bullet.getY() + 4);
+                    // console.log(":",0);
                     bullet.getElement().remove();
                     this.playerBullets = this.playerBullets.filter(b => b !== bullet);
                     return;
