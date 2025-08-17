@@ -2,12 +2,11 @@ export class Player {
     constructor() {
         this.score = 0;
         this.lives = 3;
-        this.moves = 3
+        this.moves = 6
         this.x = 0;
         this.direction = null;
         this.createPlayer()
         this.trackDirection()
-
     }
 
 
@@ -35,6 +34,7 @@ export class Player {
                 this.direction = "right";
             }
         });
+
         document.addEventListener("keyup", () => {
             this.direction = null;
         });
@@ -54,6 +54,7 @@ export class Player {
 
 
     movePlayer(direction) {
+        if (!direction) return
         const p = document.querySelector(".player");
         const container = document.querySelector(".player-container");
         const maxX = (container.offsetWidth / 2) - p.offsetWidth / 2;

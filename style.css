@@ -5,6 +5,10 @@ body {
     padding: 0;
 }
 
+.hud {
+    height: 70px;
+}
+
 .hud div {
     display: inline-block;
     margin-top: 20px;
@@ -19,8 +23,8 @@ body {
     justify-content: start;
     background: black;
     color: rgb(127, 185, 33);
-    height: 98vh;
-        transform: scale(1);
+    height: 99vh;
+
 }
 
 
@@ -29,7 +33,6 @@ body {
     position: relative;
     overflow: hidden;
     flex: 1;
-    border: 3px solid green;
     width: 100%;
     height: 600px; 
 }
@@ -37,12 +40,14 @@ body {
 .enemy {
     
     image-rendering: pixelated;
-    /* will-change: transform; */
     width: 24px;
     height: 24px;
-    /* border: 1px solid red; */
-    
+    position : absolute;
+    left : 25%;
+    top : 50px
 }
+
+
 .E1__A1 { background: url(./Assets/invader_A1.png) no-repeat center; }
 .E2__B1 { background: url(./Assets/invader_B1.png) no-repeat center; }
 .E3__C1 { background: url(./Assets/invader_C1.png) no-repeat center; }
@@ -57,26 +62,22 @@ body {
     overflow: hidden;
     display: flex;
     justify-content: center;
-    background-color: rgb(73, 71, 71);
     width: 100%;
-    height: 100px;
+    height: 60px;
+
 }
 
 .player-container .player {
     overflow: hidden;
     align-self:    center;
-    width: 20%;
-    max-width: 80px;
-    height: 50px;
+    width: 5%;
+    max-width: 6%;
     background-image: url('../Assets/player.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size:  contain;
     image-rendering: pixelated;    /* for blocky style */
-    
     height: 100%;
-    border:1px solid gray
-    
 }
 
 

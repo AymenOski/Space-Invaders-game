@@ -4,7 +4,6 @@ import { Player } from './player.js';
 export class Game {
     constructor() {
         this.EnemyManager = new EnemyManager();
-        this.EnemyManager.spawnEnemies();
         this.Player = new Player();
     }
 
