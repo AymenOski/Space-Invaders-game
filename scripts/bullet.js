@@ -31,6 +31,8 @@ export class Bullet {
     }
 
     updatePosition() {        
+        // console.log("this.x :",this.x - window.innerWidth / 2);
+        
         if (this.Element) {
             this.Element.style.transform = `translate3d(${this.x - window.innerWidth / 2}px, ${this.y}px , 0px) scale(1.8)`;
         }

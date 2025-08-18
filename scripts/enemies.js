@@ -129,9 +129,11 @@ export class EnemyManager {
             }
         }
     }
+
     shoot() {
-        const randomEnemy = this.Enemies[Math.floor(Math.random() * this.Enemies.length)];
-        const bullet = new Bullet(randomEnemy.getEnemyX(), this.EnemiesY);
+        const randomEnemy = this.Enemies[Math.floor(Math.random() * this.Enemies.length)].getElement().getBoundingClientRect();
+        
+        const bullet = new Bullet(randomEnemy.left  , randomEnemy.top);
         bullet.Element = bullet.createBulletElement(bullet.updateBulletType(Math.random()));
         this.EnemyBullets.push(bullet);
     }
@@ -177,15 +179,13 @@ export class EnemyManager {
             this.EnemiesDirection = 'left';
         }
         // shooting enemy and player bullets
-        if (Math.random() < 0.02) {
+        if (Math.random() < 0.014) {
             this.shoot();
         }
         
         if (this.EnemyBullets.length > 0) {
             this.EnemyBullets.forEach((bullet) => {
                 if (bullet.getY() + 25>= window.innerHeight) {
-                    console.log(bullet.getY() + 4 );
-                    console.log(":",window.innerHeight);
                     bullet.getElement().remove();
                     this.EnemyBullets = this.EnemyBullets.filter(b => b !== bullet);
                     return;

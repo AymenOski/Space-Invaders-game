@@ -79,7 +79,7 @@ export class Player {
     shoot() {
         const p = document.querySelector(".player");
         const playerRect = p.getBoundingClientRect();        
-        
+
         const bulletX = playerRect.left + p.offsetWidth / 2;        
         const bullet = new Bullet(bulletX, window.innerHeight - p.offsetWidth);
         bullet.Element = bullet.createBulletElement(bullet.updateBulletType(-1));
@@ -113,7 +113,7 @@ export class Player {
                     this.playerBullets = this.playerBullets.filter(b => b !== bullet);
                     return;
                 }
-                document.querySelector('.game-container').append(bullet.getElement());
+                // document.querySelector('.game-container').append(bullet.getElement());
                 bullet.moveBullet('up');
 
             });
