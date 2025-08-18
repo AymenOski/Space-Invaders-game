@@ -5,16 +5,8 @@ body {
     padding: 0;
 }
 
-.game-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    justify-content: start;
-    background: black;
-    color: rgb(127, 185, 33);
-    height: 98vh;
-    position: relative;
+.hud {
+    height: 70px;
 }
 
 .hud div {
@@ -23,37 +15,44 @@ body {
     margin-right: 20px;
 }
 
+.game-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    justify-content: start;
+    background: black;
+    color: rgb(127, 185, 33);
+    height: 99vh;
+
+}
+
+
+/* Enemys */
+.enemy-container{
+    position: relative;
+    overflow: hidden;
+    flex: 1;
+    width: 100%;
+    height: 600px; 
+}
+
 .enemy {
     image-rendering: pixelated;
-    will-change: transform;
     width: 24px;
     height: 24px;
-
+    position : absolute;
+    left : 25%;
+    top : 50px
 }
 
-.E1__A1 {
-    background: url(./Assets/invader_A1.png) no-repeat center;
-}
 
-.E2__B1 {
-    background: url(./Assets/invader_B1.png) no-repeat center;
-}
-
-.E3__C1 {
-    background: url(./Assets/invader_C1.png) no-repeat center;
-}
-
-.E1__A2 {
-    background: url(./Assets/invader_A2.png) no-repeat center;
-}
-
-.E2__B2 {
-    background: url(./Assets/invader_B2.png) no-repeat center;
-}
-
-.E3__C2 {
-    background: url(./Assets/invader_C2.png) no-repeat center;
-}
+.E1__A1 { background: url(./Assets/invader_A1.png) no-repeat center; }
+.E2__B1 { background: url(./Assets/invader_B1.png) no-repeat center; }
+.E3__C1 { background: url(./Assets/invader_C1.png) no-repeat center; }
+.E1__A2 { background: url(./Assets/invader_A2.png) no-repeat center; }
+.E2__B2 { background: url(./Assets/invader_B2.png) no-repeat center; }
+.E3__C2 { background: url(./Assets/invader_C2.png) no-repeat center; }
 
 .bullet__type__1 {
     background: url(./Assets/Enemy_Bullet_A.png) no-repeat center;
@@ -82,39 +81,37 @@ body {
     image-rendering: pixelated;
 }
 
-/* ussef responsive and player work */
-
-.enemy-container {
-    flex: 1;
-    /* border: 3px solid green;
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-    height: 600px; */
-
-}
+/* player */
 
 .player-container {
     overflow: hidden;
     display: flex;
     justify-content: center;
-    /* background-color: rgb(73, 71, 71); */
-    width: 100%; 
-    height: 100px;
-}
+    width: 100%;
+    height: 60px;
 
+}
 
 .player-container .player {
     overflow: hidden;
-    align-self: center;
-    width: 20%;
-    max-width: 80px;
-    height: 50px;
+    align-self:    center;
+    width: 5%;
+    max-width: 6%;
     background-image: url('../Assets/player.png');
     background-repeat: no-repeat;
     background-position: center;
+    background-size:  contain;
+    image-rendering: pixelated;    /* for blocky style */
+    height: 100%;
+}
+
+
+/* bullet */
+.bullet {
+    will-change: transform;
+    width: 8px;
+    height: 8px;
+    background: url(./Assets/player.png) no-repeat center;
     background-size: contain;
     image-rendering: pixelated;
-    /* for blocky style */
-
 }

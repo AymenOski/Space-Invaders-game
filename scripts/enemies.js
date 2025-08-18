@@ -26,27 +26,55 @@ export class Enemy {
             this.Element = document.createElement('div');
             this.Element.classList.add('enemy');
             this.Element.classList.add(type);
-            this.Element.style.left = `${window.innerWidth / 4 + 15}px`;
-            this.Element.style.top = `${window.innerHeight / 10}px`;
-            this.Element.style.transform = `translate3d(0px , 0px , 0px) scale(1.8)`;
-            this.Element.style.position = 'absolute';
+            // this.Element.style.left = `${window.innerWidth / 4 }px`;
+            // this.Element.style.top = `${50}px`;
+
         }
         return this.Element;
     }
+
     moveEnemy(direction) {
         if (direction === 'left') {
             this.EnemyX -= this.Speed;
         } else if (direction === 'right') {
             this.EnemyX += this.Speed;
         } else if (direction === 'down') {
-            this.EnemyY += this.Speed + 20;
+            this.EnemyY += this.Speed + 0.4;
         }
         this.updatePosition();
     }
+
+
+
+
+
     updatePosition() {
-        if (this.Element) {
-            this.Element.style.transform = `translate3d(${this.EnemyX}px, ${this.EnemyY}px , 0px) scale(1.8)`;
+        if (!this.Element) return;
+        const enemyContainer = document.querySelector('.enemy-container')
+        const width = enemyContainer.offsetWidth
+        const height = enemyContainer.offsetHeight
+        const columns = 11 
+        const rows = 5     
+
+        const xSpacing = (width / 2)  / columns + 5
+        const ySpacing = (height / 3 ) / rows  + 5  
+
+        
+        if (width < 600){ 
+            // enemyContainer.style.background = "blue"
+            this.Element.style.transform = `translate3d(${this.EnemyX * xSpacing}px, ${this.EnemyY * ySpacing}px , 0px) scale(0.5)`
         }
+        else if (width < 800) {
+            // enemyContainer.style.background = "red"
+                this.Element.style.transform = `translate3d(${this.EnemyX * xSpacing}px, ${this.EnemyY * ySpacing}px , 0px) scale(1)`
+        } else if (width < 1200) {
+            // enemyContainer.style.background = "gray"
+                this.Element.style.transform = `translate3d(${this.EnemyX * xSpacing}px, ${this.EnemyY * ySpacing}px , 0px) scale(1.5)`
+        } else if (width > 1200) {
+            // enemyContainer.style.background = "green"
+                this.Element.style.transform = `translate3d(${this.EnemyX * xSpacing}px, ${this.EnemyY * ySpacing}px , 0px) scale(2)`
+        }
+
     }
 
     updateEnemyType() {
@@ -94,13 +122,14 @@ export class EnemyManager {
             ["E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3"]
         ];
         this.EnemyBullets = [];
+        this.spawnEnemies()
     }
 
     spawnEnemies() {
         for (let i = 0; i < this.EnemyGrid.length; i++) {
             for (let j = 0; j < this.EnemyGrid[i].length; j++) {
                 // const newEnemy = this.level === 1 ? new Enemy(1, false) : new Enemy(2, false);
-                const newEnemy = new Enemy(4, null);
+                const newEnemy = new Enemy(0.05, null);
                 var enemyElement = undefined;
                 switch (this.EnemyGrid[i][j]) {
                     case "E1":
@@ -117,8 +146,8 @@ export class EnemyManager {
                 }
                 newEnemy.setElement(enemyElement);
 
-                const posX = j * 70;
-                const posY = i * 55;
+                const posX = j;
+                const posY = i;
                 newEnemy.setEnemyX(posX);
                 newEnemy.setEnemyY(posY);
 
@@ -151,11 +180,14 @@ export class EnemyManager {
         // moves enemies and make them shoot
         this.EnemiesHaveMovedDown = false;
         if (this.EnemiesCanMoveX) {
+            
             this.Enemies.forEach((enemy) => {
-                enemy.moveEnemy(this.EnemiesDirection);
-                if (enemy.getEnemyX() % 35 === 0) {
-                    enemy.updateEnemyType();
-                }
+                // console.log(enemy.getEnemyX()*2);
+                
+                enemy.moveEnemy(this.EnemiesDirection);                
+                // if (enemy.getEnemyX()) {
+                //     enemy.updateEnemyType();
+                // }
             })
         }
 
