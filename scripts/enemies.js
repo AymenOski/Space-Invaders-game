@@ -39,7 +39,7 @@ export class Enemy {
         } else if (direction === 'right') {
             this.EnemyX += this.Speed;
         } else if (direction === 'down') {
-            this.EnemyY += this.Speed + 0.4;
+            this.EnemyY += this.Speed ;
         }
         this.updatePosition();
     }
@@ -114,6 +114,7 @@ export class EnemyManager {
         this.EnemiesDirection = 'right';
         this.EnemiesCanMoveX = true;
         this.EnemiesHaveMovedDown = false;
+        this.EnemiesDammagedThePlayer= false;
         this.EnemyGrid = [
             ["E1", "E1", "E1", "E1", "E1", "E1", "E1", "E1", "E1", "E1", "E1"],
             ["E2", "E2", "E2", "E2", "E2", "E2", "E2", "E2", "E2", "E2", "E2"],
@@ -220,6 +221,9 @@ export class EnemyManager {
 
         if (this.EnemyBullets.length > 0) {
             this.EnemyBullets.forEach((bullet) => {
+                if (bullet.isColliding("Player")) {
+                    this.EnemiesDammagedThePlayer = true;
+                }
                 if (bullet.getY() + 25 >= window.innerHeight) {
                     bullet.getElement().remove();
                     this.EnemyBullets = this.EnemyBullets.filter(b => b !== bullet);

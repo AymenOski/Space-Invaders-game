@@ -10,6 +10,7 @@ export class Player {
         this.playerBullets = [];
         this.lastShotTime = 0;
         this.shootCooldown = 700;
+        this.PlayerIsInvincible = false;
         this.createPlayer()
         this.trackDirection()
 
@@ -60,12 +61,37 @@ export class Player {
         });
     }
 
-    reset() { this.score = 0; this.lives = 3; this.x = 0; }
+    reset() { 
+        this.score = 0; this.lives = 3; this.x = 0;
+        const p = document.querySelector(".player")
+        p.style.transform = `translate3d(${this.x}px, 0, 0)`;
+    }
 
     dammage() {
+        if (this.PlayerIsInvincible) return;
+
+        this.PlayerIsInvincible = true;
         this.lives--;
-        if (this.lives < 0) {
-            this.lives = 0;
+        const p = document.querySelector(".player-container");
+        let blinkTimes = 10;
+        let visible = true;
+        const interval = setInterval(() => {
+            p.style.opacity = visible ? 0.3 : 1;
+            visible = !visible;
+            blinkTimes--;
+            if (blinkTimes <= 0) {
+                p.style.opacity = 1;
+                // console.log("secendCall"); // 100 * 10 = 1s => so at the end of the blinking , the player is invinsible no more
+                clearInterval(interval);
+            }
+        }, 100)
+        setTimeout(() => {
+            // console.log("firstCall"); // 999 = 0.9s
+            this.PlayerIsInvincible = false;
+        }, 999);
+        if (this.lives <= 0) {
+            alert('game over');
+            this.reset();
         }
     }
 
@@ -79,9 +105,9 @@ export class Player {
 
     shoot() {
         const p = document.querySelector(".player");
-        const playerRect = p.getBoundingClientRect();        
+        const playerRect = p.getBoundingClientRect();
 
-        const bulletX = playerRect.left + p.offsetWidth / 2;        
+        const bulletX = playerRect.left + p.offsetWidth / 2;
         const bullet = new Bullet(bulletX, window.innerHeight - p.offsetWidth);
         bullet.Element = bullet.createBulletElement(bullet.updateBulletType(-1));
         this.playerBullets.push(bullet);
@@ -108,6 +134,9 @@ export class Player {
     update() {
         if (this.playerBullets.length > 0) {
             this.playerBullets.forEach((bullet) => {
+                if (bullet.isColliding("Enemy")) {
+
+                }
                 if (bullet.getY() + 4 <= 0) {
                     // console.log(bullet.getY() + 4);
                     // console.log(":",0);

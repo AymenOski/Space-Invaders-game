@@ -10,6 +10,11 @@ export class Game {
     updateEntities() {
         this.EnemyManager.update();
         this.Player.update();
+        if (this.EnemyManager.EnemiesDammagedThePlayer) {
+            console.log(this.Player.lives);
+            this.Player.dammage();
+            this.EnemyManager.EnemiesDammagedThePlayer = false;
+        }
     }
 }
 
@@ -18,7 +23,7 @@ const game = new Game();
 function gameLoop() {
     game.updateEntities();
     if (game.Player.direction) { game.Player.movePlayer(game.Player.direction) }
-    // handleSounds();
+
     requestAnimationFrame(gameLoop);
 }
 

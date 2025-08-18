@@ -101,7 +101,7 @@ body {
     background-repeat: no-repeat;
     background-position: center;
     background-size:  contain;
-    image-rendering: pixelated;    /* for blocky style */
+    image-rendering: pixelated;
     height: 100%;
 }
 

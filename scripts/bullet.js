@@ -30,14 +30,14 @@ export class Bullet {
         this.updatePosition();
     }
 
-    updatePosition() {                
+    updatePosition() {
         if (this.Element) {
-            this.Element.style.transform = `translate3d(${this.x - window.innerWidth / 2    }px, ${this.y}px , 0px) scale(1.8)`;
+            this.Element.style.transform = `translate3d(${this.x - window.innerWidth / 2}px, ${this.y}px , 0px) scale(1.8)`;
         }
     }
 
     updateBulletType(type) {
-        if (type === -1){
+        if (type === -1) {
             return "player__bullet__type__1";
         }
         if (type < 0.33) {
@@ -49,4 +49,14 @@ export class Bullet {
         }
     }
 
+    isColliding(CollisionType) {
+        if (CollisionType === "Enemy") {
+
+        } else if (CollisionType === "Player") {
+            const PlayerRect = document.querySelector(".player").getBoundingClientRect()
+            if (this.x >= PlayerRect.left && this.x <= PlayerRect.right && this.y >= PlayerRect.top && this.y <= PlayerRect.bottom) {
+                return true;
+            }
+        }
+    }
 }
