@@ -53,26 +53,26 @@ export class Enemy {
         const enemyContainer = document.querySelector('.enemy-container')
         const width = enemyContainer.offsetWidth
         const height = enemyContainer.offsetHeight
-        const columns = 11 
-        const rows = 5     
+        const columns = 11
+        const rows = 5
 
-        const xSpacing = (width / 2)  / columns + 5
-        const ySpacing = (height / 3 ) / rows  + 5  
+        const xSpacing = (width / 2) / columns + 5
+        const ySpacing = (height / 3) / rows + 5
 
-        
-        if (width < 600){ 
+
+        if (width < 600) {
             // enemyContainer.style.background = "blue"
             this.Element.style.transform = `translate3d(${this.EnemyX * xSpacing}px, ${this.EnemyY * ySpacing}px , 0px) scale(0.5)`
         }
         else if (width < 800) {
             // enemyContainer.style.background = "red"
-                this.Element.style.transform = `translate3d(${this.EnemyX * xSpacing}px, ${this.EnemyY * ySpacing}px , 0px) scale(1)`
+            this.Element.style.transform = `translate3d(${this.EnemyX * xSpacing}px, ${this.EnemyY * ySpacing}px , 0px) scale(1)`
         } else if (width < 1200) {
             // enemyContainer.style.background = "gray"
-                this.Element.style.transform = `translate3d(${this.EnemyX * xSpacing}px, ${this.EnemyY * ySpacing}px , 0px) scale(1.5)`
+            this.Element.style.transform = `translate3d(${this.EnemyX * xSpacing}px, ${this.EnemyY * ySpacing}px , 0px) scale(1.5)`
         } else if (width > 1200) {
             // enemyContainer.style.background = "green"
-                this.Element.style.transform = `translate3d(${this.EnemyX * xSpacing}px, ${this.EnemyY * ySpacing}px , 0px) scale(2)`
+            this.Element.style.transform = `translate3d(${this.EnemyX * xSpacing}px, ${this.EnemyY * ySpacing}px , 0px) scale(2)`
         }
 
     }
@@ -123,6 +123,7 @@ export class EnemyManager {
         ];
         this.EnemyBullets = [];
         this.spawnEnemies()
+        this.Animation = 0;
     }
 
     spawnEnemies() {
@@ -161,8 +162,8 @@ export class EnemyManager {
 
     shoot() {
         const randomEnemy = this.Enemies[Math.floor(Math.random() * this.Enemies.length)].getElement().getBoundingClientRect();
-        
-        const bullet = new Bullet(randomEnemy.left  , randomEnemy.top);
+
+        const bullet = new Bullet(randomEnemy.left, randomEnemy.top);
         bullet.Element = bullet.createBulletElement(bullet.updateBulletType(Math.random()));
         this.EnemyBullets.push(bullet);
     }
@@ -173,6 +174,9 @@ export class EnemyManager {
         let lastEnemyColumn = this.Enemies[this.Enemies.length - 1].getElement().getBoundingClientRect();
         this.EnemiesX = firstEnemyColumn.left;
         this.EnemiesY = firstEnemyColumn.top;
+
+        this.Animation++;
+
         if ((firstEnemyColumn.left <= 0 || lastEnemyColumn.right + 10 >= window.innerWidth) && !this.EnemiesHaveMovedDown) {
             this.EnemiesCanMoveX = false;
         }
@@ -180,14 +184,13 @@ export class EnemyManager {
         // moves enemies and make them shoot
         this.EnemiesHaveMovedDown = false;
         if (this.EnemiesCanMoveX) {
-            
+
             this.Enemies.forEach((enemy) => {
-                // console.log(enemy.getEnemyX()*2);
-                
-                enemy.moveEnemy(this.EnemiesDirection);                
-                // if (enemy.getEnemyX()) {
-                //     enemy.updateEnemyType();
-                // }
+
+                enemy.moveEnemy(this.EnemiesDirection);
+                if (this.Animation % 50 === 0) {
+                    enemy.updateEnemyType();
+                }
             })
         }
 
@@ -214,10 +217,10 @@ export class EnemyManager {
         if (Math.random() < 0.014) {
             this.shoot();
         }
-        
+
         if (this.EnemyBullets.length > 0) {
             this.EnemyBullets.forEach((bullet) => {
-                if (bullet.getY() + 25>= window.innerHeight) {
+                if (bullet.getY() + 25 >= window.innerHeight) {
                     bullet.getElement().remove();
                     this.EnemyBullets = this.EnemyBullets.filter(b => b !== bullet);
                     return;
