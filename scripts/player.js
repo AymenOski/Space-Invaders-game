@@ -72,6 +72,8 @@ export class Player {
 
         this.PlayerIsInvincible = true;
         this.lives--;
+        const lives = document.querySelector(".lives-container");
+        lives.innerHTML = `Lives: ${this.lives}`
         const p = document.querySelector(".player-container");
         let blinkTimes = 10;
         let visible = true;
@@ -90,6 +92,7 @@ export class Player {
             this.PlayerIsInvincible = false;
         }, 999);
         if (this.lives <= 0) {
+            lives.innerHTML = `Lives: 3`
             alert('game over');
             this.reset();
         }
