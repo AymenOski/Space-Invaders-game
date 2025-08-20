@@ -61,7 +61,7 @@ export class Player {
         });
     }
 
-    reset() { 
+    reset() {
         this.score = 0; this.lives = 3; this.x = 0;
         const p = document.querySelector(".player")
         p.style.transform = `translate3d(${this.x}px, 0, 0)`;
@@ -109,9 +109,13 @@ export class Player {
     shoot() {
         const p = document.querySelector(".player");
         const playerRect = p.getBoundingClientRect();
+        const style = window.getComputedStyle(p);
+        const matrix = new DOMMatrixReadOnly(style.transform);
+        console.log(matrix.m41, matrix.m42); // x و y
+
 
         const bulletX = playerRect.left + p.offsetWidth / 2;
-        const bullet = new Bullet(bulletX, window.innerHeight - p.offsetWidth);
+        const bullet = new Bullet(bulletX, window.innerHeight - p.offsetHeight);
         bullet.Element = bullet.createBulletElement(bullet.updateBulletType(-1));
         this.playerBullets.push(bullet);
         document.querySelector('.game-container').appendChild(bullet.getElement());
@@ -135,6 +139,8 @@ export class Player {
     }
 
     update() {
+        const timerCont = document.querySelector('.timer-container');
+        timerCont.innerHTML = `Play_Time: ${(performance.now() / 1000).toFixed(2)}`;
         if (this.playerBullets.length > 0) {
             this.playerBullets.forEach((bullet) => {
                 if (bullet.isColliding("Enemy")) {
