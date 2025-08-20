@@ -1,3 +1,5 @@
+import { Bullet } from "./bullet.js";
+
 export class Player {
     constructor() {
         this.score = 0;
@@ -7,26 +9,29 @@ export class Player {
         this.direction = null;
         this.createPlayer()
         this.trackDirection()
+        this.shoot()
     }
 
 
     //geters
     getLives() { return this.lives }
     getScore() { return this.score }
-    getX() { return this.x }
+    getX()     { return this.x }
+    getX()     { return this.x  + (document.querySelector(".player-container").offsetWidth - 7) / 2   }
+
     // seters 
     setLives(lives) { this.lives = lives }
     setScore(score) { this.score = score }
     setX(x) { this.x = x }
 
-    createPlayer(){
+    createPlayer() {
         const p = document.createElement("div");
         p.classList.add("player");
         const container = document.querySelector(".player-container");
         container.appendChild(p);
     }
 
-    trackDirection(){
+    trackDirection() {
         document.addEventListener("keydown", (event) => {
             if (event.key === "ArrowLeft") {
                 this.direction = "left";
@@ -50,7 +55,30 @@ export class Player {
     }
 
 
-    shoot() { }
+    shoot() {
+        
+        document.addEventListener("keyup", (e) => {
+            if (e.code === "Space") {
+                
+                const y = document.querySelector(".enemy-container").offsetHeight-7;
+                const bullet = new Bullet(this.getX(), y )
+                bullet.createBulletElement("bullet")
+                
+                const moveInterval = setInterval(() => {
+                bullet.moveBullet("up")
+                // clearInterval(moveInterval);
+                }, 100)
+
+            }
+
+        })
+
+
+
+
+
+
+    }
 
 
     movePlayer(direction) {

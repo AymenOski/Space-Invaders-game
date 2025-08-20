@@ -59,7 +59,7 @@ export class Enemy {
         const xSpacing = (width / 2)  / columns + 10
         const ySpacing = (height / 3 ) / rows  + 10 
 
-        if (width < 600){ 
+        if (width < 500){ 
             // enemyContainer.style.background = "blue"
             this.Element.style.transform = `translate3d(${this.EnemyX * xSpacing}px, ${this.EnemyY * ySpacing}px , 0px) scale(0.5)`
         }

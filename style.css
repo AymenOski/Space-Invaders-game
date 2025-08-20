@@ -64,6 +64,7 @@ body {
     justify-content: center;
     width: 100%;
     height: 60px;
+    background-color: gray;
 
 }
 
@@ -71,7 +72,7 @@ body {
     overflow: hidden;
     align-self:    center;
     width: 6%;
-    max-width: 6%;
+    max-width: 5%;
     background-image: url('../Assets/player.png');
     background-repeat: no-repeat;
     background-position: center;
