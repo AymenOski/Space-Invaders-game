@@ -2,7 +2,7 @@ export class Bullet {
     constructor(x, y) {
         this.x = x;
         this.y = y;
-        this.Speed = 20;
+        this.Speed = 3;
         this.Element = null;
     }
 
@@ -16,10 +16,7 @@ export class Bullet {
         if (!this.Element) {
             this.Element = document.createElement('div');
             this.Element.classList.add(type);
-            document.querySelector(".enemy-container").appendChild(this.Element);
-            this.Element.style.background = 'white'
-            this.Element.style.transform = `translate3d(${this.x }px ,${this.y }px , 0px) `;
-            
+            this.Element.style.position = 'absolute';
         }
         return this.Element;
     }
@@ -33,16 +30,14 @@ export class Bullet {
         this.updatePosition();
     }
 
-    updatePosition() {        
-        // console.log(this.x - window.innerWidth / 2);
-        
+    updatePosition() {
         if (this.Element) {
-            this.Element.style.transform = `translate3d(${this.x }px, ${this.y}px , 0px)`;
+            this.Element.style.transform = `translate3d(${this.x - window.innerWidth / 2}px, ${this.y}px , 0px) scale(1.8)`;
         }
     }
 
     updateBulletType(type) {
-        if (type === -1){
+        if (type === -1) {
             return "player__bullet__type__1";
         }
         if (type < 0.33) {
@@ -54,4 +49,24 @@ export class Bullet {
         }
     }
 
+    isColliding(CollisionType) {
+        if (CollisionType === "Enemy") {
+            for (let i = 0; i < (document.querySelector('.enemy-container').children).length; i++) {
+                var enemiesRect = document.querySelector('.enemy-container').children[i].getBoundingClientRect();
+                if (this.y <= enemiesRect.bottom && this.y >= enemiesRect.top && this.x >= enemiesRect.left && this.x <= enemiesRect.right) {
+                    if (this.Element) {
+                        document.querySelector('.enemy-container').children[i].remove();
+                        return true;
+                    }
+                }
+            }
+
+        } else if (CollisionType === "Player") {
+            const PlayerRect = document.querySelector(".player").getBoundingClientRect()
+            if (this.x >= PlayerRect.left && this.x <= PlayerRect.right && this.y >= PlayerRect.top && this.y <= PlayerRect.bottom) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
