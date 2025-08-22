@@ -32,7 +32,7 @@ export class Bullet {
 
     updatePosition() {
         // console.log(this.x - window.innerWidth / 2);
-        
+
         if (this.Element) {
             this.Element.style.transform = `translate3d(${this.x - window.innerWidth / 2}px, ${this.y}px , 0px) scale(1.8)`;
         }
@@ -57,7 +57,10 @@ export class Bullet {
                 var enemiesRect = document.querySelector('.enemy-container').children[i].getBoundingClientRect();
                 if (this.y <= enemiesRect.bottom && this.y >= enemiesRect.top && this.x >= enemiesRect.left && this.x <= enemiesRect.right) {
                     if (this.Element) {
-                        document.querySelector('.enemy-container').children[i].remove();
+                        let enemy = document.querySelector('.enemy-container').children[i];
+                        enemy.style.backgroundImage = "none";
+                        enemy.innerHTML = `<img src="../Assets/Images/EnemyExplosion.png"/>`;
+                        setTimeout(() => enemy.remove(), 400);
                         return true;
                     }
                 }
