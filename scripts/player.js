@@ -18,6 +18,7 @@ export class Player {
         this.trackDirection()
 
         document.addEventListener("keydown", (event) => {
+            if (this.lives <= 0) return;
             switch (event.key) {
                 case "ArrowLeft":
                     this.movePlayer("left");

@@ -80,3 +80,10 @@ continueBtn.addEventListener("click", () => {
     document.querySelector('.lives-container').innerHTML = 'Lives: 1';
     gameLoop();
 });
+
+document.addEventListener('click', startMusic, { once: true });
+document.addEventListener('keydown', startMusic, { once: true });
+
+function startMusic() {
+    game.MusicManager.play('mainTitle');
+}
