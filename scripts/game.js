@@ -8,6 +8,7 @@ export class Game {
     constructor() {
         this.MusicManager = new MusicManager();
         this.MusicManager.play('mainTitle');
+        this.isPaused = false;
 
         this.EnemyManager = new EnemyManager(this.MusicManager);
         this.Player = new Player(this.MusicManager);
@@ -47,27 +48,33 @@ startGame()
 
 
 function gameLoop() {
+    animationId = requestAnimationFrame(gameLoop);
+
+    if (game.isPaused) return;
+
     if (game.Player.lives <= 0) {
+        game.isPaused = true;
         showGameMenu("GameOver");
         return;
     }
 
     game.updateEntities();
-    if (game.Player.direction) { game.Player.movePlayer(game.Player.direction) }
-    animationId = requestAnimationFrame(gameLoop);
-
+    if (game.Player.direction) {
+        game.Player.movePlayer(game.Player.direction);
+    }
 }
 
-let toggleMenu = false;
 document.addEventListener('keydown', (event) => {
     if (game.Player.lives <= 0) return;
+
     if (event.code === "Escape") {
-        if (toggleMenu) {
-            showGameMenu("pause"); // true
+        if (game.isPaused) {
+            popup.classList.add("hidden");
+            game.isPaused = false;
         } else {
-            showGameMenu("pause"); // false 
+            game.isPaused = true;
+            showGameMenu("pause");
         }
-        toggleMenu = !toggleMenu;
     }
 });
 
@@ -75,7 +82,7 @@ const popup = document.getElementById("game-over-popup");
 const replayBtn = document.getElementById("replay-btn");
 const continueBtn = document.getElementById("continue-btn");
 function showGameMenu(type) {
-    game.Player.pauseMovement = true;
+
     if (type === "GameOver") {
         popup.querySelector("h2").textContent = "Game Over";
         continueBtn.style.display = "none";
@@ -83,15 +90,8 @@ function showGameMenu(type) {
         popup.querySelector("h2").textContent = "Paused";
         continueBtn.style.display = "inline-block";
     }
-    if (!toggleMenu) {
-        popup.classList.remove("hidden");
-        cancelAnimationFrame(animationId);
-    } else {
-        popup.classList.add("hidden");
-        cancelAnimationFrame(animationId);
-        game.Player.pauseMovement = false;
-        gameLoop();
-    }
+
+    popup.classList.remove("hidden");
 }
 
 replayBtn.addEventListener("click", () => {
@@ -101,7 +101,7 @@ replayBtn.addEventListener("click", () => {
 
 continueBtn.addEventListener("click", () => {
     popup.classList.add("hidden");
-    gameLoop();
+    game.isPaused = false;
 });
 
 document.addEventListener('click', startMusic, { once: true });
