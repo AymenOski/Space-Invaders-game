@@ -2,8 +2,7 @@ import { EnemyManager } from './enemies.js';
 import { MusicManager } from './music.js';
 import { Player } from './player.js';
 
-let game;
-let animationId;
+let game ,animationId , GameMenuCheck;
 
 export class Game {
     constructor() {
@@ -49,7 +48,7 @@ startGame()
 
 function gameLoop() {
     if (game.Player.lives <= 0) {
-        showGameOverPopup();
+        showGameMenu(gameOver);
         return;
     }
 
@@ -63,9 +62,11 @@ const popup = document.getElementById("game-over-popup");
 const replayBtn = document.getElementById("replay-btn");
 const continueBtn = document.getElementById("continue-btn");
 
-function showGameOverPopup() {
+function showGameMenu(type) {
     popup.classList.remove("hidden");
-    cancelAnimationFrame(animationId);
+    if (type === 'gameOver') {
+        cancelAnimationFrame(animationId);
+    }
 }
 
 replayBtn.addEventListener("click", () => {
@@ -75,8 +76,6 @@ replayBtn.addEventListener("click", () => {
 
 continueBtn.addEventListener("click", () => {
     popup.classList.add("hidden");
-    game.Player.lives = 2;
-    game.Player.dammage();
     document.querySelector('.lives-container').innerHTML = 'Lives: 1';
     gameLoop();
 });
@@ -87,3 +86,9 @@ document.addEventListener('keydown', startMusic, { once: true });
 function startMusic() {
     game.MusicManager.play('mainTitle');
 }
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === "Escape") {
+        showGameMenu();
+    }
+});
