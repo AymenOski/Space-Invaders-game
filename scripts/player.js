@@ -8,6 +8,7 @@ export class Player {
         this.x = 0;
         this.time = performance.now();
         this.direction = null;
+        this.pauseMovement = false;
         this.playerBullets = [];
         this.lastShotTime = 0;
         this.shootCooldown = 700;
@@ -18,7 +19,7 @@ export class Player {
         this.trackDirection()
 
         document.addEventListener("keydown", (event) => {
-            if (this.lives <= 0) return;
+            if (this.lives <= 0 || this.pauseMovement) return;
             switch (event.key) {
                 case "ArrowLeft":
                     this.movePlayer("left");
