@@ -77,29 +77,29 @@ export class Enemy {
 
     }
 
-    updateEnemyType() {
-        if (this.Element) {
-            if (this.Element.classList.contains('E1__A1')) {
-                this.Element.classList.remove('E1__A1');
-                this.Element.classList.add('E1__A2');
-            } else if (this.Element.classList.contains('E2__B1')) {
-                this.Element.classList.remove('E2__B1');
-                this.Element.classList.add('E2__B2');
-            } else if (this.Element.classList.contains('E3__C1')) {
-                this.Element.classList.remove('E3__C1');
-                this.Element.classList.add('E3__C2');
-            } else if (this.Element.classList.contains('E1__A2')) {
-                this.Element.classList.remove('E1__A2');
-                this.Element.classList.add('E1__A1');
-            } else if (this.Element.classList.contains('E2__B2')) {
-                this.Element.classList.remove('E2__B2');
-                this.Element.classList.add('E2__B1');
-            } else if (this.Element.classList.contains('E3__C2')) {
-                this.Element.classList.remove('E3__C2');
-                this.Element.classList.add('E3__C1');
-            }
-        }
-    }
+    // updateEnemyType() {
+    //     if (this.Element) {
+    //         if (this.Element.classList.contains('E1__A1')) {
+    //             this.Element.classList.remove('E1__A1');
+    //             this.Element.classList.add('E1__A2');
+    //         } else if (this.Element.classList.contains('E2__B1')) {
+    //             this.Element.classList.remove('E2__B1');
+    //             this.Element.classList.add('E2__B2');
+    //         } else if (this.Element.classList.contains('E3__C1')) {
+    //             this.Element.classList.remove('E3__C1');
+    //             this.Element.classList.add('E3__C2');
+    //         } else if (this.Element.classList.contains('E1__A2')) {
+    //             this.Element.classList.remove('E1__A2');
+    //             this.Element.classList.add('E1__A1');
+    //         } else if (this.Element.classList.contains('E2__B2')) {
+    //             this.Element.classList.remove('E2__B2');
+    //             this.Element.classList.add('E2__B1');
+    //         } else if (this.Element.classList.contains('E3__C2')) {
+    //             this.Element.classList.remove('E3__C2');
+    //             this.Element.classList.add('E3__C1');
+    //         }
+    //     }
+    // }
 }
 
 // EnemyManager class
@@ -131,7 +131,7 @@ export class EnemyManager {
         for (let i = 0; i < this.EnemyGrid.length; i++) {
             for (let j = 0; j < this.EnemyGrid[i].length; j++) {
                 // const newEnemy = this.level === 1 ? new Enemy(1, false) : new Enemy(2, false);
-                const newEnemy = new Enemy(0.05, null);
+                const newEnemy = new Enemy(0.02, null);
                 var enemyElement = undefined;
                 switch (this.EnemyGrid[i][j]) {
                     case "E1":
@@ -171,8 +171,14 @@ export class EnemyManager {
 
     update() {
         // Update all enemies
-        let firstEnemyColumn = this.Enemies[0].getElement().getBoundingClientRect();
-        let lastEnemyColumn = this.Enemies[this.Enemies.length - 1].getElement().getBoundingClientRect();
+        const T = document.querySelectorAll('[class*="E1__"]')
+
+        let firstEnemyColumn = T[0].getBoundingClientRect();
+        let lastEnemyColumn = T[T.length-1].getBoundingClientRect()
+        console.log(lastEnemyColumn);
+        
+        
+        
         this.EnemiesX = firstEnemyColumn.left;
         this.EnemiesY = firstEnemyColumn.top;
 
@@ -190,7 +196,7 @@ export class EnemyManager {
 
                 enemy.moveEnemy(this.EnemiesDirection);
                 if (this.Animation % 50 === 0) {
-                    enemy.updateEnemyType();
+                    // enemy.updateEnemyType();
                 }
             })
         }

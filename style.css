@@ -95,7 +95,7 @@ body {
 .player-container .player {
     overflow: hidden;
     align-self:    center;
-    width: 5%;
+    width: 6%;
     max-width: 6%;
     background-image: url('../Assets/Images/player.png');
     background-repeat: no-repeat;

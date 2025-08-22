@@ -2,7 +2,7 @@ export class Bullet {
     constructor(x, y) {
         this.x = x;
         this.y = y;
-        this.Speed = 5;
+        this.Speed = 3;
         this.Element = null;
     }
 
@@ -53,6 +53,15 @@ export class Bullet {
 
     isColliding(CollisionType) {
         if (CollisionType === "Enemy") {
+            for (let i = 0; i < (document.querySelector('.enemy-container').children).length; i++) {
+                var enemiesRect = document.querySelector('.enemy-container').children[i].getBoundingClientRect();
+                if (this.y <= enemiesRect.bottom && this.y >= enemiesRect.top && this.x >= enemiesRect.left && this.x <= enemiesRect.right) {
+                    if (this.Element) {
+                        document.querySelector('.enemy-container').children[i].remove();
+                        return true;
+                    }
+                }
+            }
 
         } else if (CollisionType === "Player") {
             const PlayerRect = document.querySelector(".player").getBoundingClientRect()
@@ -60,6 +69,7 @@ export class Bullet {
                 return true;
             }
         }
+        return false;
     }
 }
 

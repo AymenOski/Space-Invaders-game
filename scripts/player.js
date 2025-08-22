@@ -143,8 +143,11 @@ export class Player {
         if (this.playerBullets.length > 0) {
             this.playerBullets.forEach((bullet) => {
                 if (bullet.isColliding("Enemy")) {
-
+                    bullet.getElement().remove();
+                    this.playerBullets = this.playerBullets.filter((b) => b != bullet)
+                    return
                 }
+
                 if (bullet.getY() + 4 <= 0) {
                     // console.log(bullet.getY() + 4);
                     // console.log(":",0);
@@ -152,7 +155,7 @@ export class Player {
                     this.playerBullets = this.playerBullets.filter(b => b !== bullet);
                     return;
                 }
-                // document.querySelector('.game-container').append(bullet.getElement());
+                document.querySelector('.game-container').append(bullet.getElement());
                 bullet.moveBullet('up');
 
             });
