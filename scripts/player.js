@@ -72,7 +72,14 @@ export class Player {
         this.musicManager.play('playerDammage');
         this.lives--;
         const lives = document.querySelector(".lives-container");
-        lives.innerHTML = `Lives: ${this.lives}`
+        lives.style.opacity = 0.4
+        lives.style.color = "red"
+        setTimeout(() =>{
+            lives.innerHTML = `Lives: ${this.lives}`
+            lives.style.color = "white"
+            lives.style.opacity = 1
+
+        } , 400);
         const p = document.querySelector(".player-container");
         let blinkTimes = 10;
         let visible = true;
