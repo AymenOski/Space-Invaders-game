@@ -131,7 +131,7 @@ export class EnemyManager {
         for (let i = 0; i < this.EnemyGrid.length; i++) {
             for (let j = 0; j < this.EnemyGrid[i].length; j++) {
                 // const newEnemy = this.level === 1 ? new Enemy(1, false) : new Enemy(2, false);
-                const newEnemy = new Enemy(0.02, null);
+                const newEnemy = new Enemy(0.07, null);
                 var enemyElement = undefined;
                 switch (this.EnemyGrid[i][j]) {
                     case "E1":
@@ -163,7 +163,10 @@ export class EnemyManager {
 
     shoot() {
         const randomEnemy = this.Enemies[Math.floor(Math.random() * this.Enemies.length)].getElement().getBoundingClientRect();
-
+        if(randomEnemy.y <= 114 ){
+             return;
+        }
+        
         const bullet = new Bullet(randomEnemy.left, randomEnemy.top);
         bullet.Element = bullet.createBulletElement(bullet.updateBulletType(Math.random()));
         this.EnemyBullets.push(bullet);
@@ -172,11 +175,15 @@ export class EnemyManager {
     update() {
         // Update all enemies
         const T = document.querySelectorAll('[class*="E1__"]')
-
-        let firstEnemyColumn = T[0].getBoundingClientRect();
-        let lastEnemyColumn = T[T.length-1].getBoundingClientRect()
-        console.log(lastEnemyColumn);
+        let firstEnemyColumn , lastEnemyColumn;
         
+        if (T.length > 1 ){
+            firstEnemyColumn = T[0].getBoundingClientRect();
+            lastEnemyColumn = T[T.length-1].getBoundingClientRect()
+        }else {
+            firstEnemyColumn = T[0].getBoundingClientRect();    
+            lastEnemyColumn = T[0].getBoundingClientRect();
+        }        
         
         
         this.EnemiesX = firstEnemyColumn.left;
@@ -221,7 +228,8 @@ export class EnemyManager {
             this.EnemiesDirection = 'left';
         }
         // shooting enemy and player bullets
-        if (Math.random() < 0.014) {
+        
+        if (Math.random() <  (document.querySelector(".enemy-container").children.length > 25 ? 0.014 : 0.014 + 0.02)) {
             this.shoot();
         }
 

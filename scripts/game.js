@@ -11,7 +11,6 @@ export class Game {
         this.EnemyManager.update();
         this.Player.update();
         if (this.EnemyManager.EnemiesDammagedThePlayer) {
-            console.log(this.Player.lives);
             this.Player.dammage();
             this.EnemyManager.EnemiesDammagedThePlayer = false;
         }
