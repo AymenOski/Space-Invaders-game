@@ -10,14 +10,11 @@ export class Game {
     updateEntities() {
         this.EnemyManager.update();
         this.Player.update();
-        document.querySelector('.timer-container').innerHTML = `Play_Time: ${(performance.now()/1000).toFixed(2)}`;
 
         if (this.EnemyManager.EnemiesDammagedThePlayer) {
             this.Player.dammage();
             this.EnemyManager.EnemiesDammagedThePlayer = false;
         }
-
-
     }
 }
 

@@ -62,7 +62,7 @@ export class Enemy {
 
         if (width < 600) {
             // enemyContainer.style.background = "blue"
-            this.Element.style.transform = `translate3d(${this.EnemyX * xSpacing + n}px, ${this.EnemyY * ySpacing}px , 0px) scale(0.5)`
+            this.Element.style.transform = `translate3d(${this.EnemyX * xSpacing}px, ${this.EnemyY * ySpacing}px , 0px) scale(0.5)`
         }
         else if (width < 800) {
             // enemyContainer.style.background = "red"

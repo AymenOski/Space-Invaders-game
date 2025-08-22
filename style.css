@@ -47,27 +47,27 @@ body {
 }
 
 
-.E1__A1 { background: url(./Assets/invader_A1.png) no-repeat center; }
-.E2__B1 { background: url(./Assets/invader_B1.png) no-repeat center; }
-.E3__C1 { background: url(./Assets/invader_C1.png) no-repeat center; }
-.E1__A2 { background: url(./Assets/invader_A2.png) no-repeat center; }
-.E2__B2 { background: url(./Assets/invader_B2.png) no-repeat center; }
-.E3__C2 { background: url(./Assets/invader_C2.png) no-repeat center; }
+.E1__A1 { background: url(./Assets/Images/invader_A1.png) no-repeat center; }
+.E2__B1 { background: url(./Assets/Images/invader_B1.png) no-repeat center; }
+.E3__C1 { background: url(./Assets/Images/invader_C1.png) no-repeat center; }
+.E1__A2 { background: url(./Assets/Images/invader_A2.png) no-repeat center; }
+.E2__B2 { background: url(./Assets/Images/invader_B2.png) no-repeat center; }
+.E3__C2 { background: url(./Assets/Images/invader_C2.png) no-repeat center; }
 
 .bullet__type__1 {
-    background: url(./Assets/Enemy_Bullet_A.png) no-repeat center;
+    background: url(./Assets/Images/Enemy_Bullet_A.png) no-repeat center;
 }
 
 .bullet__type__2 {
-    background: url(./Assets/Enemy_Bullet_B.png) no-repeat center;
+    background: url(./Assets/Images/Enemy_Bullet_B.png) no-repeat center;
 }
 
 .bullet__type__3 {
-    background: url(./Assets/Enemy_Bullet_C.png) no-repeat center;
+    background: url(./Assets/Images/Enemy_Bullet_C.png) no-repeat center;
 }
 
 .player__bullet__type__1 {
-    background: url(./Assets/Player_Bullet.png) no-repeat center;
+    background: url(./Assets/Images/Player_Bullet.png) no-repeat center;
 }
 
 .bullet__type__1,
@@ -97,7 +97,7 @@ body {
     align-self:    center;
     width: 5%;
     max-width: 6%;
-    background-image: url('../Assets/player.png');
+    background-image: url('../Assets/Images/player.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size:  contain;
@@ -111,7 +111,7 @@ body {
     will-change: transform;
     width: 8px;
     height: 8px;
-    background: url(./Assets/player.png) no-repeat center;
+    background: url(./Assets/Images/player.png) no-repeat center;
     background-size: contain;
     image-rendering: pixelated;
 }
