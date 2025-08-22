@@ -1,16 +1,19 @@
 import { Bullet } from './bullet.js';
 
 export class Player {
-    constructor() {
+    constructor(musicManager) {
         this.score = 0;
         this.lives = 3;
         this.Speed = 6
         this.x = 0;
+        this.time = performance.now();
         this.direction = null;
         this.playerBullets = [];
         this.lastShotTime = 0;
         this.shootCooldown = 700;
         this.PlayerIsInvincible = false;
+        this.musicManager = musicManager;
+
         this.createPlayer()
         this.trackDirection()
 
@@ -61,16 +64,10 @@ export class Player {
         });
     }
 
-    reset() {
-        this.score = 0; this.lives = 3; this.x = 0;
-        const p = document.querySelector(".player")
-        p.style.transform = `translate3d(${this.x}px, 0, 0)`;
-    }
-
     dammage() {
         if (this.PlayerIsInvincible) return;
-
         this.PlayerIsInvincible = true;
+        this.musicManager.play('playerDammage');
         this.lives--;
         const lives = document.querySelector(".lives-container");
         lives.innerHTML = `Lives: ${this.lives}`
@@ -91,17 +88,13 @@ export class Player {
             // console.log("firstCall"); // 999 = 0.9s
             this.PlayerIsInvincible = false;
         }, 999);
-        if (this.lives <= 0) {
-            lives.innerHTML = `Lives: 3`
-            alert('game over');
-            this.reset();
-        }
     }
 
     handleShoot() {
         const now = performance.now();
         if (now - this.lastShotTime >= this.shootCooldown) {
             this.shoot();
+            this.musicManager.play('playerShoot');
             this.lastShotTime = now;
         }
     }
@@ -109,10 +102,6 @@ export class Player {
     shoot() {
         const p = document.querySelector(".player");
         const playerRect = p.getBoundingClientRect();
-        const style = window.getComputedStyle(p);
-        const matrix = new DOMMatrixReadOnly(style.transform);
-        console.log(matrix.m41, matrix.m42); // x و y
-
 
         const bulletX = playerRect.left + p.offsetWidth / 2;
         const bullet = new Bullet(bulletX, window.innerHeight - p.offsetHeight);
@@ -139,18 +128,17 @@ export class Player {
     }
 
     update() {
-        document.querySelector('.timer-container').innerHTML = `Play_Time: ${(performance.now() / 1000).toFixed(2)}`;
+        document.querySelector('.timer-container').innerHTML = `Play_Time: ${((performance.now() - this.time)/ 1000).toFixed(2)}`;
         if (this.playerBullets.length > 0) {
             this.playerBullets.forEach((bullet) => {
                 if (bullet.isColliding("Enemy")) {
                     bullet.getElement().remove();
+                    this.musicManager.play('InvadersDeath');
                     this.playerBullets = this.playerBullets.filter((b) => b != bullet)
                     return
                 }
 
                 if (bullet.getY() + 4 <= 0) {
-                    // console.log(bullet.getY() + 4);
-                    // console.log(":",0);
                     bullet.getElement().remove();
                     this.playerBullets = this.playerBullets.filter(b => b !== bullet);
                     return;

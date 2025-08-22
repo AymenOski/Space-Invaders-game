@@ -1,10 +1,17 @@
 import { EnemyManager } from './enemies.js';
+import { MusicManager } from './music.js';
 import { Player } from './player.js';
+
+let game;
+let animationId;
 
 export class Game {
     constructor() {
-        this.EnemyManager = new EnemyManager();
-        this.Player = new Player();
+        this.MusicManager = new MusicManager();
+        this.MusicManager.play('mainTitle');
+
+        this.EnemyManager = new EnemyManager(this.MusicManager);
+        this.Player = new Player(this.MusicManager);
     }
 
     updateEntities() {
@@ -16,15 +23,60 @@ export class Game {
             this.EnemyManager.EnemiesDammagedThePlayer = false;
         }
     }
+
+    reset() {
+        cancelAnimationFrame(animationId);
+        document.querySelectorAll('[class*="bullet__"]').forEach(b => b.remove());
+        document.querySelector('.enemy-container').innerHTML = '';
+        document.querySelector('.player-container').innerHTML = '';
+        document.querySelector('.lives-container').innerHTML = 'Lives: 3';
+        document.querySelector('.timer-container').innerHTML = 'Play_Time: 0.00';
+        document.querySelector('.score-container').innerHTML = 'Score: 0';
+        
+        this.MusicManager.stopAllMusic();
+        startGame();
+    }
 }
 
-const game = new Game();
+
+function startGame() {
+    game = new Game();
+    gameLoop();
+}
+
+startGame()
+
 
 function gameLoop() {
+    if (game.Player.lives <= 0) {
+        showGameOverPopup();
+        return;
+    }
+
     game.updateEntities();
     if (game.Player.direction) { game.Player.movePlayer(game.Player.direction) }
+    animationId = requestAnimationFrame(gameLoop);
 
-    requestAnimationFrame(gameLoop);
 }
 
-requestAnimationFrame(gameLoop);
+const popup = document.getElementById("game-over-popup");
+const replayBtn = document.getElementById("replay-btn");
+const continueBtn = document.getElementById("continue-btn");
+
+function showGameOverPopup() {
+    popup.classList.remove("hidden");
+    cancelAnimationFrame(animationId);
+}
+
+replayBtn.addEventListener("click", () => {
+    popup.classList.add("hidden");
+    game.reset();
+});
+
+continueBtn.addEventListener("click", () => {
+    popup.classList.add("hidden");
+    game.Player.lives = 2;
+    game.Player.dammage();
+    document.querySelector('.lives-container').innerHTML = 'Lives: 1';
+    gameLoop();
+});

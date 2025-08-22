@@ -44,10 +44,6 @@ export class Enemy {
         this.updatePosition();
     }
 
-
-
-
-
     updatePosition() {
         if (!this.Element) return;
         const enemyContainer = document.querySelector('.enemy-container')
@@ -77,36 +73,36 @@ export class Enemy {
 
     }
 
-    // updateEnemyType() {
-    //     if (this.Element) {
-    //         if (this.Element.classList.contains('E1__A1')) {
-    //             this.Element.classList.remove('E1__A1');
-    //             this.Element.classList.add('E1__A2');
-    //         } else if (this.Element.classList.contains('E2__B1')) {
-    //             this.Element.classList.remove('E2__B1');
-    //             this.Element.classList.add('E2__B2');
-    //         } else if (this.Element.classList.contains('E3__C1')) {
-    //             this.Element.classList.remove('E3__C1');
-    //             this.Element.classList.add('E3__C2');
-    //         } else if (this.Element.classList.contains('E1__A2')) {
-    //             this.Element.classList.remove('E1__A2');
-    //             this.Element.classList.add('E1__A1');
-    //         } else if (this.Element.classList.contains('E2__B2')) {
-    //             this.Element.classList.remove('E2__B2');
-    //             this.Element.classList.add('E2__B1');
-    //         } else if (this.Element.classList.contains('E3__C2')) {
-    //             this.Element.classList.remove('E3__C2');
-    //             this.Element.classList.add('E3__C1');
-    //         }
-    //     }
-    // }
+    updateEnemyType() {
+        if (this.Element) {
+            if (this.Element.classList.contains('E1__A1')) {
+                this.Element.classList.remove('E1__A1');
+                this.Element.classList.add('E1__A2');
+            } else if (this.Element.classList.contains('E2__B1')) {
+                this.Element.classList.remove('E2__B1');
+                this.Element.classList.add('E2__B2');
+            } else if (this.Element.classList.contains('E3__C1')) {
+                this.Element.classList.remove('E3__C1');
+                this.Element.classList.add('E3__C2');
+            } else if (this.Element.classList.contains('E1__A2')) {
+                this.Element.classList.remove('E1__A2');
+                this.Element.classList.add('E1__A1');
+            } else if (this.Element.classList.contains('E2__B2')) {
+                this.Element.classList.remove('E2__B2');
+                this.Element.classList.add('E2__B1');
+            } else if (this.Element.classList.contains('E3__C2')) {
+                this.Element.classList.remove('E3__C2');
+                this.Element.classList.add('E3__C1');
+            }
+        }
+    }
 }
 
 // EnemyManager class
 
 
 export class EnemyManager {
-    constructor() {
+    constructor(musicManager) {
         this.EnemyCount = 55;
         this.Enemies = [];
         this.EnemiesX = 0;
@@ -122,6 +118,7 @@ export class EnemyManager {
             ["E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3"],
             ["E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3"]
         ];
+        this.musicManager = musicManager;
         this.EnemyBullets = [];
         this.spawnEnemies()
         this.Animation = 0;
@@ -175,9 +172,6 @@ export class EnemyManager {
 
         let firstEnemyColumn = T[0].getBoundingClientRect();
         let lastEnemyColumn = T[T.length-1].getBoundingClientRect()
-        console.log(lastEnemyColumn);
-        
-        
         
         this.EnemiesX = firstEnemyColumn.left;
         this.EnemiesY = firstEnemyColumn.top;
@@ -196,7 +190,7 @@ export class EnemyManager {
 
                 enemy.moveEnemy(this.EnemiesDirection);
                 if (this.Animation % 50 === 0) {
-                    // enemy.updateEnemyType();
+                    enemy.updateEnemyType();
                 }
             })
         }

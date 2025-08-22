@@ -115,3 +115,64 @@ body {
     background-size: contain;
     image-rendering: pixelated;
 }
+
+/* game over menu */
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.popup.hidden {
+  display: none;
+}
+
+.popup-content {
+  background: #222;
+  color: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.popup-content h2 {
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+.popup-buttons button {
+  margin: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: background 0.3s;
+}
+
+#replay-btn {
+  background: #e63946;
+  color: white;
+}
+
+#replay-btn:hover {
+  background: #d62828;
+}
+
+#continue-btn {
+  background: #457b9d;
+  color: white;
+}
+
+#continue-btn:hover {
+  background: #1d3557;
+}
