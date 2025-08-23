@@ -1,6 +1,7 @@
 import { EnemyManager } from './enemies.js';
 import { MusicManager } from './music.js';
 import { Player } from './player.js';
+import { BulletHitEnemyGetter , BulletHitEnemySetter } from './bullet.js';
 
 let game, animationId;
 
@@ -52,9 +53,22 @@ function gameLoop() {
 
     if (game.isPaused) return;
 
-    if (game.Player.lives <= 0) {
+    if(BulletHitEnemyGetter() === true){
+        game.EnemyManager.EnemyCount--;        
+        BulletHitEnemySetter(false);
+    }
+
+    if (game.Player.lives <= 0 || game.EnemyManager.Animation === -1) {
+        if (game.EnemyManager.Animation === -1){
+            game.Player.lives = 1;
+            game.Player.dammage();
+        }
         game.isPaused = true;
         showGameMenu("GameOver");
+        return;
+    } else if (game.EnemyManager.EnemyCount <= 0) {
+        game.isPaused = true;
+        showGameMenu("Congrats");
         return;
     }
 
@@ -83,7 +97,10 @@ const replayBtn = document.getElementById("replay-btn");
 const continueBtn = document.getElementById("continue-btn");
 function showGameMenu(type) {
 
-    if (type === "GameOver") {
+    if (type === "Congrats") {
+        popup.querySelector("h2").textContent = "Congrats You win!";
+        continueBtn.style.display = "none";
+    } else if (type === "GameOver") {
         popup.querySelector("h2").textContent = "Game Over";
         continueBtn.style.display = "none";
     } else {
@@ -112,7 +129,8 @@ function startMusic() {
 }
 
 document.addEventListener('keydown', (event) => {
-    
+    console.log(event.key);
+
     if (event.ctrlKey || event.metaKey) {
         if (event.key.toLowerCase() === 'r') {
             return;
@@ -126,3 +144,4 @@ document.addEventListener('wheel', (event) => {
         event.preventDefault();
     }
 }, { passive: false });
+

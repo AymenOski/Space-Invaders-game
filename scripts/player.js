@@ -65,6 +65,7 @@ export class Player {
         });
     }
 
+
     dammage() {
         if (this.PlayerIsInvincible) return;
         this.PlayerIsInvincible = true;

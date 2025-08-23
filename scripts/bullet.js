@@ -1,3 +1,5 @@
+let BulletHitEnemy = false;
+
 export class Bullet {
     constructor(x, y) {
         this.x = x;
@@ -23,7 +25,7 @@ export class Bullet {
 
     moveBullet(direction) {
         if (direction === 'up') {
-            this.y -= this.Speed;
+            this.y -= this.Speed + 2;
         } else if (direction === 'down') {
             this.y += this.Speed;
         }
@@ -53,10 +55,11 @@ export class Bullet {
 
     isColliding(CollisionType) {
         if (CollisionType === "Enemy") {
-            for (let i = 0; i < (document.querySelector('.enemy-container').children).length; i++) {
+            for (let i = 0; i < (document.querySelector('.enemy-container').children).length; i++) { // we need to put this into a variable to improve performance
                 var enemiesRect = document.querySelector('.enemy-container').children[i].getBoundingClientRect();
                 if (this.y <= enemiesRect.bottom && this.y >= enemiesRect.top && this.x >= enemiesRect.left && this.x <= enemiesRect.right) {
                     if (this.Element) {
+                        BulletHitEnemy = true;
                         let enemy = document.querySelector('.enemy-container').children[i];
                         enemy.style.backgroundImage = "none";
                         enemy.innerHTML = `<img src="../Assets/Images/EnemyExplosion.png"/>`;
@@ -76,3 +79,10 @@ export class Bullet {
     }
 }
 
+export function BulletHitEnemyGetter() {
+    return BulletHitEnemy;
+}
+
+export function BulletHitEnemySetter(value) {
+    BulletHitEnemy = value;
+}

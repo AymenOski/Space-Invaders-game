@@ -39,7 +39,7 @@ export class Enemy {
         } else if (direction === 'right') {
             this.EnemyX += this.Speed;
         } else if (direction === 'down') {
-            this.EnemyY += this.Speed ;
+            this.EnemyY += this.Speed + 0.3;
         }
         this.updatePosition();
     }
@@ -55,9 +55,9 @@ export class Enemy {
         const xSpacing = (width / 2) / columns + 5
         const ySpacing = (height / 3) / rows + 5
 
-        if (width < 450){
+        if (width < 450) {
             this.Element.style.transform = `translate3d(${this.EnemyX * xSpacing}px, ${this.EnemyY * ySpacing}px , 0px) scale(0.5)`
-        }else if (width < 600) {
+        } else if (width < 600) {
             // enemyContainer.style.background = "blue"
             this.Element.style.transform = `translate3d(${this.EnemyX * xSpacing}px, ${this.EnemyY * ySpacing}px , 0px) scale(0.9)`
         }
@@ -106,12 +106,10 @@ export class EnemyManager {
     constructor(musicManager) {
         this.EnemyCount = 55;
         this.Enemies = [];
-        this.EnemiesX = 0;
-        this.EnemiesY = 0;
         this.EnemiesDirection = 'right';
         this.EnemiesCanMoveX = true;
         this.EnemiesHaveMovedDown = false;
-        this.EnemiesDammagedThePlayer= false;
+        this.EnemiesDammagedThePlayer = false;
         this.EnemyGrid = [
             ["E1", "E1", "E1", "E1", "E1", "E1", "E1", "E1", "E1", "E1", "E1"],
             ["E2", "E2", "E2", "E2", "E2", "E2", "E2", "E2", "E2", "E2", "E2"],
@@ -161,91 +159,100 @@ export class EnemyManager {
 
     shoot() {
         const randomEnemy = this.Enemies[Math.floor(Math.random() * this.Enemies.length)].getElement().getBoundingClientRect();
-        if(randomEnemy.y <= 114 ){
-             return;
+        if (randomEnemy.y <= 114) {
+            return;
         }
-        
+
         const bullet = new Bullet(randomEnemy.left, randomEnemy.top);
         bullet.Element = bullet.createBulletElement(bullet.updateBulletType(Math.random()));
         this.EnemyBullets.push(bullet);
     }
 
-    update() {
-        // Update all enemies
-        const T = document.querySelectorAll('[class*="E1__"]')
-        let firstEnemyColumn , lastEnemyColumn;
-        
-        if (T.length > 1 ){
-            firstEnemyColumn = T[0].getBoundingClientRect();
-            lastEnemyColumn = T[T.length-1].getBoundingClientRect()
-        }else {
-            firstEnemyColumn = T[0].getBoundingClientRect();    
-            lastEnemyColumn = T[0].getBoundingClientRect();
-        }        
-        
-        
-        this.EnemiesX = firstEnemyColumn.left;
-        this.EnemiesY = firstEnemyColumn.top;
+    checkIfEnemiesReachedPlayer() {
+        let maxBottom = Math.max(...this.Enemies.map(enemy => {
+            return enemy.getElement().getBoundingClientRect().bottom;
+        }));
 
-        this.Animation++;
+        let playerTop = document.querySelector('.player').getBoundingClientRect().top;
 
-        if ((firstEnemyColumn.left <= 0 || lastEnemyColumn.right + 10 >= window.innerWidth) && !this.EnemiesHaveMovedDown) {
-            this.EnemiesCanMoveX = false;
-        }
-
-        // moves enemies and make them shoot
-        this.EnemiesHaveMovedDown = false;
-        if (this.EnemiesCanMoveX) {
-
-            this.Enemies.forEach((enemy) => {
-
-                enemy.moveEnemy(this.EnemiesDirection);
-                if (this.Animation % 50 === 0) {
-                    enemy.updateEnemyType();
-                }
-            })
-        }
-
-        if (firstEnemyColumn.left <= 0 && !this.EnemiesCanMoveX) {
-            this.Enemies.forEach((enemy) => {
-                enemy.moveEnemy('down');
-            })
-
-            this.EnemiesHaveMovedDown = true;
-            this.EnemiesCanMoveX = true;
-            this.EnemiesDirection = 'right';
-        }
-
-        if (lastEnemyColumn.right + 10 >= window.innerWidth && !this.EnemiesCanMoveX) {
-            this.Enemies.forEach((enemy) => {
-                enemy.moveEnemy('down');
-            })
-
-            this.EnemiesHaveMovedDown = true;
-            this.EnemiesCanMoveX = true;
-            this.EnemiesDirection = 'left';
-        }
-        // shooting enemy and player bullets
-        
-        if (Math.random() <  (document.querySelector(".enemy-container").children.length > 25 ? 0.014 : 0.014 + 0.02)) {
-            this.shoot();
-        }
-
-        if (this.EnemyBullets.length > 0) {
-            this.EnemyBullets.forEach((bullet) => {
-                if (bullet.isColliding("Player")) {
-                    this.EnemiesDammagedThePlayer = true;
-                }
-                if (bullet.getY() + 25 >= window.innerHeight) {
-                    bullet.getElement().remove();
-                    this.EnemyBullets = this.EnemyBullets.filter(b => b !== bullet);
-                    return;
-                }
-                document.querySelector('.game-container').appendChild(bullet.getElement());
-                bullet.moveBullet('down');
-            });
-        }
-
+        return maxBottom >= playerTop;
     }
+
+    update() {
+    // Update all enemies
+    const allEnemies = document.querySelectorAll('.enemy');
+    if (allEnemies.length === 0) return;
+
+    let minLeft = Infinity;
+    let maxRight = -Infinity;
+    allEnemies.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.left < minLeft) minLeft = rect.left;
+        if (rect.right > maxRight) maxRight = rect.right;
+    });
+
+    this.Animation++;
+
+    if ((minLeft <= 0 || maxRight + 10 >= window.innerWidth) && !this.EnemiesHaveMovedDown) {
+        this.EnemiesCanMoveX = false;
+    }
+
+    // moves enemies and make them shoot
+    this.EnemiesHaveMovedDown = false;
+    if (this.EnemiesCanMoveX) {
+        this.Enemies.forEach((enemy) => {
+            enemy.moveEnemy(this.EnemiesDirection);
+            if (this.Animation % 50 === 0) {
+                enemy.updateEnemyType();
+            }
+        })
+    }
+
+    if (minLeft <= 0 && !this.EnemiesCanMoveX) {
+        this.Enemies.forEach((enemy) => {
+            enemy.moveEnemy('down');
+            if (this.checkIfEnemiesReachedPlayer()) {
+                this.Animation = -1; // just a way to pop the game over menu because the player is dead  
+            }
+        })
+
+        this.EnemiesHaveMovedDown = true;
+        this.EnemiesCanMoveX = true;
+        this.EnemiesDirection = 'right';
+    }
+
+    if (maxRight + 10 >= window.innerWidth && !this.EnemiesCanMoveX) {
+        this.Enemies.forEach((enemy) => {
+            enemy.moveEnemy('down');
+            if (this.checkIfEnemiesReachedPlayer()) {
+                this.Animation = -1;
+            }
+        })
+
+        this.EnemiesHaveMovedDown = true;
+        this.EnemiesCanMoveX = true;
+        this.EnemiesDirection = 'left';
+    }
+    // shooting enemy and player bullets
+        
+    if (Math.random() <  (document.querySelector(".enemy-container").children.length > 25 ? 0.014 : 0.014 + 0.02)) {
+        this.shoot();
+    }
+
+    if (this.EnemyBullets.length > 0) {
+        this.EnemyBullets.forEach((bullet) => {
+            if (bullet.isColliding("Player")) {
+                this.EnemiesDammagedThePlayer = true;
+            }
+            if (bullet.getY() + 25 >= window.innerHeight) {
+                bullet.getElement().remove();
+                this.EnemyBullets = this.EnemyBullets.filter(b => b !== bullet);
+                return;
+            }
+            document.querySelector('.game-container').appendChild(bullet.getElement());
+            bullet.moveBullet('down');
+        });
+    }
+}
 
 }
