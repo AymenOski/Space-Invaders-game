@@ -112,7 +112,6 @@ function startMusic() {
 }
 
 document.addEventListener('keydown', (event) => {
-    console.log(event.key);
     
     if (event.ctrlKey || event.metaKey) {
         if (event.key.toLowerCase() === 'r') {

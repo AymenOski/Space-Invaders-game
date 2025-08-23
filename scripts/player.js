@@ -112,7 +112,7 @@ export class Player {
         const playerRect = p.getBoundingClientRect();
 
         const bulletX = playerRect.left + p.offsetWidth / 2;
-        const bullet = new Bullet(bulletX, window.innerHeight - p.offsetHeight);
+        const bullet = new Bullet(bulletX, window.innerHeight - 35);
         bullet.Element = bullet.createBulletElement(bullet.updateBulletType(-1));
         this.playerBullets.push(bullet);
         document.querySelector('.game-container').appendChild(bullet.getElement());
