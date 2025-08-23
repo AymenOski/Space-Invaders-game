@@ -1,7 +1,7 @@
 import { EnemyManager } from './enemies.js';
 import { MusicManager } from './music.js';
 import { Player } from './player.js';
-import { BulletHitEnemyGetter , BulletHitEnemySetter } from './bullet.js';
+import { BulletHitEnemyGetter , BulletHitEnemySetter , PlayerScoreGetter} from './bullet.js';
 
 let game, animationId;
 
@@ -54,8 +54,18 @@ function gameLoop() {
     if (game.isPaused) return;
 
     if(BulletHitEnemyGetter() === true){
-        game.EnemyManager.EnemyCount--;        
+        game.EnemyManager.EnemyCount--;
         BulletHitEnemySetter(false);
+        game.Player.score += PlayerScoreGetter();
+        const score = document.querySelector(".score-container");
+        score.style.opacity = 0.4
+        score.style.color = "green"
+        setTimeout(() =>{
+            score.innerHTML = `Score: ${game.Player.score}`
+            score.style.color = "white"
+            score.style.opacity = 1
+
+        } , 400);    
     }
 
     if (game.Player.lives <= 0 || game.EnemyManager.Animation === -1) {

@@ -1,4 +1,4 @@
-let BulletHitEnemy = false;
+let BulletHitEnemy = false , Score = 0;
 
 export class Bullet {
     constructor(x, y) {
@@ -58,9 +58,17 @@ export class Bullet {
             for (let i = 0; i < (document.querySelector('.enemy-container').children).length; i++) { // we need to put this into a variable to improve performance
                 var enemiesRect = document.querySelector('.enemy-container').children[i].getBoundingClientRect();
                 if (this.y <= enemiesRect.bottom && this.y >= enemiesRect.top && this.x >= enemiesRect.left && this.x <= enemiesRect.right) {
+                    Score = 0;
                     if (this.Element) {
                         BulletHitEnemy = true;
                         let enemy = document.querySelector('.enemy-container').children[i];
+                        if (enemy.classList.contains('E1__A1') || enemy.classList.contains('E1__A2')) {
+                            Score += 150;
+                        }else if (enemy.classList.contains('E2__B1') || enemy.classList.contains('E2__B2')) {
+                            Score += 100;
+                        }else if (enemy.classList.contains('E3__C1') || enemy.classList.contains('E3__C2')) {
+                            Score += 50;
+                        }
                         enemy.style.backgroundImage = "none";
                         enemy.innerHTML = `<img src="../Assets/Images/EnemyExplosion.png"/>`;
                         setTimeout(() => enemy.remove(), 400);
@@ -85,4 +93,8 @@ export function BulletHitEnemyGetter() {
 
 export function BulletHitEnemySetter(value) {
     BulletHitEnemy = value;
+}
+
+export function PlayerScoreGetter(){
+    return Score;
 }
