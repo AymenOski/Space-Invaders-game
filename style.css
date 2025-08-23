@@ -107,7 +107,6 @@ body {
     overflow: hidden;
 }
 
-
 /* bullets */
 .bullet {
     will-change: transform;
@@ -138,8 +137,8 @@ body {
 .bullet__type__2,
 .bullet__type__3,
 .player__bullet__type__1 {
-    width: 10px;
-    height: 10px;
+    width: 1vw;
+    height: 0.7vw;
     background-size: contain;
     image-rendering: pixelated;
 }

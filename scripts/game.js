@@ -111,3 +111,19 @@ function startMusic() {
     game.MusicManager.play('mainTitle');
 }
 
+document.addEventListener('keydown', (event) => {
+    console.log(event.key);
+    
+    if (event.ctrlKey || event.metaKey) {
+        if (event.key.toLowerCase() === 'r') {
+            return;
+        }
+        event.preventDefault();
+    }
+});
+
+document.addEventListener('wheel', (event) => {
+    if (event.ctrlKey || event.metaKey) {
+        event.preventDefault();
+    }
+}, { passive: false });
