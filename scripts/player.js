@@ -10,29 +10,13 @@ export class Player {
         this.direction = null;
         this.playerBullets = [];
         this.lastShotTime = 0;
-        this.shootCooldown = 700;
+        this.shootCooldown = 400;
         this.PlayerIsInvincible = false;
         this.musicManager = musicManager;
+        this.isPaused = false;
 
         this.createPlayer()
         this.trackDirection()
-
-        document.addEventListener("keydown", (event) => {
-            if (this.lives <= 0 ) return;
-            switch (event.key) {
-                case "ArrowLeft":
-                    this.direction = "left";
-                    break;
-                case "ArrowRight":
-                    this.direction = "right";
-                    break;
-                case " ":
-                    this.handleShoot();
-                    break;
-                default:
-                    return;
-            }
-        });
 
     }
 
@@ -53,10 +37,19 @@ export class Player {
 
     trackDirection() {
         document.addEventListener("keydown", (event) => {
-            if (event.key === "ArrowLeft") {
-                this.direction = "left";
-            } else if (event.key === "ArrowRight") {
-                this.direction = "right";
+            if (this.lives <= 0 || this.isPaused) return;
+            switch (event.key) {
+                case "ArrowLeft":
+                    this.direction = "left";
+                    break;
+                case "ArrowRight":
+                    this.direction = "right";
+                    break;
+                case " ":
+                    this.handleShoot();
+                    break;
+                default:
+                    return;
             }
         });
 

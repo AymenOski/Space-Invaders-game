@@ -50,6 +50,7 @@ body {
 }
 
 .enemy {
+    will-change: transform;
     image-rendering: pixelated;
     width: 24px;
     height: 24px;
@@ -96,6 +97,7 @@ body {
 }
 
 .player {
+    will-change: transform;
     align-self: center;
     width: 10%;
     transform: scale(1);

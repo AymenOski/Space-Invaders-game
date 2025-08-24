@@ -73,10 +73,12 @@ function gameLoop() {
             game.Player.lives = 1;
             game.Player.dammage();
         }
+        game.Player.isPaused = true;
         game.isPaused = true;
         showGameMenu("GameOver");
         return;
     } else if (game.EnemyManager.EnemyCount <= 0) {
+        game.Player.isPaused = true;
         game.isPaused = true;
         showGameMenu("Congrats");
         return;
@@ -94,8 +96,10 @@ document.addEventListener('keydown', (event) => {
     if (event.code === "Escape") {
         if (game.isPaused) {
             popup.classList.add("hidden");
+            game.Player.isPaused = false;
             game.isPaused = false;
         } else {
+            game.Player.isPaused = true;
             game.isPaused = true;
             showGameMenu("pause");
         }
@@ -128,6 +132,7 @@ replayBtn.addEventListener("click", () => {
 
 continueBtn.addEventListener("click", () => {
     popup.classList.add("hidden");
+    game.Player.isPaused = false;
     game.isPaused = false;
 });
 
@@ -139,7 +144,6 @@ function startMusic() {
 }
 
 document.addEventListener('keydown', (event) => {
-    console.log(event.key);
 
     if (event.ctrlKey || event.metaKey) {
         if (event.key.toLowerCase() === 'r') {
@@ -154,4 +158,3 @@ document.addEventListener('wheel', (event) => {
         event.preventDefault();
     }
 }, { passive: false });
-
