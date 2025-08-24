@@ -30,12 +30,11 @@ body {
     width: 100%;
     height: 10%;
     overflow: hidden;
-    font-size: 7px;
 }
 
 .hud div {
-    padding: 15px;
     color: aliceblue;
+font-size: medium;
 }
 
 
@@ -55,7 +54,7 @@ body {
     height: 24px;
     position: absolute;
     left: 25%;
-    top: 50px
+    top: 10px
 }
 
 
@@ -144,7 +143,7 @@ body {
     image-rendering: pixelated;
 }
 
-@media (max-width: 250px) or (max-height :250px) {
+@media (max-width: 301px) or (max-height :301px) {
 
     .hud,
     .enemy-container,
@@ -156,28 +155,19 @@ body {
 @media (width < 600px) {
     .hud div {
         transform: scale(0.5);
+        font-size: x-small;
     }
-.player{ width: 10%}
-}
-
-@media (width < 900px) {
-    .hud div {
-        transform: scale(1);
-    }
+    .player{ width: 10%}
 }
 
 @media (width <= 1200px) {
     .hud div {
-        transform: scale(1.3)
+        transform: scale(1);
     }
     .player {  width: 8%; }
 }
 
 @media (width > 1200px) {
-    .hud div {
-        transform: scale(1.9)
-
-    }
 
 .player { width : 5%; }
 }

@@ -15,27 +15,10 @@ export class Player {
         this.musicManager = musicManager;
 
         this.createPlayer()
-        this.trackDirection()
-
-        document.addEventListener("keydown", (event) => {
-            if (this.lives <= 0 ) return;
-            switch (event.key) {
-                case "ArrowLeft":
-                    this.direction = "left";
-                    break;
-                case "ArrowRight":
-                    this.direction = "right";
-                    break;
-                case " ":
-                    this.handleShoot();
-                    break;
-                default:
-                    return;
-            }
-        });
-
+        this.controler()
     }
 
+    // geters
     getLives() { return this.lives }
     getScore() { return this.score }
     getX() { return this.x }
@@ -51,12 +34,21 @@ export class Player {
         container.appendChild(p);
     }
 
-    trackDirection() {
+    controler() {
         document.addEventListener("keydown", (event) => {
-            if (event.key === "ArrowLeft") {
-                this.direction = "left";
-            } else if (event.key === "ArrowRight") {
-                this.direction = "right";
+            if (this.lives <= 0 ) return;
+            switch (event.key) {
+                case "ArrowLeft":
+                    this.direction = "left";
+                    break;
+                case "ArrowRight":
+                    this.direction = "right";
+                    break;
+                case " ":
+                    this.handleShoot();
+                    break;
+                default:
+                    this.direction = null;
             }
         });
 
