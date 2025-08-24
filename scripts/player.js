@@ -16,10 +16,10 @@ export class Player {
         this.isPaused = false;
 
         this.createPlayer()
-        this.trackDirection()
-
+        this.controler()
     }
 
+    // geters
     getLives() { return this.lives }
     getScore() { return this.score }
     getX() { return this.x }
@@ -35,7 +35,7 @@ export class Player {
         container.appendChild(p);
     }
 
-    trackDirection() {
+    controler() {
         document.addEventListener("keydown", (event) => {
             if (this.lives <= 0 || this.isPaused) return;
             switch (event.key) {
@@ -49,7 +49,7 @@ export class Player {
                     this.handleShoot();
                     break;
                 default:
-                    return;
+                    this.direction = null;
             }
         });
 

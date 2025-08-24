@@ -6,6 +6,7 @@ const Enemies = document.querySelector('.enemy-container');
 
 export class Enemy {
     constructor(Speed) {
+
         this.Speed = Speed;
         this.EnemyX = 0;
         this.EnemyY = 0;
@@ -39,7 +40,7 @@ export class Enemy {
         } else if (direction === 'right') {
             this.EnemyX += this.Speed;
         } else if (direction === 'down') {
-            this.EnemyY += this.Speed + 0.3;
+            this.EnemyY += this.Speed + 0.2;
         }
         this.updatePosition();
     }
@@ -54,7 +55,6 @@ export class Enemy {
 
         const xSpacing = (width / 2) / columns + 5
         const ySpacing = (height / 3) / rows + 5
-
         if (width < 450) {
             this.Element.style.transform = `translate3d(${this.EnemyX * xSpacing}px, ${this.EnemyY * ySpacing}px , 0px) scale(0.5)`
         } else if (width < 600) {
