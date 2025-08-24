@@ -10,7 +10,7 @@ export class Player {
         this.direction = null;
         this.playerBullets = [];
         this.lastShotTime = 0;
-        this.shootCooldown = 400;
+        this.shootCooldown = 550;
         this.PlayerIsInvincible = false;
         this.musicManager = musicManager;
         this.isPaused = false;

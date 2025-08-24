@@ -121,6 +121,7 @@ export class EnemyManager {
         this.EnemyBullets = [];
         this.spawnEnemies()
         this.Animation = 0;
+        this.isPaused = false;
     }
 
     spawnEnemies() {
@@ -169,6 +170,7 @@ export class EnemyManager {
     }
 
     checkIfEnemiesReachedPlayer() {
+        if (this.isPaused) return;
         let maxBottom = Math.max(...this.Enemies.map(enemy => {
             return enemy.getElement().getBoundingClientRect().bottom;
         }));
@@ -180,6 +182,8 @@ export class EnemyManager {
 
     update() {
     // Update all enemies
+
+    if (this.isPaused) return;
     const allEnemies = document.querySelectorAll('.enemy');
     if (allEnemies.length === 0) return;
 

@@ -145,7 +145,7 @@ font-size: medium;
     image-rendering: pixelated;
 }
 
-@media (max-width: 301px) or (max-height :301px) {
+@media (max-width: 300px) or (max-height :300px) {
 
     .hud,
     .enemy-container,

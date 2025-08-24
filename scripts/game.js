@@ -1,7 +1,7 @@
 import { EnemyManager } from './enemies.js';
 import { MusicManager } from './music.js';
 import { Player } from './player.js';
-import { BulletHitEnemyGetter , BulletHitEnemySetter , PlayerScoreGetter} from './bullet.js';
+import { BulletHitEnemyGetter, BulletHitEnemySetter, PlayerScoreGetter } from './bullet.js';
 
 let game, animationId;
 
@@ -50,26 +50,30 @@ startGame()
 
 function gameLoop() {
     animationId = requestAnimationFrame(gameLoop);
-
+    if (window.innerWidth < 300 || window.innerHeight < 300) {
+        game.EnemyManager.isPaused = true;
+    }else {
+        game.EnemyManager.isPaused = false;
+    }
     if (game.isPaused) return;
 
-    if(BulletHitEnemyGetter() === true){
+    if (BulletHitEnemyGetter() === true) {
         game.EnemyManager.EnemyCount--;
         BulletHitEnemySetter(false);
         game.Player.score += PlayerScoreGetter();
         const score = document.querySelector(".score-container");
         score.style.opacity = 0.4
         score.style.color = "green"
-        setTimeout(() =>{
+        setTimeout(() => {
             score.innerHTML = `Score: ${game.Player.score}`
             score.style.color = "white"
             score.style.opacity = 1
 
-        } , 400);    
+        }, 400);
     }
 
     if (game.Player.lives <= 0 || game.EnemyManager.Animation === -1) {
-        if (game.EnemyManager.Animation === -1){
+        if (game.EnemyManager.Animation === -1) {
             game.Player.lives = 1;
             game.Player.dammage();
         }
@@ -96,6 +100,7 @@ document.addEventListener('keydown', (event) => {
     if (event.code === "Escape") {
         if (game.isPaused) {
             popup.classList.add("hidden");
+            game.EnemyManager.isPaused = false;
             game.Player.isPaused = false;
             game.isPaused = false;
         } else {
@@ -132,6 +137,7 @@ replayBtn.addEventListener("click", () => {
 
 continueBtn.addEventListener("click", () => {
     popup.classList.add("hidden");
+    game.EnemyManager.isPaused = false;
     game.Player.isPaused = false;
     game.isPaused = false;
 });
