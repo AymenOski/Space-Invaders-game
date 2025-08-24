@@ -1,37 +1,24 @@
 import { Bullet } from './bullet.js';
 
 export class Player {
-    constructor() {
+    constructor(musicManager) {
         this.score = 0;
         this.lives = 3;
         this.Speed = 6
         this.x = 0;
+        this.time = performance.now();
         this.direction = null;
         this.playerBullets = [];
         this.lastShotTime = 0;
         this.shootCooldown = 700;
         this.PlayerIsInvincible = false;
+        this.musicManager = musicManager;
+
         this.createPlayer()
-        this.trackDirection()
-
-        document.addEventListener("keydown", (event) => {
-            switch (event.key) {
-                case "ArrowLeft":
-                    this.movePlayer("left");
-                    break;
-                case "ArrowRight":
-                    this.movePlayer("right");
-                    break;
-                case " ":
-                    this.handleShoot();
-                    break;
-                default:
-                    return;
-            }
-        });
-
+        this.controler()
     }
 
+    // geters
     getLives() { return this.lives }
     getScore() { return this.score }
     getX() { return this.x }
@@ -47,12 +34,21 @@ export class Player {
         container.appendChild(p);
     }
 
-    trackDirection() {
+    controler() {
         document.addEventListener("keydown", (event) => {
-            if (event.key === "ArrowLeft") {
-                this.direction = "left";
-            } else if (event.key === "ArrowRight") {
-                this.direction = "right";
+            if (this.lives <= 0 ) return;
+            switch (event.key) {
+                case "ArrowLeft":
+                    this.direction = "left";
+                    break;
+                case "ArrowRight":
+                    this.direction = "right";
+                    break;
+                case " ":
+                    this.handleShoot();
+                    break;
+                default:
+                    this.direction = null;
             }
         });
 
@@ -61,17 +57,21 @@ export class Player {
         });
     }
 
-    reset() { 
-        this.score = 0; this.lives = 3; this.x = 0;
-        const p = document.querySelector(".player")
-        p.style.transform = `translate3d(${this.x}px, 0, 0)`;
-    }
 
     dammage() {
         if (this.PlayerIsInvincible) return;
-
         this.PlayerIsInvincible = true;
+        this.musicManager.play('playerDammage');
         this.lives--;
+        const lives = document.querySelector(".lives-container");
+        lives.style.opacity = 0.4
+        lives.style.color = "red"
+        setTimeout(() =>{
+            lives.innerHTML = `Lives: ${this.lives}`
+            lives.style.color = "white"
+            lives.style.opacity = 1
+
+        } , 400);
         const p = document.querySelector(".player-container");
         let blinkTimes = 10;
         let visible = true;
@@ -89,16 +89,13 @@ export class Player {
             // console.log("firstCall"); // 999 = 0.9s
             this.PlayerIsInvincible = false;
         }, 999);
-        if (this.lives <= 0) {
-            alert('game over');
-            this.reset();
-        }
     }
 
     handleShoot() {
         const now = performance.now();
         if (now - this.lastShotTime >= this.shootCooldown) {
             this.shoot();
+            this.musicManager.play('playerShoot');
             this.lastShotTime = now;
         }
     }
@@ -108,7 +105,7 @@ export class Player {
         const playerRect = p.getBoundingClientRect();
 
         const bulletX = playerRect.left + p.offsetWidth / 2;
-        const bullet = new Bullet(bulletX, window.innerHeight - p.offsetWidth);
+        const bullet = new Bullet(bulletX, window.innerHeight - 35);
         bullet.Element = bullet.createBulletElement(bullet.updateBulletType(-1));
         this.playerBullets.push(bullet);
         document.querySelector('.game-container').appendChild(bullet.getElement());
@@ -132,17 +129,17 @@ export class Player {
     }
 
     update() {
+        document.querySelector('.timer-container').innerHTML = `Play_Time: ${((performance.now() - this.time)/ 1000).toFixed(2)}`;
         if (this.playerBullets.length > 0) {
             this.playerBullets.forEach((bullet) => {
                 if (bullet.isColliding("Enemy")) {
                     bullet.getElement().remove();
+                    this.musicManager.play('InvadersDeath');
                     this.playerBullets = this.playerBullets.filter((b) => b != bullet)
                     return
                 }
 
                 if (bullet.getY() + 4 <= 0) {
-                    // console.log(bullet.getY() + 4);
-                    // console.log(":",0);
                     bullet.getElement().remove();
                     this.playerBullets = this.playerBullets.filter(b => b !== bullet);
                     return;

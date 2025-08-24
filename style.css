@@ -5,15 +5,6 @@ body {
     padding: 0;
 }
 
-.hud {
-    height: 70px;
-}
-
-.hud div {
-    display: inline-block;
-    margin-top: 20px;
-    margin-right: 20px;
-}
 
 .game-container {
     display: flex;
@@ -21,65 +12,77 @@ body {
     justify-content: center;
     align-items: center;
     justify-content: start;
-    background: black;
     color: rgb(127, 185, 33);
-    height: 99vh;
-
+    height: 100vh;
+    background-image: url('./Assets/Images/31633.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden; 
 }
 
 
+/* navbar */
+.hud {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    height: 10%;
+    overflow: hidden;
+}
+
+.hud div {
+    color: aliceblue;
+font-size: medium;
+}
+
+
+
+
 /* Enemys */
-.enemy-container{
+.enemy-container {
     position: relative;
     overflow: hidden;
-    flex: 1;
     width: 100%;
-    height: 600px; 
+    height: 80%;
 }
 
 .enemy {
     image-rendering: pixelated;
     width: 24px;
     height: 24px;
-    position : absolute;
-    left : 25%;
-    top : 50px
+    position: absolute;
+    left: 25%;
+    top: 10px
 }
 
 
-.E1__A1 { background: url(./Assets/invader_A1.png) no-repeat center; }
-.E2__B1 { background: url(./Assets/invader_B1.png) no-repeat center; }
-.E3__C1 { background: url(./Assets/invader_C1.png) no-repeat center; }
-.E1__A2 { background: url(./Assets/invader_A2.png) no-repeat center; }
-.E2__B2 { background: url(./Assets/invader_B2.png) no-repeat center; }
-.E3__C2 { background: url(./Assets/invader_C2.png) no-repeat center; }
-
-.bullet__type__1 {
-    background: url(./Assets/Enemy_Bullet_A.png) no-repeat center;
+.E1__A1 {
+    background: url(./Assets/Images/invader_A1.png) no-repeat center;
 }
 
-.bullet__type__2 {
-    background: url(./Assets/Enemy_Bullet_B.png) no-repeat center;
+.E2__B1 {
+    background: url(./Assets/Images/invader_B1.png) no-repeat center;
 }
 
-.bullet__type__3 {
-    background: url(./Assets/Enemy_Bullet_C.png) no-repeat center;
+.E3__C1 {
+    background: url(./Assets/Images/invader_C1.png) no-repeat center;
 }
 
-.player__bullet__type__1 {
-    background: url(./Assets/Player_Bullet.png) no-repeat center;
+.E1__A2 {
+    background: url(./Assets/Images/invader_A2.png) no-repeat center;
 }
 
-.bullet__type__1,
-.bullet__type__2,
-.bullet__type__3,
-.player__bullet__type__1 {
-    /* border: 1px solid red; */
-    width: 10px;
-    height: 10px;
-    background-size: contain;
-    image-rendering: pixelated;
+.E2__B2 {
+    background: url(./Assets/Images/invader_B2.png) no-repeat center;
 }
+
+.E3__C2 {
+    background: url(./Assets/Images/invader_C2.png) no-repeat center;
+}
+
+
 
 /* player */
 
@@ -88,30 +91,144 @@ body {
     display: flex;
     justify-content: center;
     width: 100%;
-    height: 60px;
-
+    height: 10%;
 }
 
-.player-container .player {
-    overflow: hidden;
-    align-self:    center;
-    width: 6%;
-    max-width: 6%;
-    background-image: url('../Assets/player.png');
+.player {
+    align-self: center;
+    width: 10%;
+    transform: scale(1);
+    background-image: url('../Assets/Images/player.png');
     background-repeat: no-repeat;
     background-position: center;
-    background-size:  contain;
+    background-size: contain;
     image-rendering: pixelated;
     height: 100%;
+    overflow: hidden;
 }
 
-
-/* bullet */
+/* bullets */
 .bullet {
     will-change: transform;
     width: 8px;
     height: 8px;
-    background: url(./Assets/player.png) no-repeat center;
+    background: url(./Assets/Images/player.png) no-repeat center;
     background-size: contain;
     image-rendering: pixelated;
+}
+
+.bullet__type__1 {
+    background: url(./Assets/Images/Enemy_Bullet_A.png) no-repeat center;
+}
+
+.bullet__type__2 {
+    background: url(./Assets/Images/Enemy_Bullet_B.png) no-repeat center;
+}
+
+.bullet__type__3 {
+    background: url(./Assets/Images/Enemy_Bullet_C.png) no-repeat center;
+}
+
+.player__bullet__type__1 {
+    background: url(./Assets/Images/Player_Bullet.png) no-repeat center;
+}
+
+.bullet__type__1,
+.bullet__type__2,
+.bullet__type__3,
+.player__bullet__type__1 {
+    width: 1vw;
+    height: 0.7vw;
+    background-size: contain;
+    image-rendering: pixelated;
+}
+
+@media (max-width: 301px) or (max-height :301px) {
+
+    .hud,
+    .enemy-container,
+    .player-container {
+        display: none;
+    }
+}
+
+@media (width < 600px) {
+    .hud div {
+        transform: scale(0.5);
+        font-size: x-small;
+    }
+    .player{ width: 10%}
+}
+
+@media (width <= 1200px) {
+    .hud div {
+        transform: scale(1);
+    }
+    .player {  width: 8%; }
+}
+
+@media (width > 1200px) {
+
+.player { width : 5%; }
+}
+
+/* game over menu */
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.popup.hidden {
+  display: none;
+}
+
+.popup-content {
+  background: #222;
+  color: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.popup-content h2 {
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+.popup-buttons button {
+  margin: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: background 0.3s;
+}
+
+#replay-btn {
+  background: #e63946;
+  color: white;
+}
+
+#replay-btn:hover {
+  background: #d62828;
+}
+
+#continue-btn {
+  background: #457b9d;
+  color: white;
+}
+
+#continue-btn:hover {
+  background: #1d3557;
 }
