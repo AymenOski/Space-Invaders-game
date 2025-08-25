@@ -41,11 +41,9 @@ export class Game {
 
 function startGame() {
     game = new Game();
+    game.MusicManager.play('mainTitle');
     gameLoop();
 }
-
-startGame()
-
 
 function gameLoop() {
     animationId = requestAnimationFrame(gameLoop);
@@ -109,6 +107,7 @@ document.addEventListener('keydown', (event) => {
             game.Player.isPaused = false;
             game.isPaused = false;
         } else {
+            game.EnemyManager.isPaused = true;
             game.Player.isPaused = true;
             game.isPaused = true;
             showGameMenu("pause");
@@ -176,3 +175,7 @@ document.addEventListener('wheel', (event) => {
 function startMusic() {    
     game.MusicManager.play('mainTitle');
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    startGame();
+});
