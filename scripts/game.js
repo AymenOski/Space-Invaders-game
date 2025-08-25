@@ -8,7 +8,6 @@ let game, animationId;
 export class Game {
     constructor() {
         this.MusicManager = new MusicManager();
-        this.MusicManager.play('mainTitle');
         this.isPaused = false;
 
         this.EnemyManager = new EnemyManager(this.MusicManager);
