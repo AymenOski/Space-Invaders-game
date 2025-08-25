@@ -17,6 +17,7 @@ export class Player {
 
         this.createPlayer()
         this.controler()
+        this.animatePlayer();
     }
 
     // geters
@@ -36,26 +37,35 @@ export class Player {
     }
 
     controler() {
+        this.keys = { left: false, right: false };
+
         document.addEventListener("keydown", (event) => {
             if (this.lives <= 0 || this.isPaused) return;
             switch (event.key) {
                 case "ArrowLeft":
-                    this.direction = "left";
+                    this.keys.left = true;
                     break;
                 case "ArrowRight":
-                    this.direction = "right";
+                    this.keys.right = true;
                     break;
                 case " ":
                     this.handleShoot();
                     break;
-                default:
-                    this.direction = null;
             }
         });
 
-        document.addEventListener("keyup", () => {
-            this.direction = null;
+        document.addEventListener("keyup", (event) => {
+            if (event.key === "ArrowLeft") this.keys.left = false;
+            if (event.key === "ArrowRight") this.keys.right = false;
         });
+    }
+    animatePlayer() {
+        if (!this.isPaused && this.lives > 0) {
+            if (this.keys.left) this.movePlayer("left");
+            if (this.keys.right) this.movePlayer("right");
+        }
+
+        requestAnimationFrame(() => this.animatePlayer());
     }
 
 
@@ -67,12 +77,12 @@ export class Player {
         const lives = document.querySelector(".lives-container");
         lives.style.opacity = 0.4
         lives.style.color = "red"
-        setTimeout(() =>{
+        setTimeout(() => {
             lives.innerHTML = `Lives: ${this.lives}`
             lives.style.color = "white"
             lives.style.opacity = 1
 
-        } , 400);
+        }, 400);
         const p = document.querySelector(".player-container");
         let blinkTimes = 10;
         let visible = true;
@@ -129,8 +139,9 @@ export class Player {
         p.style.transform = `translate3d(${this.x}px, 0, 0)`;
     }
 
+
     update() {
-        document.querySelector('.timer-container').innerHTML = `Play_Time: ${((performance.now() - this.time)/ 1000).toFixed(1)}`;
+        document.querySelector('.timer-container').innerHTML = `Play_Time: ${((performance.now() - this.time) / 1000).toFixed(1)}`;
         if (this.playerBullets.length > 0) {
             this.playerBullets.forEach((bullet) => {
                 if (bullet.isColliding("Enemy")) {

@@ -93,7 +93,8 @@ function gameLoop() {
 
     game.updateEntities();
     if (game.Player.direction) {
-        game.Player.movePlayer(game.Player.direction);
+        game.Player.animatePlayer();
+        // game.Player.movePlayer(game.Player.direction);
     }
 }
 
