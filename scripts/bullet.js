@@ -55,8 +55,10 @@ export class Bullet {
 
     isColliding(CollisionType) {
         if (CollisionType === "Enemy") {
-            for (let i = 0; i < (document.querySelector('.enemy-container').children).length; i++) { // we need to put this into a variable to improve performance
-                var enemiesRect = document.querySelector('.enemy-container').children[i].getBoundingClientRect();
+            const enemyContainer = document.querySelector('.enemy-container');
+            const enemies = enemyContainer.children;
+            for (let i = 0; i < enemies.length ; i++) { // we need to put this into a variable to improve performance
+                var enemiesRect = enemies[i].getBoundingClientRect();
                 if (this.y <= enemiesRect.bottom && this.y >= enemiesRect.top && this.x >= enemiesRect.left && this.x <= enemiesRect.right) {
                     Score = 0;
                     if (this.Element) {
