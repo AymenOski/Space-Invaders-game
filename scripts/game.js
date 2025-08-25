@@ -50,7 +50,7 @@ startGame()
 
 function gameLoop() {
     animationId = requestAnimationFrame(gameLoop);
-    if (window.innerWidth < 300 || window.innerHeight < 300) {
+    if (window.innerWidth < 320 || window.innerHeight < 320) {
         game.EnemyManager.isPaused = true;
         document.querySelector('.enemy-container').style.display = "none"
         document.querySelector('.player').style.display = "none"
@@ -157,12 +157,9 @@ continueBtn.addEventListener("click", () => {
 document.addEventListener('click', startMusic, { once: true });
 document.addEventListener('keydown', startMusic, { once: true });
 
-function startMusic() {
-    game.MusicManager.play('mainTitle');
-}
 
 document.addEventListener('keydown', (event) => {
-
+    
     if (event.ctrlKey || event.metaKey) {
         if (event.key.toLowerCase() === 'r') {
             return;
@@ -176,3 +173,7 @@ document.addEventListener('wheel', (event) => {
         event.preventDefault();
     }
 }, { passive: false });
+
+function startMusic() {    
+    game.MusicManager.play('mainTitle');
+}
