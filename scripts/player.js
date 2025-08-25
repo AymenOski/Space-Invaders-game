@@ -130,7 +130,7 @@ export class Player {
     }
 
     update() {
-        document.querySelector('.timer-container').innerHTML = `Play_Time: ${((performance.now() - this.time)/ 1000).toFixed(2)}`;
+        document.querySelector('.timer-container').innerHTML = `Play_Time: ${((performance.now() - this.time)/ 1000).toFixed(1)}`;
         if (this.playerBullets.length > 0) {
             this.playerBullets.forEach((bullet) => {
                 if (bullet.isColliding("Enemy")) {

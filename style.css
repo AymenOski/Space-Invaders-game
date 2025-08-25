@@ -35,6 +35,8 @@ body {
 .hud div {
     color: aliceblue;
 font-size: medium;
+padding: 10px;
+line-height: 2;
 }
 
 
@@ -145,19 +147,19 @@ font-size: medium;
     image-rendering: pixelated;
 }
 
-@media (max-width: 300px) or (max-height :300px) {
+/* @media (max-width: 300px) or (max-height :300px) {
 
     .hud,
     .enemy-container,
     .player-container {
         display: none;
     }
-}
+} */
 
 @media (width < 600px) {
     .hud div {
-        transform: scale(0.5);
-        font-size: x-small;
+        /* transform: scale(0.5); */
+        font-size: xx-small;
     }
     .player{ width: 10%}
 }
@@ -170,7 +172,6 @@ font-size: medium;
 }
 
 @media (width > 1200px) {
-
 .player { width : 5%; }
 }
 

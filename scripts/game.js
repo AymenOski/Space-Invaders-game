@@ -31,7 +31,7 @@ export class Game {
         document.querySelector('.enemy-container').innerHTML = '';
         document.querySelector('.player-container').innerHTML = '';
         document.querySelector('.lives-container').innerHTML = 'Lives: 3';
-        document.querySelector('.timer-container').innerHTML = 'Play_Time: 0.00';
+        document.querySelector('.timer-container').innerHTML = 'Play_Time: 0.0';
         document.querySelector('.score-container').innerHTML = 'Score: 0';
 
         this.MusicManager.stopAllMusic();
@@ -52,9 +52,15 @@ function gameLoop() {
     animationId = requestAnimationFrame(gameLoop);
     if (window.innerWidth < 300 || window.innerHeight < 300) {
         game.EnemyManager.isPaused = true;
+        document.querySelector('.enemy-container').style.display = "none"
+        document.querySelector('.player').style.display = "none"
+
     }else {
         game.EnemyManager.isPaused = false;
+        document.querySelector('.enemy-container').style.display = "inline-block";
+        document.querySelector('.player').style.display = "flex";
     }
+    
     if (game.isPaused) return;
 
     if (BulletHitEnemyGetter() === true) {
@@ -122,16 +128,21 @@ function showGameMenu(type) {
     } else if (type === "GameOver") {
         popup.querySelector("h2").textContent = "Game Over";
         continueBtn.style.display = "none";
+
+        // document.querySelector('.enemy-container').style.display = 'none';
+        // document.querySelector('.player').style.display = "none"
     } else {
         popup.querySelector("h2").textContent = "Paused";
         continueBtn.style.display = "inline-block";
     }
-
+    
     popup.classList.remove("hidden");
 }
 
 replayBtn.addEventListener("click", () => {
     popup.classList.add("hidden");
+        // document.querySelector('.enemy-container').style.display = "inline-block";
+        // document.querySelector('.player').style.display = "flex";
     game.reset();
 });
 
