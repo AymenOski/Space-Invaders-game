@@ -4,7 +4,7 @@ export class Player {
     constructor(musicManager) {
         this.score = 0;
         this.lives = 3;
-        this.Speed = 6
+        this.Speed = 7
         this.x = 0;
         this.time = performance.now();
         this.direction = null;

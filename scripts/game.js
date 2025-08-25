@@ -128,9 +128,10 @@ function showGameMenu(type) {
     } else if (type === "GameOver") {
         popup.querySelector("h2").textContent = "Game Over";
         continueBtn.style.display = "none";
-
-        // document.querySelector('.enemy-container').style.display = 'none';
-        // document.querySelector('.player').style.display = "none"
+    if (window.innerWidth < 400 || window.innerHeight < 400) {
+        document.querySelector('.enemy-container').style.opacity = 0
+        document.querySelector('.player').style.opacity = 0
+    }
     } else {
         popup.querySelector("h2").textContent = "Paused";
         continueBtn.style.display = "inline-block";
@@ -141,8 +142,8 @@ function showGameMenu(type) {
 
 replayBtn.addEventListener("click", () => {
     popup.classList.add("hidden");
-        // document.querySelector('.enemy-container').style.display = "inline-block";
-        // document.querySelector('.player').style.display = "flex";
+        document.querySelector('.enemy-container').style.opacity = 1
+        document.querySelector('.player').style.opacity = 1
     game.reset();
 });
 
