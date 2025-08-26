@@ -27,14 +27,12 @@ export class Bullet {
         if (direction === 'up') {
             this.y -= this.Speed + 2;
         } else if (direction === 'down') {
-            this.y += this.Speed;
+            this.y += this.Speed + 1;
         }
         this.updatePosition();
     }
 
     updatePosition() {
-        // console.log(this.x - window.innerWidth / 2);
-
         if (this.Element) {
             this.Element.style.transform = `translate3d(${this.x - window.innerWidth / 2}px, ${this.y}px , 0px) scale(1.8)`;
         }
@@ -57,13 +55,13 @@ export class Bullet {
         if (CollisionType === "Enemy") {
             const enemyContainer = document.querySelector('.enemy-container');
             const enemies = enemyContainer.children;
-            for (let i = 0; i < enemies.length ; i++) { // we need to put this into a variable to improve performance
+            for (let i = 0; i < enemies.length ; i++) {
                 var enemiesRect = enemies[i].getBoundingClientRect();
                 if (this.y <= enemiesRect.bottom && this.y >= enemiesRect.top && this.x >= enemiesRect.left && this.x <= enemiesRect.right) {
                     Score = 0;
                     if (this.Element) {
                         BulletHitEnemy = true;
-                        let enemy = document.querySelector('.enemy-container').children[i];
+                        let enemy = enemies[i];
                         if (enemy.classList.contains('E1__A1') || enemy.classList.contains('E1__A2')) {
                             Score += 150;
                         }else if (enemy.classList.contains('E2__B1') || enemy.classList.contains('E2__B2')) {

@@ -13,11 +13,7 @@ export class Enemy {
         this.Element = null; // This will hold the enemy element once created
     }
 
-    getSpeed() { return this.Speed; }
     getElement() { return this.Element; }
-    getEnemyX() { return this.EnemyX; }
-    getEnemyY() { return this.EnemyY; }
-    setSpeed(Speed) { this.Speed = Speed; }
     setElement(element) { this.Element = element; }
     setEnemyX(x) { this.EnemyX = x; }
     setEnemyY(y) { this.EnemyY = y; }
@@ -147,8 +143,8 @@ export class EnemyManager {
 
                 const posX = j;
                 const posY = i;
-                newEnemy.setEnemyX(posX);
-                newEnemy.setEnemyY(posY);
+                newEnemy.EnemyX = posX;
+                newEnemy.EnemyY = posY;
 
                 newEnemy.updatePosition();
 
@@ -181,82 +177,82 @@ export class EnemyManager {
     }
 
     update() {
-    // Update all enemies
+        // Update all enemies
 
-    if (this.isPaused) return;
-    const allEnemies = document.querySelectorAll('.enemy');
-    if (allEnemies.length === 0) return;
+        if (this.isPaused) return;
+        const allEnemies = document.querySelectorAll('.enemy');
+        if (allEnemies.length === 0) return;
 
-    let minLeft = Infinity;
-    let maxRight = -Infinity;
-    allEnemies.forEach(el => {
-        const rect = el.getBoundingClientRect();
-        if (rect.left < minLeft) minLeft = rect.left;
-        if (rect.right > maxRight) maxRight = rect.right;
-    });
-
-    this.Animation++;
-
-    if ((minLeft <= 0 || maxRight + 10 >= window.innerWidth) && !this.EnemiesHaveMovedDown) {
-        this.EnemiesCanMoveX = false;
-    }
-
-    // moves enemies and make them shoot
-    this.EnemiesHaveMovedDown = false;
-    if (this.EnemiesCanMoveX) {
-        this.Enemies.forEach((enemy) => {
-            enemy.moveEnemy(this.EnemiesDirection);
-            if (this.Animation % 50 === 0) {
-                enemy.updateEnemyType();
-            }
-        })
-    }
-
-    if (minLeft <= 0 && !this.EnemiesCanMoveX) {
-        this.Enemies.forEach((enemy) => {
-            enemy.moveEnemy('down');
-            if (this.checkIfEnemiesReachedPlayer()) {
-                this.Animation = -1; // just a way to pop the game over menu because the player is dead  
-            }
-        })
-
-        this.EnemiesHaveMovedDown = true;
-        this.EnemiesCanMoveX = true;
-        this.EnemiesDirection = 'right';
-    }
-
-    if (maxRight + 10 >= window.innerWidth && !this.EnemiesCanMoveX) {
-        this.Enemies.forEach((enemy) => {
-            enemy.moveEnemy('down');
-            if (this.checkIfEnemiesReachedPlayer()) {
-                this.Animation = -1;
-            }
-        })
-
-        this.EnemiesHaveMovedDown = true;
-        this.EnemiesCanMoveX = true;
-        this.EnemiesDirection = 'left';
-    }
-    // shooting enemy and player bullets
-        
-    if (Math.random() <  (document.querySelector(".enemy-container").children.length > 25 ? 0.014 : 0.014 + 0.02)) {
-        this.shoot();
-    }
-
-    if (this.EnemyBullets.length > 0) {
-        this.EnemyBullets.forEach((bullet) => {
-            if (bullet.isColliding("Player")) {
-                this.EnemiesDammagedThePlayer = true;
-            }
-            if (bullet.getY() + 25 >= window.innerHeight) {
-                bullet.getElement().remove();
-                this.EnemyBullets = this.EnemyBullets.filter(b => b !== bullet);
-                return;
-            }
-            document.querySelector('.game-container').appendChild(bullet.getElement());
-            bullet.moveBullet('down');
+        let minLeft = Infinity;
+        let maxRight = -Infinity;
+        allEnemies.forEach(el => {
+            const rect = el.getBoundingClientRect();
+            if (rect.left < minLeft) minLeft = rect.left;
+            if (rect.right > maxRight) maxRight = rect.right;
         });
+
+        this.Animation++;
+
+        if ((minLeft <= 0 || maxRight + 10 >= window.innerWidth) && !this.EnemiesHaveMovedDown) {
+            this.EnemiesCanMoveX = false;
+        }
+
+        // moves enemies and make them shoot
+        this.EnemiesHaveMovedDown = false;
+        if (this.EnemiesCanMoveX) {
+            this.Enemies.forEach((enemy) => {
+                enemy.moveEnemy(this.EnemiesDirection);
+                if (this.Animation % 50 === 0) {
+                    enemy.updateEnemyType();
+                }
+            })
+        }
+
+        if (minLeft <= 0 && !this.EnemiesCanMoveX) {
+            this.Enemies.forEach((enemy) => {
+                enemy.moveEnemy('down');
+                if (this.checkIfEnemiesReachedPlayer()) {
+                    this.Animation = -1; // just a way to pop the game over menu because the player is dead  
+                }
+            })
+
+            this.EnemiesHaveMovedDown = true;
+            this.EnemiesCanMoveX = true;
+            this.EnemiesDirection = 'right';
+        }
+
+        if (maxRight + 10 >= window.innerWidth && !this.EnemiesCanMoveX) {
+            this.Enemies.forEach((enemy) => {
+                enemy.moveEnemy('down');
+                if (this.checkIfEnemiesReachedPlayer()) {
+                    this.Animation = -1;
+                }
+            })
+
+            this.EnemiesHaveMovedDown = true;
+            this.EnemiesCanMoveX = true;
+            this.EnemiesDirection = 'left';
+        }
+        // shooting enemy and player bullets
+
+        if (Math.random() < (document.querySelector(".enemy-container").children.length > 25 ? 0.014 : 0.014 + 0.02)) {
+            this.shoot();
+        }
+
+        if (this.EnemyBullets.length > 0) {
+            this.EnemyBullets.forEach((bullet) => {
+                if (bullet.isColliding("Player")) {
+                    this.EnemiesDammagedThePlayer = true;
+                }
+                if (bullet.getY() + 25 >= window.innerHeight) {
+                    bullet.getElement().remove();
+                    this.EnemyBullets = this.EnemyBullets.filter(b => b !== bullet);
+                    return;
+                }
+                document.querySelector('.game-container').appendChild(bullet.getElement());
+                bullet.moveBullet('down');
+            });
+        }
     }
-}
 
 }

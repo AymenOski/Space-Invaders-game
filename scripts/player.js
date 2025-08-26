@@ -20,15 +20,6 @@ export class Player {
         this.animatePlayer();
     }
 
-    // geters
-    getLives() { return this.lives }
-    getScore() { return this.score }
-    getX() { return this.x }
-    // seters 
-    setLives(lives) { this.lives = lives }
-    setScore(score) { this.score = score }
-    setX(x) { this.x = x }
-
     createPlayer() {
         const p = document.createElement("div");
         p.classList.add("player");
@@ -61,7 +52,10 @@ export class Player {
     }
     animatePlayer() {
         if (!this.isPaused && this.lives > 0) {
-            if (this.keys.left) this.movePlayer("left");
+            if (this.keys.left) {
+                console.log("asd");
+                this.movePlayer("left");
+            }
             if (this.keys.right) this.movePlayer("right");
         }
 
@@ -138,7 +132,6 @@ export class Player {
 
         p.style.transform = `translate3d(${this.x}px, 0, 0)`;
     }
-
 
     update() {
         document.querySelector('.timer-container').innerHTML = `Play_Time: ${((performance.now() - this.time) / 1000).toFixed(1)}`;
