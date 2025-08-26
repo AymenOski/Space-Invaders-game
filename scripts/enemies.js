@@ -182,6 +182,8 @@ export class EnemyManager {
         if (this.isPaused) return;
         const allEnemies = document.querySelectorAll('.enemy');
         if (allEnemies.length === 0) return;
+        // console.log(allEnemies.length);
+        
 
         let minLeft = Infinity;
         let maxRight = -Infinity;
@@ -235,7 +237,7 @@ export class EnemyManager {
         }
         // shooting enemy and player bullets
 
-        if (Math.random() < (document.querySelector(".enemy-container").children.length > 25 ? 0.014 : 0.014 + 0.02)) {
+        if (Math.random() < (allEnemies.length > 25 ? 0.014 : 0.014 + 0.02)) {
             this.shoot();
         }
 
