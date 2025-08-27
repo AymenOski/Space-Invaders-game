@@ -2,181 +2,121 @@ import { EnemyManager } from './enemies.js';
 import { MusicManager } from './music.js';
 import { Player } from './player.js';
 import { BulletHitEnemyGetter, BulletHitEnemySetter, PlayerScoreGetter } from './bullet.js';
+import { keys, setupInput } from './input.js';
+import { showGameMenu, setupMenu, hideMenu } from "./menu.js";
+import { handlePauseToggle, handleSmallScreenPause, handleBulletHit } from './helpers.js';
 
 let game, animationId;
+let enemyContainer, playerContainer, livesContainer, timerContainer, scoreContainer;
+
 
 export class Game {
     constructor() {
         this.MusicManager = new MusicManager();
         this.isPaused = false;
-
         this.EnemyManager = new EnemyManager(this.MusicManager);
         this.Player = new Player(this.MusicManager);
     }
 
+    // Updates all entities (enemies and player) each frame
     updateEntities() {
         this.EnemyManager.update();
         this.Player.update();
 
+        // Handle when enemies damage the player
         if (this.EnemyManager.EnemiesDammagedThePlayer) {
             this.Player.dammage();
             this.EnemyManager.EnemiesDammagedThePlayer = false;
         }
     }
 
+    // Reset the game state and start a new game
     reset() {
         cancelAnimationFrame(animationId);
         document.querySelectorAll('[class*="bullet__"]').forEach(b => b.remove());
-        document.querySelector('.enemy-container').innerHTML = '';
-        document.querySelector('.player-container').innerHTML = '';
-        document.querySelector('.lives-container').innerHTML = 'Lives: 3';
-        document.querySelector('.timer-container').innerHTML = 'Play_Time: 0.0';
-        document.querySelector('.score-container').innerHTML = 'Score: 0';
-
+        enemyContainer.innerHTML = '';
+        playerContainer.innerHTML = '';
+        livesContainer.textContent = 'Lives: 3';
+        timerContainer.textContent = 'Play_Time: 0.0';
+        scoreContainer.textContent = 'Score: 0';
         this.MusicManager.stopAllMusic();
         startGame();
     }
 }
 
 
+
+
+
+// Starts a new game instance and plays main background music
 function startGame() {
     game = new Game();
     game.MusicManager.play('mainTitle');
     gameLoop();
 }
 
+
+function endGame(reason) {
+    game.Player.isPaused = true;
+    game.isPaused = true;
+
+    // if enemies reached bottom, make player show the death effect once
+    if (reason === "GameOver" && game.EnemyManager.Animation === -1) {
+        game.Player.lives = 1;
+        game.Player.dammage();
+    }
+
+    showGameMenu(reason);
+}
+
+
+
+// Main game loop that runs each animation frame
 function gameLoop() {
     animationId = requestAnimationFrame(gameLoop);
-    if (window.innerWidth < 320 || window.innerHeight < 320) {
-        game.EnemyManager.isPaused = true;
-        document.querySelector('.enemy-container').style.display = "none"
-        document.querySelector('.player').style.display = "none"
 
-    }else {
-        game.EnemyManager.isPaused = false;
-        document.querySelector('.enemy-container').style.display = "inline-block";
-        document.querySelector('.player').style.display = "flex";
-    }
-    
+    // Handle toggling pause with Escape key
+    handlePauseToggle(game, keys, hideMenu, showGameMenu);
+    // Pause the game if the screen is too small
+    handleSmallScreenPause(game, enemyContainer, playerContainer);
+    // Handle bullet hitting an enemy and updating score
+    handleBulletHit(game, scoreContainer);
+
     if (game.isPaused) return;
 
-    if (BulletHitEnemyGetter() === true) {
-        game.EnemyManager.EnemyCount--;
-        BulletHitEnemySetter(false);
-        game.Player.score += PlayerScoreGetter();
-        const score = document.querySelector(".score-container");
-        score.style.opacity = 0.4
-        score.style.color = "green"
-        setTimeout(() => {
-            score.innerHTML = `Score: ${game.Player.score}`
-            score.style.color = "white"
-            score.style.opacity = 1
-
-        }, 400);
-    }
-
-    if (game.Player.lives <= 0 || game.EnemyManager.Animation === -1) {
-        if (game.EnemyManager.Animation === -1) {
-            game.Player.lives = 1;
-            game.Player.dammage();
-        }
-        game.Player.isPaused = true;
-        game.isPaused = true;
-        showGameMenu("GameOver");
-        return;
-    } else if (game.EnemyManager.EnemyCount <= 0) {
-        game.Player.isPaused = true;
-        game.isPaused = true;
-        showGameMenu("Congrats");
-        return;
-    }
-
+    // Check for game over condition or victory
+    if (game.Player.lives <= 0 || game.EnemyManager.Animation === -1) return endGame("GameOver");
+    if (game.EnemyManager.EnemyCount <= 0) return endGame("Congrats");
+    
+    // Update all entities each frame
     game.updateEntities();
-    if (game.Player.direction) {
-        game.Player.animatePlayer();
-        // game.Player.movePlayer(game.Player.direction);
-    }
 }
 
-document.addEventListener('keydown', (event) => {
-    if (game.Player.lives <= 0) return;
-
-    if (event.code === "Escape") {
-        if (game.isPaused) {
-            popup.classList.add("hidden");
-            game.EnemyManager.isPaused = false;
-            game.Player.isPaused = false;
-            game.isPaused = false;
-        } else {
-            game.EnemyManager.isPaused = true;
-            game.Player.isPaused = true;
-            game.isPaused = true;
-            showGameMenu("pause");
-        }
-    }
-});
-
-const popup = document.getElementById("game-over-popup");
-const replayBtn = document.getElementById("replay-btn");
-const continueBtn = document.getElementById("continue-btn");
-function showGameMenu(type) {
-
-    if (type === "Congrats") {
-        popup.querySelector("h2").textContent = "Congrats You win!";
-        continueBtn.style.display = "none";
-    } else if (type === "GameOver") {
-        popup.querySelector("h2").textContent = "Game Over";
-        continueBtn.style.display = "none";
-    if (window.innerWidth < 400 || window.innerHeight < 400) {
-        document.querySelector('.enemy-container').style.opacity = 0
-        document.querySelector('.player').style.opacity = 0
-    }
-    } else {
-        popup.querySelector("h2").textContent = "Paused";
-        continueBtn.style.display = "inline-block";
-    }
-    
-    popup.classList.remove("hidden");
-}
-
-replayBtn.addEventListener("click", () => {
-    popup.classList.add("hidden");
-        document.querySelector('.enemy-container').style.opacity = 1
-        document.querySelector('.player').style.opacity = 1
-    game.reset();
-});
-
-continueBtn.addEventListener("click", () => {
-    popup.classList.add("hidden");
-    game.EnemyManager.isPaused = false;
-    game.Player.isPaused = false;
-    game.isPaused = false;
-});
-
-document.addEventListener('click', startMusic, { once: true });
-document.addEventListener('keydown', startMusic, { once: true });
 
 
-document.addEventListener('keydown', (event) => {
-    
-    if (event.ctrlKey || event.metaKey) {
-        if (event.key.toLowerCase() === 'r') {
-            return;
-        }
-        event.preventDefault();
-    }
-});
-
-document.addEventListener('wheel', (event) => {
-    if (event.ctrlKey || event.metaKey) {
-        event.preventDefault();
-    }
-}, { passive: false });
-
-function startMusic() {    
+function startMusic() {
+    if (!game) return;
     game.MusicManager.play('mainTitle');
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    startGame();
+    enemyContainer = document.querySelector('.enemy-container');
+    playerContainer = document.querySelector('.player-container');
+    livesContainer = document.querySelector('.lives-container');
+    timerContainer = document.querySelector('.timer-container');
+    scoreContainer = document.querySelector('.score-container');
+
+    setupInput(); // init input listeners
+    startGame(); // starts the loop.
+
+    // simple callbacks for Menu BTN ( replay and continue 
+    setupMenu(() => game.reset(), () => {
+        game.isPaused = false;
+        game.Player.isPaused = false;
+        game.EnemyManager.isPaused = false;
+    });
+    // attach music starters now (game is defined)
+    document.addEventListener('click', startMusic, { once: true });
+    document.addEventListener('keydown', startMusic, { once: true });
+
 });

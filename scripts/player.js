@@ -1,13 +1,13 @@
 import { Bullet } from './bullet.js';
+import { keys } from './input.js';   // 👈 new import
 
 export class Player {
     constructor(musicManager) {
         this.score = 0;
         this.lives = 3;
-        this.Speed = 7
+        this.Speed = 7;
         this.x = 0;
         this.time = performance.now();
-        this.direction = null;
         this.playerBullets = [];
         this.lastShotTime = 0;
         this.shootCooldown = 550;
@@ -15,9 +15,7 @@ export class Player {
         this.musicManager = musicManager;
         this.isPaused = false;
 
-        this.createPlayer()
-        this.controler()
-        this.animatePlayer();
+        this.createPlayer();
     }
 
     createPlayer() {
@@ -27,56 +25,20 @@ export class Player {
         container.appendChild(p);
     }
 
-    controler() {
-        this.keys = { left: false, right: false };
-
-        document.addEventListener("keydown", (event) => {
-            if (this.lives <= 0 || this.isPaused) return;
-            switch (event.key) {
-                case "ArrowLeft":
-                    this.keys.left = true;
-                    break;
-                case "ArrowRight":
-                    this.keys.right = true;
-                    break;
-                case " ":
-                    this.handleShoot();
-                    break;
-            }
-        });
-
-        document.addEventListener("keyup", (event) => {
-            if (event.key === "ArrowLeft") this.keys.left = false;
-            if (event.key === "ArrowRight") this.keys.right = false;
-        });
-    }
-    animatePlayer() {
-        if (!this.isPaused && this.lives > 0) {
-            if (this.keys.left) {
-                console.log("asd");
-                this.movePlayer("left");
-            }
-            if (this.keys.right) this.movePlayer("right");
-        }
-
-        requestAnimationFrame(() => this.animatePlayer());
-    }
-
-
     dammage() {
         if (this.PlayerIsInvincible) return;
         this.PlayerIsInvincible = true;
         this.musicManager.play('playerDammage');
         this.lives--;
         const lives = document.querySelector(".lives-container");
-        lives.style.opacity = 0.4
-        lives.style.color = "red"
+        lives.style.opacity = 0.4;
+        lives.style.color = "red";
         setTimeout(() => {
-            lives.innerHTML = `Lives: ${this.lives}`
-            lives.style.color = "white"
-            lives.style.opacity = 1
-
+            lives.innerHTML = `Lives: ${this.lives}`;
+            lives.style.color = "white";
+            lives.style.opacity = 1;
         }, 400);
+
         const p = document.querySelector(".player-container");
         let blinkTimes = 10;
         let visible = true;
@@ -86,12 +48,11 @@ export class Player {
             blinkTimes--;
             if (blinkTimes <= 0) {
                 p.style.opacity = 1;
-                // console.log("secendCall"); // 100 * 10 = 1s => so at the end of the blinking , the player is invinsible no more
                 clearInterval(interval);
             }
-        }, 100)
+        }, 100);
+
         setTimeout(() => {
-            // console.log("firstCall"); // 999 = 0.9s
             this.PlayerIsInvincible = false;
         }, 999);
     }
@@ -108,7 +69,6 @@ export class Player {
     shoot() {
         const p = document.querySelector(".player");
         const playerRect = p.getBoundingClientRect();
-
         const bulletX = playerRect.left + p.offsetWidth / 2;
         const bullet = new Bullet(bulletX, window.innerHeight - 35);
         bullet.Element = bullet.createBulletElement(bullet.updateBulletType(-1));
@@ -117,12 +77,11 @@ export class Player {
     }
 
     movePlayer(direction) {
-        if (!direction) return
+        if (!direction) return;
         const p = document.querySelector(".player");
         const container = document.querySelector(".player-container");
         const maxX = (container.offsetWidth / 2) - p.offsetWidth / 2;
         const minX = -(container.offsetWidth / 2) + p.offsetWidth / 2;
-
 
         if (direction === "left" && this.x - this.Speed > minX) {
             this.x -= this.Speed;
@@ -134,14 +93,23 @@ export class Player {
     }
 
     update() {
-        document.querySelector('.timer-container').innerHTML = `Play_Time: ${((performance.now() - this.time) / 1000).toFixed(1)}`;
+        document.querySelector('.timer-container').innerHTML = 
+          `Play_Time: ${((performance.now() - this.time) / 1000).toFixed(1)}`;
+
+        // NEW: check inputs here
+        if (!this.isPaused && this.lives > 0) {
+            if (keys.left) this.movePlayer("left");
+            if (keys.right) this.movePlayer("right");
+            if (keys.shoot) this.handleShoot();
+        }
+
         if (this.playerBullets.length > 0) {
             this.playerBullets.forEach((bullet) => {
                 if (bullet.isColliding("Enemy")) {
                     bullet.getElement().remove();
                     this.musicManager.play('InvadersDeath');
-                    this.playerBullets = this.playerBullets.filter((b) => b != bullet)
-                    return
+                    this.playerBullets = this.playerBullets.filter((b) => b != bullet);
+                    return;
                 }
 
                 if (bullet.getY() + 4 <= 0) {
@@ -151,9 +119,7 @@ export class Player {
                 }
                 document.querySelector('.game-container').append(bullet.getElement());
                 bullet.moveBullet('up');
-
             });
         }
     }
-
 }
