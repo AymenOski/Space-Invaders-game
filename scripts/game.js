@@ -112,17 +112,18 @@ document.addEventListener("DOMContentLoaded", () => {
     scoreContainer = document.querySelector('.score-container');
 
     setupInput(); // init input listeners
-    startGame(); // starts the loop.
     PreventDefaults(); // prevent default browser actions for some keys
     
-
+    
     // simple callbacks for Menu BTN ( replay and continue 
     setupMenu(() => game.reset(), () => {
         game.isPaused = false;
         game.Player.isPaused = false;
         game.EnemyManager.isPaused = false;
     });
-    // attach music starters now (game is defined)
+    startGame(); // starts the loop.
+    
+    // start main title upon user-interaction
     document.addEventListener('click', startMusic, { once: true });
     document.addEventListener('keydown', startMusic, { once: true });
 });
