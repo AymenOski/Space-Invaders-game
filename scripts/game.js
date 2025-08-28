@@ -111,11 +111,11 @@ document.addEventListener("DOMContentLoaded", () => {
     timerContainer = document.querySelector('.timer-container');
     scoreContainer = document.querySelector('.score-container');
 
-    setupInput(); // init input listeners
     startGame(); // starts the loop.
+    setupInput(); // init input listeners
     PreventDefaults(); // prevent default browser actions for some keys
     
-
+    
     // simple callbacks for Menu BTN ( replay and continue 
     setupMenu(() => game.reset(), () => {
         game.isPaused = false;
