@@ -1,10 +1,10 @@
 import { EnemyManager } from './enemies.js';
 import { MusicManager } from './music.js';
 import { Player } from './player.js';
-import { BulletHitEnemyGetter, BulletHitEnemySetter, PlayerScoreGetter } from './bullet.js';
 import { keys, setupInput } from './input.js';
 import { showGameMenu, setupMenu, hideMenu } from "./menu.js";
-import { handlePauseToggle, handleSmallScreenPause, handleBulletHit } from './helpers.js';
+import { handlePauseToggle, handleSmallScreenPause, handleBulletHit , PreventDefaults} from './helpers.js';
+
 
 let game, animationId;
 let enemyContainer, playerContainer, livesContainer, timerContainer, scoreContainer;
@@ -70,13 +70,16 @@ function endGame(reason) {
 }
 
 
-
+let lastToggleTime = 0;
 // Main game loop that runs each animation frame
-function gameLoop() {
+function gameLoop(timeStamp) {
     animationId = requestAnimationFrame(gameLoop);
-
-    // Handle toggling pause with Escape key
-    handlePauseToggle(game, keys, hideMenu, showGameMenu);
+    
+    // Handle toggling pause with Escape key with a throttle of 300ms
+    if (keys.pause && timeStamp - lastToggleTime > 300) {
+        handlePauseToggle(game, keys, hideMenu, showGameMenu);
+        lastToggleTime = timeStamp;
+    }
     // Pause the game if the screen is too small
     handleSmallScreenPause(game, enemyContainer, playerContainer);
     // Handle bullet hitting an enemy and updating score
@@ -86,7 +89,9 @@ function gameLoop() {
 
     // Check for game over condition or victory
     if (game.Player.lives <= 0 || game.EnemyManager.Animation === -1) return endGame("GameOver");
-    if (game.EnemyManager.EnemyCount <= 0) return endGame("Congrats");
+    if (document.querySelectorAll('.enemy').length <= 0) {
+        return endGame("Congrats");
+    }
     
     // Update all entities each frame
     game.updateEntities();
@@ -108,6 +113,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setupInput(); // init input listeners
     startGame(); // starts the loop.
+    PreventDefaults(); // prevent default browser actions for some keys
+    
 
     // simple callbacks for Menu BTN ( replay and continue 
     setupMenu(() => game.reset(), () => {
@@ -118,5 +125,4 @@ document.addEventListener("DOMContentLoaded", () => {
     // attach music starters now (game is defined)
     document.addEventListener('click', startMusic, { once: true });
     document.addEventListener('keydown', startMusic, { once: true });
-
 });

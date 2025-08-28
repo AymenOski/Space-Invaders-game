@@ -39,7 +39,6 @@ export function handleSmallScreenPause(game, enemyContainer, playerContainer) {
 // Handle bullet hitting an enemy and updating score
 export function handleBulletHit(game, scoreContainer) {
     if (BulletHitEnemyGetter() === true) {
-        game.EnemyManager.EnemyCount--;
         BulletHitEnemySetter(false);
         game.Player.score += PlayerScoreGetter();
 
@@ -51,4 +50,21 @@ export function handleBulletHit(game, scoreContainer) {
             scoreContainer.style.opacity = 1;
         }, 400);
     }
+}
+
+export function PreventDefaults() {
+    document.addEventListener('keydown', (event) => {
+        if (event.ctrlKey || event.metaKey) {
+            if (event.key.toLowerCase() === 'r') {
+                return;
+            }
+            event.preventDefault();
+        }
+    });
+
+    document.addEventListener('wheel', (event) => {
+        if (event.ctrlKey || event.metaKey) {
+            event.preventDefault();
+        }
+    }, { passive: false });
 }

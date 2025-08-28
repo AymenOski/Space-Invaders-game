@@ -1,5 +1,5 @@
 import { Bullet } from './bullet.js';
-import { keys } from './input.js';   // 👈 new import
+import { keys } from './input.js';
 
 export class Player {
     constructor(musicManager) {
@@ -96,7 +96,6 @@ export class Player {
         document.querySelector('.timer-container').innerHTML = 
           `Play_Time: ${((performance.now() - this.time) / 1000).toFixed(1)}`;
 
-        // NEW: check inputs here
         if (!this.isPaused && this.lives > 0) {
             if (keys.left) this.movePlayer("left");
             if (keys.right) this.movePlayer("right");

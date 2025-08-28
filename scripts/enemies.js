@@ -23,8 +23,6 @@ export class Enemy {
             this.Element = document.createElement('div');
             this.Element.classList.add('enemy');
             this.Element.classList.add(type);
-            // this.Element.style.left = `${window.innerWidth / 4 }px`;
-            // this.Element.style.top = `${50}px`;
 
         }
         return this.Element;
@@ -100,7 +98,6 @@ export class Enemy {
 
 export class EnemyManager {
     constructor(musicManager) {
-        this.EnemyCount = 55;
         this.Enemies = [];
         this.EnemiesDirection = 'right';
         this.EnemiesCanMoveX = true;
