@@ -111,7 +111,6 @@ document.addEventListener("DOMContentLoaded", () => {
     timerContainer = document.querySelector('.timer-container');
     scoreContainer = document.querySelector('.score-container');
 
-    startGame(); // starts the loop.
     setupInput(); // init input listeners
     PreventDefaults(); // prevent default browser actions for some keys
     
@@ -122,7 +121,9 @@ document.addEventListener("DOMContentLoaded", () => {
         game.Player.isPaused = false;
         game.EnemyManager.isPaused = false;
     });
-    // attach music starters now (game is defined)
+    startGame(); // starts the loop.
+    
+    // start main title upon user-interaction
     document.addEventListener('click', startMusic, { once: true });
     document.addEventListener('keydown', startMusic, { once: true });
 });

@@ -2,7 +2,6 @@ import { Bullet } from './bullet.js';
 
 const Enemies = document.querySelector('.enemy-container');
 
-// Represents an individual enemy
 export class Enemy {
     constructor(Speed) {
         this.Speed = Speed;
@@ -15,7 +14,6 @@ export class Enemy {
     setElement(element) { this.Element = element; }
     setEnemyX(x) { this.EnemyX = x; }
     setEnemyY(y) { this.EnemyY = y; }
-
     createEnemyElement(type) {
         if (!this.Element) {
             this.Element = document.createElement('div');
