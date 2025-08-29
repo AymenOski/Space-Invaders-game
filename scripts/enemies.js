@@ -174,8 +174,7 @@ export class EnemyManager {
     }
 
     update() {
-        // Update all enemies
-
+        // Update all enemies        
         if (this.isPaused) return;
         const allEnemies = document.querySelectorAll('.enemy');
         if (allEnemies.length === 0) return;

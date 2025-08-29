@@ -4,6 +4,7 @@ import { Player } from './player.js';
 import { keys, setupInput } from './input.js';
 import { showGameMenu, setupMenu, hideMenu } from "./menu.js";
 import { handlePauseToggle, handleSmallScreenPause, handleBulletHit , PreventDefaults} from './helpers.js';
+import { StoryManager } from './story.js';
 
 
 let game, animationId;
@@ -16,6 +17,7 @@ export class Game {
         this.isPaused = false;
         this.EnemyManager = new EnemyManager(this.MusicManager);
         this.Player = new Player(this.MusicManager);
+        this.StoryManager = new StoryManager(this, this.MusicManager);
     }
 
     // Updates all entities (enemies and player) each frame
@@ -32,6 +34,7 @@ export class Game {
 
     // Reset the game state and start a new game
     reset() {
+        
         cancelAnimationFrame(animationId);
         document.querySelectorAll('[class*="bullet__"]').forEach(b => b.remove());
         enemyContainer.innerHTML = '';
@@ -52,6 +55,7 @@ export class Game {
 function startGame() {
     game = new Game();
     game.MusicManager.play('mainTitle');
+    game.StoryManager.showStory(0);
     gameLoop();
 }
 
@@ -112,9 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
     scoreContainer = document.querySelector('.score-container');
 
     setupInput(); // init input listeners
-    startGame(); // starts the loop.
     PreventDefaults(); // prevent default browser actions for some keys
-    
 
     // simple callbacks for Menu BTN ( replay and continue 
     setupMenu(() => game.reset(), () => {
@@ -125,4 +127,5 @@ document.addEventListener("DOMContentLoaded", () => {
     // attach music starters now (game is defined)
     document.addEventListener('click', startMusic, { once: true });
     document.addEventListener('keydown', startMusic, { once: true });
+    startGame(); // starts the loop.
 });

@@ -147,15 +147,6 @@ line-height: 2;
     image-rendering: pixelated;
 }
 
-/* @media (max-width: 300px) or (max-height :300px) {
-
-    .hud,
-    .enemy-container,
-    .player-container {
-        display: none;
-    }
-} */
-
 @media (width < 600px) {
     .hud div {
         /* transform: scale(0.5); */
@@ -234,4 +225,54 @@ line-height: 2;
 
 #continue-btn:hover {
   background: #1d3557;
+}
+
+/* story overlay */
+.story-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+.story-overlay.visible { opacity: 1; }
+.story-overlay.hidden { display: none; }
+.story-content {
+    background: #111;
+    color: #fff;
+    padding: 40px;
+    border: 2px solid #00ff00;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 60%;
+    animation: fadeIn 1s;
+}
+.story-content h2 {
+    font-size: 1.5rem;
+    color: #00ff00;
+    margin-bottom: 20px;
+}
+.story-content p {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+#story-continue-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #00ff00;
+    color: #000;
+    border: none;
+    cursor: pointer;
+    font-family: 'Press Start 2P', cursive;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
 }

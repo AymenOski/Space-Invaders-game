@@ -13,6 +13,14 @@
 <body>
     <script defer type="module" src="./scripts/game.js"></script>
     <div class="game-container">
+        <div id="story-overlay" class="story-overlay hidden">
+            <div class="story-content">
+                <h2 id="story-title"></h2>
+                <p id="story-text"></p>
+                <button id="story-continue-btn">Continue</button>
+            </div>
+        </div>
+        
         <div id="game-over-popup" class="popup hidden">
             <div class="popup-content">
                 <h2>Game Over</h2>
@@ -22,6 +30,7 @@
                 </div>
             </div>
         </div>
+
 
         <div class="hud">
             <div class="score-container">Score: 0</div>
