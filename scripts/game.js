@@ -4,7 +4,7 @@ import { Player } from './player.js';
 import { keys, setupInput } from './input.js';
 import { showGameMenu, setupMenu, hideMenu } from "./menu.js";
 import { handlePauseToggle, handleSmallScreenPause, handleBulletHit , PreventDefaults} from './helpers.js';
-import { StoryManager } from './story.js';
+import { StoryManager , setupStoryListener} from './story.js';
 
 
 let game, animationId;
@@ -15,6 +15,7 @@ export class Game {
     constructor() {
         this.MusicManager = new MusicManager();
         this.isPaused = false;
+        this.isShowingStory = false;
         this.EnemyManager = new EnemyManager(this.MusicManager);
         this.Player = new Player(this.MusicManager);
         this.StoryManager = new StoryManager(this, this.MusicManager);
@@ -54,8 +55,8 @@ export class Game {
 // Starts a new game instance and plays main background music
 function startGame() {
     game = new Game();
+    setupStoryListener(game); // init story continue button listener
     game.MusicManager.play('mainTitle');
-    game.StoryManager.showStory(0);
     gameLoop();
 }
 
@@ -78,6 +79,11 @@ let lastToggleTime = 0;
 // Main game loop that runs each animation frame
 function gameLoop(timeStamp) {
     animationId = requestAnimationFrame(gameLoop);
+    if (!game.StoryManager.isShowing && game.StoryManager.currentScene < 3) {
+        game.StoryManager.showStory(game.StoryManager.currentScene);
+        return;
+    }
+    if (game.isShowingStory) return;
     
     // Handle toggling pause with Escape key with a throttle of 300ms
     if (keys.pause && timeStamp - lastToggleTime > 300) {

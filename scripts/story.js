@@ -1,3 +1,5 @@
+const storyContinue = document.getElementById('story-continue-btn');
+
 
 export class StoryManager {
     constructor(game, musicManager) {
@@ -50,4 +52,19 @@ export class StoryManager {
         this.overlay.classList.remove('hidden');
         this.overlay.classList.add('visible');
     }
+}
+
+export function setupStoryListener(game) {
+    storyContinue.addEventListener('click' , () => {
+        game.StoryManager.isShowing = false;
+        game.isShowingStory = false;
+        
+        game.Player.isPaused = false;
+        game.EnemyManager.isPaused = false;
+        game.StoryManager.overlay.classList.add('hidden');
+        game.StoryManager.overlay.classList.remove('visible');
+        
+        game.StoryManager.currentScene++;
+        
+    })
 }
