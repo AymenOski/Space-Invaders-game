@@ -25,7 +25,7 @@ export class Bullet {
 
     moveBullet(direction) {
         if (direction === 'up') {
-            this.y -= this.Speed + 7;
+            this.y -= this.Speed + 7 + 13;
         } else if (direction === 'down') {
             this.y += this.Speed + 1;
         }

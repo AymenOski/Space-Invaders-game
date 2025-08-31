@@ -3,11 +3,11 @@ import { MusicManager } from './music.js';
 import { Player } from './player.js';
 import { keys, setupInput } from './input.js';
 import { showGameMenu, setupMenu, hideMenu } from "./menu.js";
-import { handlePauseToggle, handleSmallScreenPause, handleBulletHit , PreventDefaults} from './helpers.js';
-import { StoryManager , setupStoryListener} from './story.js';
+import { handlePauseToggle, handleSmallScreenPause, handleBulletHit, PreventDefaults } from './helpers.js';
+import { StoryManager, setupStoryListener } from './story.js';
 
 
-let game, animationId;
+let game, animationId, level = 0;
 let enemyContainer, playerContainer, livesContainer, timerContainer, scoreContainer;
 
 
@@ -15,8 +15,7 @@ export class Game {
     constructor() {
         this.MusicManager = new MusicManager();
         this.isPaused = false;
-        this.isShowingStory = false;
-        this.EnemyManager = new EnemyManager(this.MusicManager);
+        this.EnemyManager = new EnemyManager(this.MusicManager, ++level);
         this.Player = new Player(this.MusicManager);
         this.StoryManager = new StoryManager(this, this.MusicManager);
     }
@@ -35,7 +34,6 @@ export class Game {
 
     // Reset the game state and start a new game
     reset() {
-        
         cancelAnimationFrame(animationId);
         document.querySelectorAll('[class*="bullet__"]').forEach(b => b.remove());
         enemyContainer.innerHTML = '';
@@ -43,7 +41,9 @@ export class Game {
         livesContainer.textContent = 'Lives: 3';
         timerContainer.textContent = 'Play_Time: 0.0';
         scoreContainer.textContent = 'Score: 0';
+        level = 0
         this.MusicManager.stopAllMusic();
+        game.StoryManager.isShowingStory = false;
         startGame();
     }
 }
@@ -51,13 +51,24 @@ export class Game {
 
 
 
-
+let temp;
 // Starts a new game instance and plays main background music
-function startGame() {
-    game = new Game();
+function startGame(storyScene = 0) {
+    if (level > 0) {
+        document.querySelector('.player').remove();
+        document.querySelectorAll('[class*="bullet__"]').forEach(b => b.remove());
+        temp = game.Player;
+        game = new Game();
+        game.Player = temp;
+    } else {
+        game = new Game();
+        
+    }
     setupStoryListener(game); // init story continue button listener
-    game.StoryManager.showStory(0); // show intro story
+
+    game.StoryManager.showStory(storyScene); // show intro story
     game.MusicManager.play('mainTitle');
+    
     gameLoop();
 }
 
@@ -80,11 +91,15 @@ let lastToggleTime = 0;
 // Main game loop that runs each animation frame
 function gameLoop(timeStamp) {
     animationId = requestAnimationFrame(gameLoop);
-    if (true) {
-        game.StoryManager.showStory(game.StoryManager.currentScene);
+    
+    if (game.StoryManager.isShowingStory) return;
+    if (document.querySelectorAll('.enemy').length <= 0 && level < 3) {
+        game.StoryManager.currentScene++;
+        cancelAnimationFrame(animationId);
+        startGame(game.StoryManager.currentScene);
         return;
     }
-    
+
     // Handle toggling pause with Escape key with a throttle of 300ms
     if (keys.pause && timeStamp - lastToggleTime > 300) {
         handlePauseToggle(game, keys, hideMenu, showGameMenu);
@@ -98,15 +113,17 @@ function gameLoop(timeStamp) {
     if (game.isPaused) return;
 
     // Check for game over condition or victory
-    if (game.Player.lives <= 0 || game.EnemyManager.Animation === -1){
+    if (game.Player.lives <= 0 || game.EnemyManager.Animation === -1) {
+        game.StoryManager.currentScene = 4;
         game.StoryManager.showStory(4);
         return;
     }
-    if (document.querySelectorAll('.enemy').length <= 0) {
-        game.StoryManager.showStory(5);
+    if (document.querySelectorAll('.enemy').length <= 0 && level === 3) {
+        game.StoryManager.currentScene = 3;
+        game.StoryManager.showStory(3);
         return;
     }
-    
+
     // Update all entities each frame
     game.updateEntities();
 }

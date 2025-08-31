@@ -1,6 +1,5 @@
 const storyContinue = document.getElementById('story-continue-btn');
 
-
 export class StoryManager {
     constructor(game, musicManager) {
         this.game = game;
@@ -10,6 +9,7 @@ export class StoryManager {
         this.textElem = document.getElementById('story-text');
         this.continueBtn = document.getElementById('story-continue-btn');
         this.currentScene = 0;
+        this.isShowingStory = false;
     }
 
     getStoryScenes() {
@@ -42,16 +42,14 @@ export class StoryManager {
     }
 
     showStory(sceneIndex) {
+        this.isShowingStory = true;
         this.game.isPaused = true;
         this.game.Player.isPaused = true;
         this.game.EnemyManager.isPaused = true;
         this.titleElem.textContent = this.getStoryScenes()[sceneIndex].title;
         this.textElem.textContent = this.getStoryScenes()[sceneIndex].text.replace('[SCORE]', this.game.Player.score);
-        if (this.game.StoryManager.currentScene === 3 ){
-            
-        }else if (this.game.StoryManager.currentScene === 4){
-            
-        }
+        this.continueBtn.textContent = (sceneIndex >= 3) ? 'Restart Game' : 'Continue';
+
         this.overlay.classList.remove('hidden');
         this.overlay.classList.add('visible');
     }
@@ -59,13 +57,16 @@ export class StoryManager {
 
 export function setupStoryListener(game) {
     storyContinue.addEventListener('click' , () => {
+        
+        game.StoryManager.isShowingStory = false;
         game.isPaused = false;
         game.Player.isPaused = false;
         game.EnemyManager.isPaused = false;
-
         game.StoryManager.overlay.classList.add('hidden');
         game.StoryManager.overlay.classList.remove('visible');
-        
+        if (game.StoryManager.currentScene === 3 || game.StoryManager.currentScene === 4){            
+            game.reset();
+        }
         game.StoryManager.currentScene++;
         
     })
