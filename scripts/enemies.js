@@ -94,30 +94,39 @@ export class EnemyManager {
         this.EnemiesCanMoveX = true;
         this.EnemiesHaveMovedDown = false;
         this.EnemiesDammagedThePlayer = false;
-        this.EnemyGrid = [
+        this._map = new Map()
+        this.musicManager = musicManager;
+        this.EnemyBullets = [];
+        this.generateMap()
+        this.spawnEnemies(level);
+        this.Animation = 0;
+        this.isPaused = false;
+    }
+
+    generateMap(){
+        const EnemyGrid = [
             ["E1", "E1", "E1", "E1", "E1", "E1", "E1", "E1", "E1", "E1", "E1"],
             ["E2", "E2", "E2", "E2", "E2", "E2", "E2", "E2", "E2", "E2", "E2"],
             ["E2", "E2", "E2", "E2", "E2", "E2", "E2", "E2", "E2", "E2", "E2"],
             ["E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3"],
             ["E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3", "E3"]
         ];
-        this.musicManager = musicManager;
-        this.EnemyBullets = [];
-        this.spawnEnemies(level);
-        this.Animation = 0;
-        this.isPaused = false;
+        
+        this._map.set(1, EnemyGrid.slice(0, 2))
+        this._map.set(2, EnemyGrid.slice(0, 3))
+        this._map.set(3, EnemyGrid.slice(0, 5))        
     }
 
     // Spawns enemies based on the grid layout
     spawnEnemies(level) {
-        if (level === 1 ) {level = 3} 
-        else if (level >= 3 ) {level = 0}
+        var map = this._map.get(level), x = 0 ;
+        x = (level == 1) ? 3 : (level == 2 ? 2 : x);
 
-        for (let i = 0; i < this.EnemyGrid.length - level; i++) {
-            for (let j = 0; j < this.EnemyGrid[i].length - level; j++) {
+        for (let i = 0; i < map.length ; i++) {
+            for (let j = 0; j < map[i].length - x ; j++) {
                 const newEnemy = new Enemy(0.07, null);
                 var enemyElement = undefined;
-                switch (this.EnemyGrid[i][j]) {
+                switch (map[i][j]) {
                     case "E1":
                         enemyElement = newEnemy.createEnemyElement("E1__A1");
                         break;
