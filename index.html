@@ -9,7 +9,48 @@
     <link rel="stylesheet" href="./style.css">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
+<style>
+    .popup {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background: #222;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  z-index: 999;
+  text-align: center;
+  width: 400px;
+}
+.hidden { display: none; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+th, td {
+  padding: 5px;
+  border-bottom: 1px solid gray;
+}
+th { color: yellow; }
+.pagination {
+  margin-top: 10px;
+}
+button {
+  margin: 5px;
+  padding: 5px 10px;
+  background: #444;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+button:hover {
+  background: #666;
+}
 
+</style>
 <body>
     <script defer type="module" src="./scripts/game.js"></script>
     <div class="game-container">
