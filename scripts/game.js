@@ -56,6 +56,7 @@ export class Game {
 function startGame() {
     game = new Game();
     setupStoryListener(game); // init story continue button listener
+    game.StoryManager.showStory(0); // show intro story
     game.MusicManager.play('mainTitle');
     gameLoop();
 }
@@ -79,11 +80,10 @@ let lastToggleTime = 0;
 // Main game loop that runs each animation frame
 function gameLoop(timeStamp) {
     animationId = requestAnimationFrame(gameLoop);
-    if (!game.StoryManager.isShowing && game.StoryManager.currentScene < 3) {
+    if (true) {
         game.StoryManager.showStory(game.StoryManager.currentScene);
         return;
     }
-    if (game.isShowingStory) return;
     
     // Handle toggling pause with Escape key with a throttle of 300ms
     if (keys.pause && timeStamp - lastToggleTime > 300) {
@@ -98,9 +98,13 @@ function gameLoop(timeStamp) {
     if (game.isPaused) return;
 
     // Check for game over condition or victory
-    if (game.Player.lives <= 0 || game.EnemyManager.Animation === -1) return endGame("GameOver");
+    if (game.Player.lives <= 0 || game.EnemyManager.Animation === -1){
+        game.StoryManager.showStory(4);
+        return;
+    }
     if (document.querySelectorAll('.enemy').length <= 0) {
-        return endGame("Congrats");
+        game.StoryManager.showStory(5);
+        return;
     }
     
     // Update all entities each frame

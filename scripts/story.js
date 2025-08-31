@@ -10,7 +10,6 @@ export class StoryManager {
         this.textElem = document.getElementById('story-text');
         this.continueBtn = document.getElementById('story-continue-btn');
         this.currentScene = 0;
-        this.isShowing = false;
     }
 
     getStoryScenes() {
@@ -43,12 +42,16 @@ export class StoryManager {
     }
 
     showStory(sceneIndex) {
-        if (this.isShowing) return;
         this.game.isPaused = true;
         this.game.Player.isPaused = true;
-        this.isShowing = true;
+        this.game.EnemyManager.isPaused = true;
         this.titleElem.textContent = this.getStoryScenes()[sceneIndex].title;
         this.textElem.textContent = this.getStoryScenes()[sceneIndex].text.replace('[SCORE]', this.game.Player.score);
+        if (this.game.StoryManager.currentScene === 3 ){
+            
+        }else if (this.game.StoryManager.currentScene === 4){
+            
+        }
         this.overlay.classList.remove('hidden');
         this.overlay.classList.add('visible');
     }
@@ -56,11 +59,10 @@ export class StoryManager {
 
 export function setupStoryListener(game) {
     storyContinue.addEventListener('click' , () => {
-        game.StoryManager.isShowing = false;
-        game.isShowingStory = false;
-        
+        game.isPaused = false;
         game.Player.isPaused = false;
         game.EnemyManager.isPaused = false;
+
         game.StoryManager.overlay.classList.add('hidden');
         game.StoryManager.overlay.classList.remove('visible');
         
