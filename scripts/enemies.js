@@ -87,7 +87,7 @@ export class Enemy {
 
 // Manages all enemies in the game
 export class EnemyManager {
-    constructor(musicManager) {
+    constructor(musicManager, level = 0 ) {
         // Initializes enemy array, movement flags, and grid
         this.Enemies = [];
         this.EnemiesDirection = 'right';
@@ -103,15 +103,18 @@ export class EnemyManager {
         ];
         this.musicManager = musicManager;
         this.EnemyBullets = [];
-        this.spawnEnemies();
+        this.spawnEnemies(level);
         this.Animation = 0;
         this.isPaused = false;
     }
 
     // Spawns enemies based on the grid layout
-    spawnEnemies() {
-        for (let i = 0; i < this.EnemyGrid.length; i++) {
-            for (let j = 0; j < this.EnemyGrid[i].length; j++) {
+    spawnEnemies(level) {
+        if (level === 1 ) {level = 3} 
+        else if (level >= 3 ) {level = 0}
+
+        for (let i = 0; i < this.EnemyGrid.length - level; i++) {
+            for (let j = 0; j < this.EnemyGrid[i].length - level; j++) {
                 const newEnemy = new Enemy(0.07, null);
                 var enemyElement = undefined;
                 switch (this.EnemyGrid[i][j]) {

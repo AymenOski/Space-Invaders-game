@@ -6,7 +6,7 @@ import { showGameMenu, setupMenu, hideMenu } from "./menu.js";
 import { handlePauseToggle, handleSmallScreenPause, handleBulletHit , PreventDefaults} from './helpers.js';
 
 
-let game, animationId;
+let game, animationId , level = 0;
 let enemyContainer, playerContainer, livesContainer, timerContainer, scoreContainer;
 
 
@@ -14,7 +14,7 @@ export class Game {
     constructor() {
         this.MusicManager = new MusicManager();
         this.isPaused = false;
-        this.EnemyManager = new EnemyManager(this.MusicManager);
+        this.EnemyManager = new EnemyManager(this.MusicManager, ++level);
         this.Player = new Player(this.MusicManager);
     }
 
@@ -39,6 +39,7 @@ export class Game {
         livesContainer.textContent = 'Lives: 3';
         timerContainer.textContent = 'Play_Time: 0.0';
         scoreContainer.textContent = 'Score: 0';
+        level = 0
         this.MusicManager.stopAllMusic();
         startGame();
     }
