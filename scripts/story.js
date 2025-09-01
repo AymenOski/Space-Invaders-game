@@ -41,33 +41,19 @@ export class StoryManager {
         ];
     }
 
-    showStory(sceneIndex) {
+    showStory(storyScene) {
         this.isShowingStory = true;
         this.game.isPaused = true;
         this.game.Player.isPaused = true;
         this.game.EnemyManager.isPaused = true;
-        this.titleElem.textContent = this.getStoryScenes()[sceneIndex].title;
-        this.textElem.textContent = this.getStoryScenes()[sceneIndex].text.replace('[SCORE]', this.game.Player.score);
-        this.continueBtn.textContent = (sceneIndex >= 3) ? 'Restart Game' : 'Continue';
+        this.titleElem.textContent = this.getStoryScenes()[storyScene].title;
+        this.textElem.textContent = this.getStoryScenes()[storyScene].text.replace('[SCORE]', this.game.Player.score);
+        this.continueBtn.textContent = (storyScene >= 3) ? 'Restart Game' : 'Continue';
 
         this.overlay.classList.remove('hidden');
         this.overlay.classList.add('visible');
     }
 }
-
-export function setupStoryListener(game) {
-    storyContinue.addEventListener('click' , () => {
-        
-        game.StoryManager.isShowingStory = false;
-        game.isPaused = false;
-        game.Player.isPaused = false;
-        game.EnemyManager.isPaused = false;
-        game.StoryManager.overlay.classList.add('hidden');
-        game.StoryManager.overlay.classList.remove('visible');
-        if (game.StoryManager.currentScene === 3 || game.StoryManager.currentScene === 4){            
-            game.reset();
-        }
-        game.StoryManager.currentScene++;
-        
-    })
+export function setupStoryListener(callback) {
+    storyContinue.addEventListener('click' , callback)
 }

@@ -42,59 +42,61 @@ export class Game {
         timerContainer.textContent = 'Play_Time: 0.0';
         scoreContainer.textContent = 'Score: 0';
         level = 0
+        currentScene = 0;
         this.MusicManager.stopAllMusic();
-        game.StoryManager.isShowingStory = false;
-        startGame();
+        startGame(0);
     }
 }
 
 
 
 
-let temp;
+let tempPlayer, currentScene = 0;
 // Starts a new game instance and plays main background music
 function startGame(storyScene = 0) {
+
     if (level > 0) {
         document.querySelector('.player').remove();
         document.querySelectorAll('[class*="bullet__"]').forEach(b => b.remove());
-        temp = game.Player;
+        // document.querySelectorAll('[class*="player__bullet__"]').forEach(b => b.remove());
+        tempPlayer = game.Player;
+        currentScene = game.StoryManager.currentScene;
         game = new Game();
-        game.Player = temp;
+        game.StoryManager.currentScene = currentScene;
+        game.Player = tempPlayer;
+        game.Player.x = 0;
     } else {
         game = new Game();
-        
     }
-    setupStoryListener(game); // init story continue button listener
+    game.StoryManager.showStory(storyScene);
+    setupStoryListener(() => {
+        game.StoryManager.isShowingStory = false;
+        game.isPaused = false;
+        game.Player.isPaused = false;
+        game.EnemyManager.isPaused = false;
+        game.StoryManager.overlay.classList.add('hidden');
+        game.StoryManager.overlay.classList.remove('visible');
 
-    game.StoryManager.showStory(storyScene); // show intro story
+        if (game.StoryManager.currentScene === 3 || game.StoryManager.currentScene === 4) {
+            game.reset();
+        }
+        game.StoryManager.currentScene++;
+
+    })
     game.MusicManager.play('mainTitle');
-    
+
+    console.log("|game|", game.StoryManager.isShowingStory);
+
     gameLoop();
 }
-
-
-function endGame(reason) {
-    game.Player.isPaused = true;
-    game.isPaused = true;
-
-    // if enemies reached bottom, make player show the death effect once
-    if (reason === "GameOver" && game.EnemyManager.Animation === -1) {
-        game.Player.lives = 1;
-        game.Player.dammage();
-    }
-
-    showGameMenu(reason);
-}
-
 
 let lastToggleTime = 0;
 // Main game loop that runs each animation frame
 function gameLoop(timeStamp) {
     animationId = requestAnimationFrame(gameLoop);
-    
+
     if (game.StoryManager.isShowingStory) return;
     if (document.querySelectorAll('.enemy').length <= 0 && level < 3) {
-        game.StoryManager.currentScene++;
         cancelAnimationFrame(animationId);
         startGame(game.StoryManager.currentScene);
         return;
@@ -116,6 +118,7 @@ function gameLoop(timeStamp) {
     if (game.Player.lives <= 0 || game.EnemyManager.Animation === -1) {
         game.StoryManager.currentScene = 4;
         game.StoryManager.showStory(4);
+
         return;
     }
     if (document.querySelectorAll('.enemy').length <= 0 && level === 3) {
@@ -156,3 +159,4 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener('keydown', startMusic, { once: true });
     startGame(); // starts the loop.
 });
+
