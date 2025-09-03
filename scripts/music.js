@@ -5,10 +5,12 @@ export class MusicManager {
         this.tracks = {
             playerShoot: new Audio('./Assets/Sounds/Player__Shoot.wav'),
             playerDammage: new Audio('./Assets/Sounds/Player__Dammage.mp3'),
-            playerDeathExplosion: new Audio('./Assets/Sounds/Player__DeathExplosion.mp3'),
-            mainTitle: new Audio('./Assets/Sounds/Main__Title.mp3'),
-            gameover: new Audio('./Assets/Sounds/Game__Over.mp3'),
             InvadersDeath: new Audio('./Assets/Sounds/Invaders__DeathSound.wav'),
+            Level1 : new Audio('./Assets/Sounds/Level_1_theme.mp3'),
+            Level2 : new Audio('./Assets/Sounds/Level_2_theme.mp3'),
+            Level3 : new Audio('./Assets/Sounds/Level_3_theme.mp3'),
+            WinTheme : new Audio('./Assets/Sounds/Win__theme.mp3'),
+            LoseTheme : new Audio('./Assets/Sounds/Lose__theme.mp3'),
         };
         // Preloads all audio tracks
         for (let key in this.tracks) {
@@ -21,7 +23,7 @@ export class MusicManager {
     play(trackName) {
         if (!this.tracks[trackName]) return;
         let track = null;
-        if (trackName !== "mainTitle") {
+        if (trackName === "InvadersDeath" || trackName === "playerShoot" || trackName === "playerDammage") {
             track = this.tracks[trackName].cloneNode();
         } else {
             track = this.tracks[trackName];
@@ -30,7 +32,7 @@ export class MusicManager {
     }
 
     // Stops all audio tracks and resets their playback
-    stopAllMusic() {
+    stopAllTracks() {
         for (let key in this.tracks) {
             const track = this.tracks[key];
             track.pause();

@@ -15,33 +15,38 @@ export class StoryManager {
     getStoryScenes() {
         return [
             {  // Level 1: Introduction
-                title: "The Void Swarm Descends",
-                text: "Year 2147. The Void Swarm's scouts breach Earth's orbit, seeking to harvest our energy. As Captain Nova, pilot the Aether Guardian to stop them!",
-                music: 'mainTitle',
-                duration: 5000
+                title: "Glimmerkin Color Heist",
+                text: "It’s 2199, and the Glimmerkin are raiding Earth’s skies with their buzzing Glowdrones, stealing our colors to brighten their dull galaxy! You’re Zara Flux, piloting the *Stellar Claw*. Blast those pesky drones and save Earth’s rainbows!",
+                music: 'Level1'
             },
             {  // Level 2: Development (after clearing Level 1)
-                title: "Swarm Evolution",
-                text: "The scouts are gone, but the Warriors and Drones advance. Intel: The Swarm has stolen human tech to adapt mid-battle. Push them back!",
-                music: 'playerDammage'
+                title: "Chromacruisers Crash In",
+                text: "Way to go, Zara! The Glowdrones are gone, but now the Glimmerkin’s sleek Chromacruisers are swooping down, snatching our sunsets! Fire up the *Stellar Claw* and smash them to keep Earth’s skies vivid!",
+                music: 'Level2'
             },
             {  // Level 3: Climax
-                title: "The Queen's Wrath",
-                text: "The Swarm unleashes its Harvesters, led by their Queen. Destroy them to save Earth! Hint: Target UFOs for bonus points.",
-                music: 'InvadersDeath'
+                title: "Showdown with the Color King",
+                text: "The Glimmerkin Color King and his massive Glowdrone are here to drain Earth’s last hues! Zara, it’s do-or-die—pilot the *Stellar Claw* to blast them back to their gray galaxy. Zap those fast Chromacruisers for bonus points!",
+                music: 'Level3'
             },
             {  // Win Ending
-                title: "Victory for Earth",
-                text: "The Swarm retreats to their void dimension. Earth is safe... for now. Your score: [SCORE]. Lore: The Queen vows revenge."
+                title: "Earth’s Sky Party Saved!",
+                text: "Boom! The Glimmerkin King’s outta here, and Earth’s skies are sparkling again! Zara Flux, you’re a legend with a score of [SCORE]! Rumor has it, the Glimmerkin are planning a comeback—ready for round two?",
+                music: 'WinTheme'
             },
             {  // Lose Ending
-                title: "Earth's Last Stand Falls",
-                text: "The Swarm overwhelms the Aether Guardian. Earth is harvested. Final score: [SCORE]. Try again, Captain Nova."
+                title: "Glimmerkin Party Crashers Win",
+                text: "Oh no! The Glimmerkin turned Earth into their cosmic dance floor, and the *Stellar Claw* crashed. Your score: [SCORE]. Hop back in, Zara, and show those aliens who’s boss!",
+                music: 'LoseTheme'
             }
         ];
     }
 
     showStory(storyScene) {
+        if (storyScene > 0 ){
+            this.game.MusicManager.stopAllTracks();
+        }
+        this.game.MusicManager.play(this.getStoryScenes()[storyScene].music);
         this.isShowingStory = true;
         this.game.isPaused = true;
         this.game.Player.isPaused = true;
@@ -49,7 +54,7 @@ export class StoryManager {
         this.titleElem.textContent = this.getStoryScenes()[storyScene].title;
         this.textElem.textContent = this.getStoryScenes()[storyScene].text.replace('[SCORE]', this.game.Player.score);
         this.continueBtn.textContent = (storyScene >= 3) ? 'Restart Game' : 'Continue';
-
+        
         this.overlay.classList.remove('hidden');
         this.overlay.classList.add('visible');
     }

@@ -43,7 +43,7 @@ export class Game {
         scoreContainer.textContent = 'Score: 0';
         level = 0
         currentSceneTemp = 0;
-        this.MusicManager.stopAllMusic();
+        this.MusicManager.stopAllTracks();
         startGame(0);
     }
 }
@@ -59,6 +59,7 @@ function startGame(storyScene = 0) {
 
         document.querySelector('.player').remove();
         document.querySelectorAll('[class*="bullet__"]').forEach(b => b.remove());
+        game.MusicManager.stopAllTracks(); // stop the music before getting garbage collected
         tempPlayer = game.Player;
         currentSceneTemp = game.StoryManager.currentScene;
         game = new Game();
@@ -69,10 +70,7 @@ function startGame(storyScene = 0) {
         game = new Game();
     }
     game.StoryManager.showStory(storyScene);
-    
-    game.MusicManager.play('mainTitle');
-    
-    document.querySelectorAll('[class*="player__bullet__"]').forEach(b => b.remove());
+
     gameLoop();
 }
 
@@ -104,7 +102,7 @@ function gameLoop(timeStamp) {
     if (game.Player.lives <= 0 || game.EnemyManager.Animation === -1) {
         game.StoryManager.currentScene = 4;
         game.StoryManager.showStory(4);
-        
+
         return;
     }
     if (document.querySelectorAll('.enemy').length <= 0 && level === 3) {
@@ -119,10 +117,12 @@ function gameLoop(timeStamp) {
 
 
 
-function startMusic() {
-    if (!game) return;
-    game.MusicManager.play('mainTitle');
-}
+// function startMusic(track = 'Level1') {
+//     if (!game) return;
+//     console.log('Starting music:', track);
+    
+//     game.MusicManager.play(track);
+// }
 
 document.addEventListener("DOMContentLoaded", () => {
     enemyContainer = document.querySelector('.enemy-container');
@@ -130,10 +130,10 @@ document.addEventListener("DOMContentLoaded", () => {
     livesContainer = document.querySelector('.lives-container');
     timerContainer = document.querySelector('.timer-container');
     scoreContainer = document.querySelector('.score-container');
-    
+
     setupInput(); // init input listeners
     PreventDefaults(); // prevent default browser actions for some keys
-    
+
     // simple callbacks for Menu BTN ( replay and continue 
     setupMenu(() => game.reset(), () => {
         game.isPaused = false;
@@ -142,8 +142,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     setupStoryListener(() => game.StoryManager.hideStory());
     // attach music starters now (game is defined)
-    document.addEventListener('click', startMusic, { once: true });
-    document.addEventListener('keydown', startMusic, { once: true });
+    // document.addEventListener('click', startMusic, { once: true });
+    // document.addEventListener('keydown', startMusic, { once: true });
     startGame(); // starts the loop.
 });
 
