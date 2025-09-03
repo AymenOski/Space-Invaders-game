@@ -56,9 +56,9 @@ let tempPlayer, currentSceneTemp = 0;
 function startGame(storyScene = 0) {
 
     if (level > 0) {
+
         document.querySelector('.player').remove();
         document.querySelectorAll('[class*="bullet__"]').forEach(b => b.remove());
-        // document.querySelectorAll('[class*="player__bullet__"]').forEach(b => b.remove());
         tempPlayer = game.Player;
         currentSceneTemp = game.StoryManager.currentScene;
         game = new Game();
@@ -71,7 +71,8 @@ function startGame(storyScene = 0) {
     game.StoryManager.showStory(storyScene);
     
     game.MusicManager.play('mainTitle');
-        
+    
+    document.querySelectorAll('[class*="player__bullet__"]').forEach(b => b.remove());
     gameLoop();
 }
 

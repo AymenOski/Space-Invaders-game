@@ -1,10 +1,8 @@
-// helpers.js
 import { BulletHitEnemyGetter, BulletHitEnemySetter, PlayerScoreGetter } from './bullet.js';
 
-// Handle toggling pause with Escape key
+// Toggles game pause state when Escape is pressed
 export function handlePauseToggle(game, keys, hideMenu, showGameMenu) {
     if (!keys.pause) return;
-
     if (game.isPaused) {
         hideMenu();
         game.isPaused = false;
@@ -19,8 +17,7 @@ export function handlePauseToggle(game, keys, hideMenu, showGameMenu) {
     keys.pause = false;
 }
 
-
-// Pause the game if the screen is too small
+// Pauses the game and hides elements on small screens
 export function handleSmallScreenPause(game, enemyContainer, playerContainer) {
     if (window.innerWidth < 320 || window.innerHeight < 320) {
         game.EnemyManager.isPaused = true;
@@ -35,13 +32,11 @@ export function handleSmallScreenPause(game, enemyContainer, playerContainer) {
     }
 }
 
-
-// Handle bullet hitting an enemy and updating score
+// Updates score and UI when a bullet hits an enemy
 export function handleBulletHit(game, scoreContainer) {
     if (BulletHitEnemyGetter() === true) {
         BulletHitEnemySetter(false);
         game.Player.score += PlayerScoreGetter();
-
         scoreContainer.style.opacity = 0.4;
         scoreContainer.style.color = "green";
         setTimeout(() => {
@@ -52,6 +47,7 @@ export function handleBulletHit(game, scoreContainer) {
     }
 }
 
+// Prevents default browser actions for certain key combinations
 export function PreventDefaults() {
     document.addEventListener('keydown', (event) => {
         if (event.ctrlKey || event.metaKey) {
@@ -61,7 +57,6 @@ export function PreventDefaults() {
             event.preventDefault();
         }
     });
-
     document.addEventListener('wheel', (event) => {
         if (event.ctrlKey || event.metaKey) {
             event.preventDefault();

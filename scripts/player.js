@@ -1,8 +1,10 @@
 import { Bullet } from './bullet.js';
 import { keys } from './input.js';
 
+// Represents the player in the game
 export class Player {
     constructor(musicManager) {
+        // Initializes player properties and creates player element
         this.score = 0;
         this.lives = 3;
         this.Speed = 7;
@@ -14,10 +16,10 @@ export class Player {
         this.PlayerIsInvincible = false;
         this.musicManager = musicManager;
         this.isPaused = false;
-
         this.createPlayer();
     }
 
+    // Creates the player DOM element
     createPlayer() {
         const p = document.createElement("div");
         p.classList.add("player");
@@ -25,6 +27,7 @@ export class Player {
         container.appendChild(p);
     }
 
+    // Handles player damage, reducing lives and applying invincibility
     dammage() {
         if (this.PlayerIsInvincible) return;
         this.PlayerIsInvincible = true;
@@ -38,7 +41,6 @@ export class Player {
             lives.style.color = "white";
             lives.style.opacity = 1;
         }, 400);
-
         const p = document.querySelector(".player-container");
         let blinkTimes = 10;
         let visible = true;
@@ -51,12 +53,12 @@ export class Player {
                 clearInterval(interval);
             }
         }, 100);
-
         setTimeout(() => {
             this.PlayerIsInvincible = false;
         }, 999);
     }
 
+    // Manages player shooting with a cooldown
     handleShoot() {
         const now = performance.now();
         if (now - this.lastShotTime >= this.shootCooldown) {
@@ -66,6 +68,7 @@ export class Player {
         }
     }
 
+    // Creates and adds a player bullet
     shoot() {
         const p = document.querySelector(".player");
         const playerRect = p.getBoundingClientRect();
@@ -76,32 +79,30 @@ export class Player {
         document.querySelector('.game-container').appendChild(bullet.getElement());
     }
 
+    // Moves the player left or right within bounds
     movePlayer(direction) {
         if (!direction) return;
         const p = document.querySelector(".player");
         const container = document.querySelector(".player-container");
         const maxX = (container.offsetWidth / 2) - p.offsetWidth / 2;
         const minX = -(container.offsetWidth / 2) + p.offsetWidth / 2;
-
         if (direction === "left" && this.x - this.Speed > minX) {
             this.x -= this.Speed;
         } else if (direction === "right" && this.x + this.Speed < maxX) {
             this.x += this.Speed;
         }
-
         p.style.transform = `translate3d(${this.x}px, 0, 0)`;
     }
 
+    // Updates player movement, shooting, and bullet collisions
     update() {
         document.querySelector('.timer-container').innerHTML = 
-          `Play_Time: ${((performance.now() - this.time) / 1000).toFixed(1)}`;
-
+            `Play_Time: ${((performance.now() - this.time) / 1000).toFixed(1)}`;
         if (!this.isPaused && this.lives > 0) {
             if (keys.left) this.movePlayer("left");
             if (keys.right) this.movePlayer("right");
             if (keys.shoot) this.handleShoot();
         }
-
         if (this.playerBullets.length > 0) {
             this.playerBullets.forEach((bullet) => {
                 if (bullet.isColliding("Enemy")) {
@@ -110,7 +111,6 @@ export class Player {
                     this.playerBullets = this.playerBullets.filter((b) => b != bullet);
                     return;
                 }
-
                 if (bullet.getY() + 4 <= 0) {
                     bullet.getElement().remove();
                     this.playerBullets = this.playerBullets.filter(b => b !== bullet);
