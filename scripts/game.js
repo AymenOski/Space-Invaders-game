@@ -42,7 +42,7 @@ export class Game {
         timerContainer.textContent = 'Play_Time: 0.0';
         scoreContainer.textContent = 'Score: 0';
         level = 0
-        currentScene = 0;
+        currentSceneTemp = 0;
         this.MusicManager.stopAllMusic();
         startGame(0);
     }
@@ -51,7 +51,7 @@ export class Game {
 
 
 
-let tempPlayer, currentScene = 0;
+let tempPlayer, currentSceneTemp = 0;
 // Starts a new game instance and plays main background music
 function startGame(storyScene = 0) {
 
@@ -60,33 +60,18 @@ function startGame(storyScene = 0) {
         document.querySelectorAll('[class*="bullet__"]').forEach(b => b.remove());
         // document.querySelectorAll('[class*="player__bullet__"]').forEach(b => b.remove());
         tempPlayer = game.Player;
-        currentScene = game.StoryManager.currentScene;
+        currentSceneTemp = game.StoryManager.currentScene;
         game = new Game();
-        game.StoryManager.currentScene = currentScene;
+        game.StoryManager.currentScene = currentSceneTemp;
         game.Player = tempPlayer;
         game.Player.x = 0;
     } else {
         game = new Game();
     }
     game.StoryManager.showStory(storyScene);
-    setupStoryListener(() => {
-        game.StoryManager.isShowingStory = false;
-        game.isPaused = false;
-        game.Player.isPaused = false;
-        game.EnemyManager.isPaused = false;
-        game.StoryManager.overlay.classList.add('hidden');
-        game.StoryManager.overlay.classList.remove('visible');
-
-        if (game.StoryManager.currentScene === 3 || game.StoryManager.currentScene === 4) {
-            game.reset();
-        }
-        game.StoryManager.currentScene++;
-
-    })
+    
     game.MusicManager.play('mainTitle');
-
-    console.log("|game|", game.StoryManager.isShowingStory);
-
+        
     gameLoop();
 }
 
@@ -118,7 +103,7 @@ function gameLoop(timeStamp) {
     if (game.Player.lives <= 0 || game.EnemyManager.Animation === -1) {
         game.StoryManager.currentScene = 4;
         game.StoryManager.showStory(4);
-
+        
         return;
     }
     if (document.querySelectorAll('.enemy').length <= 0 && level === 3) {
@@ -144,16 +129,17 @@ document.addEventListener("DOMContentLoaded", () => {
     livesContainer = document.querySelector('.lives-container');
     timerContainer = document.querySelector('.timer-container');
     scoreContainer = document.querySelector('.score-container');
-
+    
     setupInput(); // init input listeners
     PreventDefaults(); // prevent default browser actions for some keys
-
+    
     // simple callbacks for Menu BTN ( replay and continue 
     setupMenu(() => game.reset(), () => {
         game.isPaused = false;
         game.Player.isPaused = false;
         game.EnemyManager.isPaused = false;
     });
+    setupStoryListener(() => game.StoryManager.hideStory());
     // attach music starters now (game is defined)
     document.addEventListener('click', startMusic, { once: true });
     document.addEventListener('keydown', startMusic, { once: true });

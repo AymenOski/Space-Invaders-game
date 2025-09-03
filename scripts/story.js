@@ -53,7 +53,20 @@ export class StoryManager {
         this.overlay.classList.remove('hidden');
         this.overlay.classList.add('visible');
     }
+    hideStory() {
+        this.isShowingStory = false;
+        this.game.isPaused = false;
+        this.game.Player.isPaused = false;
+        this.game.EnemyManager.isPaused = false;
+        this.overlay.classList.add('hidden');
+        this.overlay.classList.remove('visible');
+
+        if (this.currentScene === 3 || this.currentScene === 4) {
+            this.game.reset();
+        }
+        this.currentScene++;
+    }
 }
 export function setupStoryListener(callback) {
-    storyContinue.addEventListener('click' , callback)
+    storyContinue.addEventListener('click', callback)
 }
