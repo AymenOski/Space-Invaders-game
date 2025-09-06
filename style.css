@@ -5,6 +5,14 @@ body {
     padding: 0;
 }
 
+.noscript {
+  background-color: white;
+  font-size: large;
+  color: black;
+  padding: 10px;
+  text-align: center;
+}
+
 
 .game-container {
     display: flex;
