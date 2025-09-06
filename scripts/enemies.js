@@ -87,7 +87,7 @@ export class Enemy {
 
 // Manages all enemies in the game
 export class EnemyManager {
-    constructor(musicManager, level = 0 ) {
+    constructor(musicManager, level = 1 ) {
         // Initializes enemy array, movement flags, and grid
         this.Enemies = [];
         this.EnemiesDirection = 'right';
@@ -103,6 +103,7 @@ export class EnemyManager {
         this.isPaused = false;
     }
 
+    // generate map based on levels
     generateMap(){
         const EnemyGrid = [
             ["E1", "E1", "E1", "E1", "E1", "E1", "E1", "E1", "E1", "E1", "E1"],

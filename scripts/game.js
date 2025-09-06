@@ -48,9 +48,6 @@ export class Game {
     }
 }
 
-
-
-
 let tempPlayer, currentSceneTemp = 0;
 // Starts a new game instance and plays main background music
 function startGame(storyScene = 0) {
@@ -115,15 +112,6 @@ function gameLoop(timeStamp) {
     game.updateEntities();
 }
 
-
-
-// function startMusic(track = 'Level1') {
-//     if (!game) return;
-//     console.log('Starting music:', track);
-    
-//     game.MusicManager.play(track);
-// }
-
 document.addEventListener("DOMContentLoaded", () => {
     enemyContainer = document.querySelector('.enemy-container');
     playerContainer = document.querySelector('.player-container');
@@ -142,8 +130,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     setupStoryListener(() => game.StoryManager.hideStory());
     // attach music starters now (game is defined)
-    // document.addEventListener('click', startMusic, { once: true });
-    // document.addEventListener('keydown', startMusic, { once: true });
     startGame(); // starts the loop.
 });
 
