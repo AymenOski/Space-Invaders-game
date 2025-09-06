@@ -116,14 +116,6 @@ function gameLoop(timeStamp) {
 }
 
 
-
-// function startMusic(track = 'Level1') {
-//     if (!game) return;
-//     console.log('Starting music:', track);
-    
-//     game.MusicManager.play(track);
-// }
-
 document.addEventListener("DOMContentLoaded", () => {
     enemyContainer = document.querySelector('.enemy-container');
     playerContainer = document.querySelector('.player-container');
@@ -141,9 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
         game.EnemyManager.isPaused = false;
     });
     setupStoryListener(() => game.StoryManager.hideStory());
-    // attach music starters now (game is defined)
-    // document.addEventListener('click', startMusic, { once: true });
-    // document.addEventListener('keydown', startMusic, { once: true });
+
     startGame(); // starts the loop.
 });
 
