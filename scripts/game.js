@@ -128,6 +128,18 @@ document.addEventListener("DOMContentLoaded", () => {
         game.Player.isPaused = false;
         game.EnemyManager.isPaused = false;
     });
+
+    const unlockAudio = () => {
+        if (game && game.MusicManager) {
+            game.MusicManager.unlockAudio();
+        }
+        window.removeEventListener('click', unlockAudio);
+        window.removeEventListener('keydown', unlockAudio);
+    };
+
+    window.addEventListener('click', unlockAudio);
+    window.addEventListener('keydown', unlockAudio);
+
     setupStoryListener(() => game.StoryManager.hideStory());
     // attach music starters now (game is defined)
     startGame(); // starts the loop.

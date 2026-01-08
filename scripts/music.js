@@ -6,12 +6,13 @@ export class MusicManager {
             playerShoot: new Audio('./Assets/Sounds/Player__Shoot.wav'),
             playerDammage: new Audio('./Assets/Sounds/Player__Dammage.mp3'),
             InvadersDeath: new Audio('./Assets/Sounds/Invaders__DeathSound.wav'),
-            Level1 : new Audio('./Assets/Sounds/Level_1_theme.mp3'),
-            Level2 : new Audio('./Assets/Sounds/Level_2_theme.mp3'),
-            Level3 : new Audio('./Assets/Sounds/Level_3_theme.mp3'),
-            WinTheme : new Audio('./Assets/Sounds/Win__theme.mp3'),
-            LoseTheme : new Audio('./Assets/Sounds/Lose__theme.mp3'),
+            Level1: new Audio('./Assets/Sounds/Level_1_theme.mp3'),
+            Level2: new Audio('./Assets/Sounds/Level_2_theme.mp3'),
+            Level3: new Audio('./Assets/Sounds/Level_3_theme.mp3'),
+            WinTheme: new Audio('./Assets/Sounds/Win__theme.mp3'),
+            LoseTheme: new Audio('./Assets/Sounds/Lose__theme.mp3'),
         };
+        this.currentBackgroundTrack = null;
         // Preloads all audio tracks
         for (let key in this.tracks) {
             this.tracks[key].preload = "auto";
@@ -27,8 +28,22 @@ export class MusicManager {
             track = this.tracks[trackName].cloneNode();
         } else {
             track = this.tracks[trackName];
+            this.currentBackgroundTrack = trackName;
         }
-        track.play();
+
+        const playPromise = track.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {
+                console.warn(`Autoplay blocked for track: ${trackName}. Audio will start after user interaction.`);
+            });
+        }
+    }
+
+    // Unlocks all audio tracks during a user gesture
+    unlockAudio() {
+        if (this.currentBackgroundTrack) {
+            this.play(this.currentBackgroundTrack);
+        }
     }
 
     // Stops all audio tracks and resets their playback
